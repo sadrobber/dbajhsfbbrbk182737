@@ -1,0 +1,276 @@
+{
+  "Metadata": {
+    "title": "{brand} · Smartphone in Costa Azzurra",
+    "description": "Smartphone nuovi e ricondizionati a Mentone, Monaco e dintorni. Consigli personalizzati, offerte, permuta e assistenza vicino a te."
+  },
+  "Common": {
+    "skipToContent": "Vai al contenuto principale",
+    "backHome": "Torna alla home",
+    "todo": "TODO",
+    "todoHint": "Da confermare",
+    "prototypeNotice": "Prototipo: prezzi e disponibilità sono di esempio."
+  },
+  "Header": {
+    "home": "{brand}, pagina iniziale",
+    "languageLabel": "Scegli la lingua",
+    "languages": {
+      "fr": "Français",
+      "en": "English",
+      "it": "Italiano"
+    }
+  },
+  "Hero": {
+    "eyebrow": "Smartphone nuovi e ricondizionati · Costa Azzurra",
+    "title": "Trova lo smartphone giusto per te.",
+    "knowWhatIWant": "So cosa voglio",
+    "helpMeChoose": "Aiutami a scegliere",
+    "shortcutsTitle": "Vai direttamente a",
+    "shortcuts": {
+      "iphone": "iPhone",
+      "samsung": "Samsung",
+      "otherBrands": "Altre marche",
+      "new": "Nuovi",
+      "refurbished": "Ricondizionati",
+      "deals": "Offerte"
+    }
+  },
+  "Deals": {
+    "title": "Le offerte del momento",
+    "subtitle": "I nostri migliori prezzi in questo momento.",
+    "seeAll": "Tutte le offerte"
+  },
+  "Refurbished": {
+    "title": "I ricondizionati del momento",
+    "subtitle": "Testati, igienizzati e garantiti.",
+    "seeAll": "Tutti i ricondizionati"
+  },
+  "Product": {
+    "condition": {
+      "new": "Nuovo",
+      "refurbished": "Ricondizionato"
+    },
+    "grade": {
+      "aPlus": "Come nuovo",
+      "a": "Ottimo stato",
+      "b": "Buono stato"
+    },
+    "colors": {
+      "black": "Nero",
+      "white": "Bianco",
+      "blue": "Blu",
+      "green": "Verde",
+      "purple": "Viola",
+      "grey": "Grigio",
+      "silver": "Argento",
+      "pink": "Rosa",
+      "gold": "Oro"
+    },
+    "badges": {
+      "new_arrival": "Novità",
+      "special_price": "Prezzo speciale",
+      "last_one": "Ultimo disponibile",
+      "deal_of_the_week": "Offerta della settimana"
+    },
+    "goodFor": {
+      "photo": "Foto",
+      "battery": "Autonomia",
+      "gaming": "Giochi",
+      "work": "Lavoro",
+      "social": "Social",
+      "easy": "Facilità d’uso"
+    },
+    "storageGb": "{value} GB",
+    "storageTb": "{value} TB",
+    "battery": "Batteria {value}",
+    "warranty": "Garanzia {months} mesi",
+    "stock": {
+      "inStock": "Disponibile",
+      "fewLeft": "Solo {count} disponibili",
+      "lastOne": "Ultimo disponibile",
+      "soldOut": "Esaurito"
+    },
+    "previousPrice": "Prezzo precedente",
+    "newVersionPrice": "Nuovo: {price}",
+    "saving": "Risparmi {amount}",
+    "view": "Vedi"
+  },
+  "Packages": {
+    "title": "Molto più di un telefono",
+    "subtitle": "Aggiungi un pacchetto ed esci dal negozio protetto e pronto.",
+    "includes": "Cosa include",
+    "learnMore": "Scopri di più",
+    "max-protection": {
+      "name": "Pacchetto Protezione Max",
+      "tagline": "Proteggi + equipaggia subito il tuo smartphone."
+    },
+    "ready-to-use": {
+      "name": "Pacchetto Pronto all’uso",
+      "tagline": "Ricevi il tuo smartphone. È tutto pronto."
+    },
+    "items": {
+      "wall_charger": "Caricatore da muro",
+      "charging_cable": "Cavo di ricarica",
+      "screen_protection": "Protezione schermo",
+      "case": "Cover protettiva",
+      "setup": "Acceso e configurato",
+      "data_transfer": "I tuoi dati trasferiti",
+      "accounts": "Account e app pronti",
+      "final_check": "Controllo finale insieme"
+    }
+  },
+  "Gauge": {
+    "title": "L’Indicatore",
+    "subtitle": "Ogni acquisto lo fa salire. Al 100%, si estrae un vincitore.",
+    "meterLabel": "Indicatore al {percent}",
+    "filled": "raggiunto",
+    "howItWorks": "Come funziona",
+    "steps": {
+      "buy": "Acquista",
+      "ticket": "Ricevi il tuo biglietto",
+      "win": "Prova a vincere"
+    },
+    "prizesTitle": "In palio",
+    "prizes": {
+      "smartphone": "Smartphone premium",
+      "computer": "Computer",
+      "console": "Console per videogiochi"
+    },
+    "rules": "Soggetto al regolamento ufficiale"
+  },
+  "TradeIn": {
+    "title": "Hai un vecchio smartphone?",
+    "subtitle": "Dallo in permuta e risparmia sul prossimo.",
+    "cta": "Ottieni una stima"
+  },
+  "Local": {
+    "title": "Vicino a te",
+    "subtitle": "Da Capo d’Aglio a Sospello, un negozio e un team a due passi.",
+    "townsLabel": "Le città che serviamo",
+    "towns": {
+      "menton": "Mentone",
+      "monaco": "Monaco",
+      "beausoleil": "Beausoleil",
+      "cap-dail": "Capo d’Aglio",
+      "roquebrune-cap-martin": "Roccabruna-Capo Martino",
+      "sospel": "Sospello"
+    },
+    "servicesLabel": "I nostri servizi",
+    "services": {
+      "collection": {
+        "title": "Ritiro in negozio",
+        "text": "Ordina, poi ritira in negozio."
+      },
+      "support": {
+        "title": "Supporto",
+        "text": "Aiuto con il tuo telefono, di persona."
+      },
+      "data_transfer": {
+        "title": "Trasferimento dati",
+        "text": "Foto, contatti e app trasferiti."
+      },
+      "after_sales": {
+        "title": "Assistenza post-vendita",
+        "text": "Garanzia e riparazioni, vicino a te."
+      }
+    },
+    "cta": "Trova il negozio"
+  },
+  "Footer": {
+    "tagline": "Smartphone nuovi e ricondizionati in Costa Azzurra.",
+    "rules": "Regolamento ufficiale",
+    "legal": "Note legali",
+    "store": "Il negozio",
+    "copyright": "© {year} {brand}"
+  },
+  "Placeholder": {
+    "badge": "In arrivo",
+    "text": "Questa pagina arriverà presto. Nel frattempo, il nostro consulente può aiutarti a scegliere.",
+    "askAdvisor": "Aiutami a scegliere",
+    "pages": {
+      "phones": "Tutti gli smartphone",
+      "iphone": "iPhone",
+      "samsung": "Samsung",
+      "otherBrands": "Altre marche",
+      "new": "Smartphone nuovi",
+      "refurbished": "Smartphone ricondizionati",
+      "deals": "Offerte",
+      "tradeIn": "Stima della permuta",
+      "rules": "Regolamento ufficiale",
+      "store": "Il negozio",
+      "legal": "Note legali"
+    }
+  },
+  "NotFound": {
+    "title": "Pagina non trovata",
+    "text": "La pagina che cerchi non esiste o è stata spostata."
+  },
+  "Advisor": {
+    "title": "Aiutami a scegliere",
+    "subtitle": "Dimmi di cosa hai bisogno. Propongo solo telefoni disponibili.",
+    "demoMode": "Modalità demo",
+    "close": "Chiudi",
+    "restart": "Ricomincia",
+    "welcome": "Ciao! Cosa stai cercando? Dimmi il tuo budget, una marca o come lo userai.",
+    "examplesTitle": "Per esempio",
+    "examples": {
+      "daughter": "Un iPhone per mia figlia, sui 400 €",
+      "samsung": "Quali Samsung sotto i 300 €?",
+      "senior": "Un telefono semplice per mia nonna",
+      "photo": "La migliore fotocamera sotto i 700 €"
+    },
+    "inputLabel": "Il tuo messaggio",
+    "placeholder": "Scrivi la tua domanda…",
+    "send": "Invia",
+    "typing": "Il consulente sta scrivendo…",
+    "error": "Spiacenti, qualcosa è andato storto. Riprova.",
+    "rateLimited": "Tante domande tutte insieme! Aspetta un minuto e riprova.",
+    "retry": "Riprova",
+    "slots": {
+      "right_choice": "La scelta giusta",
+      "smart_deal": "Il buon affare",
+      "premium_option": "L’opzione premium"
+    },
+    "packagesTitle": "Da aggiungere",
+    "you": "Tu",
+    "assistant": "Consulente",
+    "launcher": "Aiutami a scegliere",
+    "footnote": "Suggerimenti basati sui telefoni disponibili oggi."
+  },
+  "AdvisorReply": {
+    "askBudget": "Con piacere! Più o meno, che budget hai in mente?",
+    "quickReplies": {
+      "low": "Meno di 300 €",
+      "mid": "Da 300 a 600 €",
+      "high": "Più di 600 €",
+      "unsure": "Non lo so ancora"
+    },
+    "intro": "Ecco la mia selezione{details}:",
+    "introBrand": "{brand}",
+    "introOtherBrands": "di altre marche",
+    "budgetMax": "fino a {amount}",
+    "budgetAround": "intorno a {amount}",
+    "budgetMin": "da {amount} in su",
+    "budgetRange": "tra {min} e {max}",
+    "popular": "Nessun problema! Ecco i modelli più richiesti del momento:",
+    "closest": "Al momento niente corrisponde esattamente, ecco le opzioni più vicine:",
+    "noBrand": "Al momento non abbiamo {brand} disponibili. Ecco delle buone alternative:",
+    "nothingInStock": "Spiacenti, al momento non ci sono telefoni disponibili. Passa a trovarci in negozio.",
+    "safeIntro": "Ecco la mia selezione per te:",
+    "reasons": {
+      "fitsBudget": "Nel tuo budget",
+      "closestToBudget": "Il più vicino al tuo budget",
+      "cheaperBy": "{amount} in meno",
+      "moreBy": "Con {amount} in più",
+      "brandNew": "Nuovo, garanzia {months} mesi",
+      "refurbished": "{grade}, batteria {battery}",
+      "uses": {
+        "photo": "Ottima fotocamera",
+        "battery": "Batteria di lunga durata",
+        "gaming": "Fluido nei giochi",
+        "work": "Ideale per il lavoro",
+        "social": "Perfetto per i social",
+        "easy": "Facilissimo da usare"
+      }
+    }
+  }
+}
