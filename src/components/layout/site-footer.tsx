@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import NextLink from "next/link";
 import { BRAND_NAME } from "@/config/site.config";
 import { Link } from "@/i18n/navigation";
 import { paths } from "@/lib/paths";
@@ -37,7 +38,18 @@ export async function SiteFooter() {
       <div className="border-t border-white/10">
         <div className={`${container} flex flex-col gap-2 pb-28 pt-6 text-[0.9375rem] text-night-muted sm:flex-row sm:justify-between sm:pb-8`}>
           <p>{t("copyright", { year: String(new Date().getFullYear()), brand: BRAND_NAME })}</p>
-          <p>{common("prototypeNotice")}</p>
+          <p>
+            {common("prototypeNotice")}
+            {/* Only in `next dev`: the public site never links to the back office. */}
+            {process.env.NODE_ENV === "development" && (
+              <>
+                {" · "}
+                <NextLink href="/admin" className="underline underline-offset-4 hover:text-white">
+                  Admin (dev only)
+                </NextLink>
+              </>
+            )}
+          </p>
         </div>
       </div>
     </footer>

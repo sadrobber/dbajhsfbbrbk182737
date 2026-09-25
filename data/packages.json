@@ -1,0 +1,101 @@
+{
+  "$comment": "Table: packages (+ package_items). Prices and contents edited in /admin/packages. Package names/taglines stay in messages/*.json (Packages.<id>).",
+  "rows": [
+    {
+      "id": "max-protection",
+      "position": 0,
+      "price": 49,
+      "icon": "shield",
+      "items": [
+        {
+          "id": "wall-charger",
+          "icon": "plug",
+          "label": {
+            "fr": "Chargeur secteur",
+            "en": "Wall charger",
+            "it": "Caricatore da muro"
+          },
+          "todo": false
+        },
+        {
+          "id": "charging-cable",
+          "icon": "cable",
+          "label": {
+            "fr": "Câble de charge",
+            "en": "Charging cable",
+            "it": "Cavo di ricarica"
+          },
+          "todo": false
+        },
+        {
+          "id": "screen-protection",
+          "icon": "screen",
+          "label": {
+            "fr": "Protection d’écran",
+            "en": "Screen protection",
+            "it": "Protezione schermo"
+          },
+          "todo": true
+        },
+        {
+          "id": "case",
+          "icon": "case",
+          "label": {
+            "fr": "Coque de protection",
+            "en": "Protective case",
+            "it": "Cover protettiva"
+          },
+          "todo": true
+        }
+      ]
+    },
+    {
+      "id": "ready-to-use",
+      "position": 1,
+      "price": 79,
+      "icon": "sparkles",
+      "items": [
+        {
+          "id": "setup",
+          "icon": "settings",
+          "label": {
+            "fr": "Allumé et configuré",
+            "en": "Switched on and set up",
+            "it": "Acceso e configurato"
+          },
+          "todo": true
+        },
+        {
+          "id": "data-transfer",
+          "icon": "transfer",
+          "label": {
+            "fr": "Vos données transférées",
+            "en": "Your data transferred",
+            "it": "I tuoi dati trasferiti"
+          },
+          "todo": true
+        },
+        {
+          "id": "accounts",
+          "icon": "user",
+          "label": {
+            "fr": "Comptes et applis prêts",
+            "en": "Accounts and apps ready",
+            "it": "Account e app pronti"
+          },
+          "todo": true
+        },
+        {
+          "id": "final-check",
+          "icon": "check",
+          "label": {
+            "fr": "Vérification finale ensemble",
+            "en": "Final check together",
+            "it": "Controllo finale insieme"
+          },
+          "todo": true
+        }
+      ]
+    }
+  ]
+}

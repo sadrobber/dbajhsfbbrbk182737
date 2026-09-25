@@ -1,7 +1,7 @@
 import { BatteryMedium, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 import type { ProductCardView } from "@/lib/product-view";
-import { PhoneVisual } from "./phone-visual";
+import { ProductPicture } from "./product-picture";
 import { Availability, visualBackdrop } from "./product-bits";
 
 /**
@@ -23,9 +23,12 @@ export function RefurbCard({ product }: { product: ProductCardView }) {
           className="relative h-32 w-24 shrink-0 overflow-hidden rounded-2xl bg-surface-2"
           style={{ backgroundImage: visualBackdrop(product.color) }}
         >
-          <PhoneVisual
+          <ProductPicture
+            photo={product.photo}
             color={product.color}
             visual={product.visual}
+            sizes="6rem"
+            photoClassName="p-2"
             className="fade-bottom absolute bottom-[-22%] left-1/2 h-[112%] -translate-x-1/2 transition duration-500 group-hover:-translate-y-1.5"
           />
         </div>

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { merchandising } from "@/config/site.config";
+import { prizeKeys } from "@/lib/data/schema";
+import { settings } from "@/test/fixtures";
 import en from "../../messages/en.json";
 import fr from "../../messages/fr.json";
 import it_ from "../../messages/it.json";
@@ -27,14 +28,10 @@ describe("translation files", () => {
 
   it("contain every label the site configuration refers to", () => {
     const keys = [
-      ...merchandising.packages.flatMap((pkg) => [
-        `Packages.${pkg.id}.name`,
-        `Packages.${pkg.id}.tagline`,
-        ...pkg.items.map((item) => `Packages.items.${item.key}`),
-      ]),
-      ...merchandising.serviceArea.towns.map((town) => `Local.towns.${town}`),
-      ...merchandising.serviceArea.services.flatMap((s) => [`Local.services.${s}.title`, `Local.services.${s}.text`]),
-      ...merchandising.gauge.prizes.map((prize) => `Gauge.prizes.${prize}`),
+      ...settings.packages.flatMap((pkg) => [`Packages.${pkg.id}.name`, `Packages.${pkg.id}.tagline`]),
+      ...settings.serviceArea.towns.map((town) => `Local.towns.${town}`),
+      ...settings.serviceArea.services.flatMap((s) => [`Local.services.${s}.title`, `Local.services.${s}.text`]),
+      ...prizeKeys.map((prize) => `Gauge.prizes.${prize}`),
     ];
     for (const [locale, tree] of Object.entries(files)) {
       for (const key of keys) {

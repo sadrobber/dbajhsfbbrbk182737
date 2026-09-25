@@ -36,6 +36,9 @@
   --color-warning: #9a4a05;
   --color-warning-soft: #fff3df;
   --color-rose: #e11d48;
+  /* Errors and destructive actions in the admin (6:1 on danger-soft) */
+  --color-danger: #b0183c;
+  --color-danger-soft: #fdecef;
 
   --shadow-glow: 0 0 0 1px rgb(0 102 255 / 0.35), 0 16px 40px -16px rgb(0 102 255 / 0.55);
   --shadow-card: 0 1px 2px rgb(15 20 35 / 0.05), 0 16px 36px -20px rgb(15 20 35 / 0.22);

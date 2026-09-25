@@ -1,29 +1,26 @@
 import "server-only";
-import { z } from "zod";
-import { merchandising } from "@/config/site.config";
-import rawCatalog from "@/data/catalog.json";
-import { catalogSchema, type Catalog } from "./schema";
+import { storefrontSettings } from "@/config/site.config";
+import { readGaugeConfig, readRows } from "./json-store";
 import type { DataSource } from "./source";
 
-let validated: Catalog | null = null;
-
-function loadCatalog(): Catalog {
-  if (!validated) {
-    const result = catalogSchema.safeParse(rawCatalog);
-    if (!result.success) {
-      throw new Error(`src/data/catalog.json is invalid:\n${z.prettifyError(result.error)}`);
-    }
-    validated = result.data;
-  }
-  return validated;
-}
-
-/** Reads the mock catalogue and the settings in site.config.ts. */
+/** Reads the JSON tables in /data (edited from the admin) and the settings in site.config.ts. */
 export const localDataSource: DataSource = {
   async getCatalog() {
-    return loadCatalog();
+    const [brands, products] = await Promise.all([readRows("brands"), readRows("products")]);
+    return { currency: "EUR", brands, products };
   },
   async getMerchandising() {
-    return merchandising;
+    const [deals, packages, gauge] = await Promise.all([readRows("deals"), readRows("packages"), readGaugeConfig()]);
+    return {
+      lowStockThreshold: storefrontSettings.lowStockThreshold,
+      greatDeals: {
+        deals: [...deals].sort((a, b) => a.position - b.position),
+        maxItems: storefrontSettings.greatDealsMaxItems,
+      },
+      refurbishedPicks: { maxItems: storefrontSettings.refurbishedPicksMaxItems },
+      gauge,
+      packages: [...packages].sort((a, b) => a.position - b.position),
+      serviceArea: storefrontSettings.serviceArea,
+    };
   },
 };

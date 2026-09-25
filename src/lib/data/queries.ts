@@ -1,6 +1,6 @@
 import "server-only";
 import { dataSource } from ".";
-import { enrichCatalog, inStock, selectGreatDeals, selectRefurbishedPicks } from "./catalog-logic";
+import { type DealItem, enrichCatalog, inStock, selectGreatDeals, selectRefurbishedPicks } from "./catalog-logic";
 import type { CatalogItem } from "./schema";
 
 /**
@@ -24,9 +24,9 @@ export async function getMerchandising() {
   return dataSource.getMerchandising();
 }
 
-export async function getGreatDeals(): Promise<CatalogItem[]> {
+export async function getGreatDeals(): Promise<DealItem[]> {
   const [items, settings] = await Promise.all([getCatalogItems(), getMerchandising()]);
-  return selectGreatDeals(items, settings);
+  return selectGreatDeals(items, settings.greatDeals);
 }
 
 export async function getRefurbishedPicks(): Promise<CatalogItem[]> {

@@ -1,0 +1,47 @@
+{
+  "$comment": "Table: great_deals. Homepage Great Deals, in `position` order. Edited in /admin/deals. deals.productId -> products.id",
+  "rows": [
+    {
+      "id": "deal-1",
+      "productId": "galaxy-s25-256",
+      "position": 0,
+      "promoBadge": null,
+      "promoLabel": null
+    },
+    {
+      "id": "deal-2",
+      "productId": "pixel-9a-128",
+      "position": 1,
+      "promoBadge": null,
+      "promoLabel": null
+    },
+    {
+      "id": "deal-3",
+      "productId": "iphone-16-128",
+      "position": 2,
+      "promoBadge": null,
+      "promoLabel": null
+    },
+    {
+      "id": "deal-4",
+      "productId": "iphone-17-256",
+      "position": 3,
+      "promoBadge": null,
+      "promoLabel": null
+    },
+    {
+      "id": "deal-5",
+      "productId": "redmi-note-14-pro-256",
+      "position": 4,
+      "promoBadge": null,
+      "promoLabel": null
+    },
+    {
+      "id": "deal-6",
+      "productId": "iphone-13-128-refurb",
+      "position": 5,
+      "promoBadge": null,
+      "promoLabel": null
+    }
+  ]
+}

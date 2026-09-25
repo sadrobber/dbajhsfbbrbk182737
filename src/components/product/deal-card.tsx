@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type { ProductCardView } from "@/lib/product-view";
 import { Availability, ProductBadge, visualBackdrop } from "./product-bits";
-import { PhoneVisual } from "./phone-visual";
+import { ProductPicture } from "./product-picture";
 
 /** Card for the Great Deals section: big visual, badges, price and availability. */
 export function DealCard({
@@ -26,9 +26,12 @@ export function DealCard({
             ))}
           </ul>
         )}
-        <PhoneVisual
+        <ProductPicture
+          photo={product.photo}
           color={product.color}
           visual={product.visual}
+          sizes="(min-width: 1024px) 24rem, 80vw"
+          photoClassName="p-6 pt-14 transition duration-500 group-hover:-translate-y-2"
           className="fade-bottom absolute bottom-[-18%] left-1/2 h-[98%] -translate-x-1/2 transition duration-500 group-hover:-translate-y-2 group-hover:rotate-[-3deg]"
         />
       </div>

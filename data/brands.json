@@ -1,0 +1,25 @@
+{
+  "$comment": "Table: brands. Referenced by products.brand.",
+  "rows": [
+    {
+      "id": "apple",
+      "name": "Apple"
+    },
+    {
+      "id": "samsung",
+      "name": "Samsung"
+    },
+    {
+      "id": "google",
+      "name": "Google"
+    },
+    {
+      "id": "xiaomi",
+      "name": "Xiaomi"
+    },
+    {
+      "id": "doro",
+      "name": "Doro"
+    }
+  ]
+}

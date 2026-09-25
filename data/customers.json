@@ -1,0 +1,145 @@
+{
+  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: customers.",
+  "rows": [
+    {
+      "id": "cus-001",
+      "firstName": "Camille",
+      "lastName": "Rossi",
+      "email": "camille.rossi@example.com",
+      "phone": "+33 6 00 00 01 01",
+      "town": "menton",
+      "createdAt": "2026-01-06T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-002",
+      "firstName": "Lucas",
+      "lastName": "Bernard",
+      "email": "lucas.bernard@example.com",
+      "phone": "+377 6 00 00 01 02",
+      "town": "monaco",
+      "createdAt": "2026-01-17T10:00:00.000Z",
+      "marketingOptIn": false
+    },
+    {
+      "id": "cus-003",
+      "firstName": "Giulia",
+      "lastName": "Ferrari",
+      "email": "giulia.ferrari@example.com",
+      "phone": "+33 6 00 00 01 03",
+      "town": "sospel",
+      "createdAt": "2026-01-28T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-004",
+      "firstName": "Marie",
+      "lastName": "Laurent",
+      "email": "marie.laurent@example.com",
+      "phone": "+33 6 00 00 01 04",
+      "town": "beausoleil",
+      "createdAt": "2026-02-08T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-005",
+      "firstName": "Paolo",
+      "lastName": "Bianchi",
+      "email": "paolo.bianchi@example.com",
+      "phone": "+33 6 00 00 01 05",
+      "town": "roquebrune-cap-martin",
+      "createdAt": "2026-02-19T10:00:00.000Z",
+      "marketingOptIn": false
+    },
+    {
+      "id": "cus-006",
+      "firstName": "Élodie",
+      "lastName": "Martin",
+      "email": "elodie.martin@example.com",
+      "phone": "+33 6 00 00 01 06",
+      "town": "cap-dail",
+      "createdAt": "2026-03-02T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-007",
+      "firstName": "Jean",
+      "lastName": "Dupont",
+      "email": "jean.dupont@example.com",
+      "phone": "+33 6 00 00 01 07",
+      "town": "menton",
+      "createdAt": "2026-03-13T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-008",
+      "firstName": "Sofia",
+      "lastName": "Romano",
+      "email": "sofia.romano@example.com",
+      "phone": "+377 6 00 00 01 08",
+      "town": "monaco",
+      "createdAt": "2026-03-24T10:00:00.000Z",
+      "marketingOptIn": false
+    },
+    {
+      "id": "cus-009",
+      "firstName": "Nathan",
+      "lastName": "Garcia",
+      "email": "nathan.garcia@example.com",
+      "phone": "+33 6 00 00 01 09",
+      "town": "beausoleil",
+      "createdAt": "2026-04-04T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-010",
+      "firstName": "Hélène",
+      "lastName": "Moreau",
+      "email": "helene.moreau@example.com",
+      "phone": "+33 6 00 00 01 10",
+      "town": "menton",
+      "createdAt": "2026-04-15T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-011",
+      "firstName": "Marco",
+      "lastName": "Esposito",
+      "email": "marco.esposito@example.com",
+      "phone": "+33 6 00 00 01 11",
+      "town": "roquebrune-cap-martin",
+      "createdAt": "2026-04-26T10:00:00.000Z",
+      "marketingOptIn": false
+    },
+    {
+      "id": "cus-012",
+      "firstName": "Chloé",
+      "lastName": "Petit",
+      "email": "chloe.petit@example.com",
+      "phone": "+33 6 00 00 01 12",
+      "town": "cap-dail",
+      "createdAt": "2026-05-07T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-013",
+      "firstName": "Antoine",
+      "lastName": "Giraud",
+      "email": "antoine.giraud@example.com",
+      "phone": "+33 6 00 00 01 13",
+      "town": "sospel",
+      "createdAt": "2026-05-18T10:00:00.000Z",
+      "marketingOptIn": true
+    },
+    {
+      "id": "cus-014",
+      "firstName": "Lucia",
+      "lastName": "Colombo",
+      "email": "lucia.colombo@example.com",
+      "phone": "+33 6 00 00 01 14",
+      "town": "menton",
+      "createdAt": "2026-05-29T10:00:00.000Z",
+      "marketingOptIn": false
+    }
+  ]
+}

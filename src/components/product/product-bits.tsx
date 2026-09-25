@@ -1,15 +1,15 @@
 import { cn } from "@/lib/cn";
-import type { Badge } from "@/lib/data/schema";
-import type { AvailabilityTone } from "@/lib/product-view";
+import type { AvailabilityTone, CardBadge } from "@/lib/product-view";
 
-const BADGE_STYLES: Record<Badge, string> = {
+const BADGE_STYLES: Record<CardBadge["key"], string> = {
   deal_of_the_week: "bg-accent text-white",
   special_price: "bg-rose text-white",
   last_one: "bg-warning text-ink",
   new_arrival: "bg-fg text-ink",
+  custom: "bg-accent-text text-white",
 };
 
-export function ProductBadge({ badge, label }: { badge: Badge; label: string }) {
+export function ProductBadge({ badge, label }: { badge: CardBadge["key"]; label: string }) {
   return (
     <span
       className={cn(

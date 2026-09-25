@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import { getTranslator } from "@/i18n/messages";
-import type { CatalogItem, PackageDefinition } from "@/lib/data/schema";
+import { type CatalogItem, localize, type PackageDefinition } from "@/lib/data/schema";
 import { locales } from "@/i18n/routing";
 import { translateDynamic } from "@/lib/i18n-dynamic";
 
@@ -23,7 +23,7 @@ export function buildSystemPrompt(input: {
     const names = locales.map((l) => `${l}: "${translateDynamic(getTranslator(l), `Packages.${pkg.id}.name`)}"`).join(", ");
     const confirmed = pkg.items
       .filter((item) => !item.todo)
-      .map((item) => translateDynamic(en, `Packages.items.${item.key}`).toLowerCase());
+      .map((item) => localize(item.label, "en").toLowerCase());
     const contents = confirmed.length > 0 ? ` Includes: ${confirmed.join(", ")}.` : "";
     const when =
       pkg.id === "max-protection"
