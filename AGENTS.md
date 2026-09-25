@@ -15,4 +15,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Data access: UI and advisor only call `src/lib/data/queries.ts`. Swap the source in `src/lib/data/index.ts`.
 - Brand name, Gauge %, Great Deals, packages: `src/config/site.config.ts`. Catalogue: `src/data/catalog.json`.
 - AI advisor: `src/server/advisor/`. Vendor code lives only in `ai-adapter.ts`; `guard.ts` re-checks every AI answer against the catalogue; `demo/` is the rule-based fallback.
+- 3D: `src/components/three/`. Scenes load lazily through `three-slot.tsx`; each has a static fallback. `?3d=off|on` switches for testing.
 - Before pushing: `npm run check` (typecheck, lint, unit tests) and `npm run build`.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { GaugeThree } from "@/components/three/lazy-scenes";
 
 const SIZE = 320;
 const STROKE = 26;
@@ -69,6 +70,11 @@ export function GaugeMeter({
 
   return (
     <div ref={ref} role="img" aria-label={label} className="relative mx-auto aspect-square w-full max-w-[20rem] sm:max-w-[22rem] lg:max-w-[27rem]">
+      <div className="absolute inset-0">
+        <GaugeThree
+          value={target}
+          className="size-full"
+          fallback={
       <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="size-full -rotate-[225deg]" aria-hidden="true">
         <defs>
           <linearGradient id="gauge-gradient" x1="0" y1="1" x2="1" y2="0">
@@ -82,7 +88,7 @@ export function GaugeMeter({
           cy={SIZE / 2}
           r={RADIUS}
           fill="none"
-          stroke="rgba(255,255,255,0.09)"
+          stroke="#e3e6ec"
           strokeWidth={STROKE}
           strokeLinecap="round"
           strokeDasharray={`${ARC} ${CIRCUMFERENCE}`}
@@ -98,9 +104,11 @@ export function GaugeMeter({
           strokeDasharray={`${ARC} ${CIRCUMFERENCE}`}
           strokeDashoffset={ARC * (1 - target / 100)}
           className="gauge-arc"
-          style={{ filter: "drop-shadow(0 0 14px rgba(0, 102, 255, 0.75))" }}
         />
       </svg>
+          }
+        />
+      </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <p className="font-display text-[4.5rem] font-extrabold leading-none tracking-[-0.04em] sm:text-[5.25rem] lg:text-[6.25rem]">
           {display}

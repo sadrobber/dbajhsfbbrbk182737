@@ -16,7 +16,7 @@ import type { Merchandising } from "@/lib/data/schema";
  */
 
 /** Shop name, shown as a text wordmark everywhere. Change it here only. */
-export const BRAND_NAME = "Brand";
+export const BRAND_NAME = "Novacell";
 
 /** Keep false while prices and stock are mock data, so search engines skip the prototype. */
 export const ALLOW_SEARCH_INDEXING = false;

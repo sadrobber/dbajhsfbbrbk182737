@@ -13,8 +13,8 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: routing.defaultLocale,
     start_url: `/${routing.defaultLocale}`,
     display: "standalone",
-    background_color: "#050507",
-    theme_color: "#050507",
+    background_color: "#ffffff",
+    theme_color: "#ffffff",
     icons: [
       { src: "/icon", sizes: "512x512", type: "image/png", purpose: "any" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

@@ -15,18 +15,18 @@ export async function SiteFooter() {
   ];
 
   return (
-    <footer className="mt-16 border-t border-line bg-surface-1/60">
+    <footer className="mt-16 bg-night text-white">
       <div className={`${container} grid gap-8 py-12 sm:grid-cols-[1fr_auto] sm:items-start`}>
         <div>
-          <Wordmark />
-          <p className="mt-2 max-w-sm text-fg-muted">{t("tagline")}</p>
+          <Wordmark onDark />
+          <p className="mt-2 max-w-sm text-night-muted">{t("tagline")}</p>
         </div>
         <ul className="flex flex-wrap gap-x-6 gap-y-1">
           {links.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="inline-flex min-h-11 items-center text-fg-muted underline-offset-4 hover:text-fg hover:underline"
+                className="inline-flex min-h-11 items-center text-night-muted underline-offset-4 hover:text-white hover:underline focus-visible:outline-night-accent"
               >
                 {link.label}
               </Link>
@@ -34,8 +34,8 @@ export async function SiteFooter() {
           ))}
         </ul>
       </div>
-      <div className="border-t border-line">
-        <div className={`${container} flex flex-col gap-2 pb-28 pt-6 text-[0.9375rem] text-fg-subtle sm:flex-row sm:justify-between sm:pb-8`}>
+      <div className="border-t border-white/10">
+        <div className={`${container} flex flex-col gap-2 pb-28 pt-6 text-[0.9375rem] text-night-muted sm:flex-row sm:justify-between sm:pb-8`}>
           <p>{t("copyright", { year: String(new Date().getFullYear()), brand: BRAND_NAME })}</p>
           <p>{common("prototypeNotice")}</p>
         </div>

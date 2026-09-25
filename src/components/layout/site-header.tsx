@@ -8,7 +8,9 @@ import { Wordmark } from "./wordmark";
 export async function SiteHeader() {
   const t = await getTranslations("Header");
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-ink/75 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-line bg-ink/85 backdrop-blur-xl">
+      {/* Electric-blue identity hairline */}
+      <div aria-hidden="true" className="h-0.5 bg-[linear-gradient(90deg,#0b0c10,#0066ff_45%,#5aa9ff)]" />
       <div className={`${container} flex h-[4.5rem] items-center justify-between gap-4`}>
         <Link href="/" aria-label={t("home", { brand: BRAND_NAME })} className="inline-flex min-h-12 items-center rounded-lg">
           <Wordmark />

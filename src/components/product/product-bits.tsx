@@ -42,15 +42,15 @@ export function Availability({ tone, label, className }: { tone: AvailabilityTon
 /** Soft glow behind the phone illustration, tinted per colour family. */
 export function visualBackdrop(color: string): string {
   const tints: Record<string, string> = {
-    black: "rgba(90,169,255,0.18)",
-    white: "rgba(255,255,255,0.14)",
-    blue: "rgba(90,169,255,0.28)",
-    green: "rgba(74,222,128,0.18)",
-    purple: "rgba(167,139,250,0.26)",
-    grey: "rgba(148,163,184,0.18)",
-    silver: "rgba(203,213,225,0.2)",
-    pink: "rgba(244,114,182,0.22)",
-    gold: "rgba(251,191,36,0.2)",
+    black: "rgba(0,102,255,0.14)",
+    white: "rgba(148,163,184,0.26)",
+    blue: "rgba(0,102,255,0.18)",
+    green: "rgba(34,197,94,0.16)",
+    purple: "rgba(139,92,246,0.16)",
+    grey: "rgba(100,116,139,0.18)",
+    silver: "rgba(148,163,184,0.24)",
+    pink: "rgba(236,72,153,0.14)",
+    gold: "rgba(234,179,8,0.16)",
   };
   return `radial-gradient(60% 60% at 50% 60%, ${tints[color] ?? tints.black}, transparent 70%)`;
 }

@@ -15,8 +15,8 @@ export const buttonVariant = {
   primary:
     "bg-accent text-white shadow-glow hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgb(0_102_255/0.6),0_24px_60px_-18px_rgb(0_102_255/0.95)] active:translate-y-0",
   secondary:
-    "border border-line-strong bg-surface-2 text-fg hover:-translate-y-0.5 hover:border-fg-subtle hover:bg-surface-3 active:translate-y-0",
-  light: "bg-fg text-ink hover:-translate-y-0.5 hover:bg-white active:translate-y-0",
+    "border border-line-strong bg-ink text-fg hover:-translate-y-0.5 hover:border-fg hover:bg-surface-1 active:translate-y-0",
+  dark: "bg-fg text-ink hover:-translate-y-0.5 hover:bg-[#262833] active:translate-y-0",
 } as const;
 
 export function buttonClass(
@@ -27,4 +27,4 @@ export function buttonClass(
 }
 
 export const eyebrow =
-  "inline-flex items-center gap-2 rounded-full border border-line bg-surface-1/80 px-3.5 py-1.5 text-[0.9375rem] font-medium text-fg-muted";
+  "inline-flex items-center gap-2 rounded-full border border-line bg-ink/80 px-3.5 py-1.5 text-[0.9375rem] font-medium text-fg-muted";

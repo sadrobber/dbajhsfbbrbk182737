@@ -27,10 +27,10 @@ export async function GaugeSection({ gauge, locale }: { gauge: GaugeSettings; lo
 
   return (
     <section aria-labelledby="gauge-title" className={`${container} reveal py-14 sm:py-20`}>
-      <div className="relative overflow-hidden rounded-[2.5rem] border border-accent/30 bg-surface-1 px-5 py-10 sm:px-10 sm:py-14 lg:px-14">
+      <div className="relative overflow-hidden rounded-[2.5rem] border border-accent/25 bg-ink px-5 py-10 shadow-card sm:px-10 sm:py-14 lg:px-14">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_40%,rgba(0,102,255,0.25),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_20%_40%,rgba(0,102,255,0.10),transparent_70%)]"
         />
         <div className="relative grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
           <div className="lg:order-2">

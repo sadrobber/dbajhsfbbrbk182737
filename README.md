@@ -1,4 +1,4 @@
-# Riviera smartphone shop: homepage prototype + AI shopping advisor
+# Novacell: smartphone shop homepage prototype + AI shopping advisor
 
 First step of the e-commerce platform for a smartphone shop serving Menton, Monaco, Beausoleil, Cap-d'Ail, Roquebrune-Cap-Martin and Sospel. This version contains the **homepage** (visual prototype, FR/EN/IT) and a **working "Help me choose" advisor**. Product pages, cart, checkout, accounts and the back office are out of scope; their links open "coming soon" pages.
 
@@ -27,7 +27,7 @@ Other commands:
 
 | What | Where |
 | --- | --- |
-| Brand name (text wordmark, titles, app icon letter) | `BRAND_NAME` in `src/config/site.config.ts` |
+| Brand name (text wordmark, titles, app icon letter), currently "Novacell" | `BRAND_NAME` in `src/config/site.config.ts` |
 | Gauge % (and on/off, prizes, rules page) | `merchandising.gauge` in `src/config/site.config.ts` |
 | Products shown in Great Deals | `merchandising.greatDeals.productIds` in `src/config/site.config.ts` (ids from the catalogue; sold-out ones are skipped) |
 | Catalogue (models, prices, stock, grades, battery, warranty, badges, "good for" tags) | `src/data/catalog.json` (validated at startup, errors name the faulty product) |
@@ -38,13 +38,15 @@ Other commands:
 | Any text on the site | `messages/{fr,en,it}.json` (French is the default language) |
 | AI provider | `.env.local` (see below); the only vendor-specific code is `src/server/advisor/ai-adapter.ts` |
 | Search engine indexing (off while prices are mock data) | `ALLOW_SEARCH_INDEXING` in `src/config/site.config.ts` |
+| Colours (white theme, black and electric-blue accents) | Tokens at the top of `src/app/globals.css` |
+| 3D scenes | `src/components/three/` (see [3D visuals](#3d-visuals)) |
 
 Notes:
 
 - "Last one available" is added automatically when stock is 1. For a refurbished phone, the "New: €X / You save €Y" line appears when the catalogue has the same model and storage new.
 - Package items marked `todo: true` are shown with a dashed border and a **TODO** tag until their contents are confirmed.
 - The Gauge copy ("When it reaches 100%, a winner is drawn", steps, prizes) lives in the `Gauge` section of the message files and still needs legal review.
-- Phone pictures are neutral illustrations (`src/components/product/phone-visual.tsx`), no brand-owned photos.
+- Phone pictures on product cards are neutral illustrations (`src/components/product/phone-visual.tsx`), no brand-owned photos.
 
 ## AI advisor
 
@@ -67,10 +69,41 @@ Choosing a provider (in `.env.local`; keys stay on the server and never reach th
 
 To add another vendor, add a case in `getAiClient()` in `src/server/advisor/ai-adapter.ts`; nothing else changes. The rate limit is in memory (fine for one server); move it to a shared store such as Redis when running several instances.
 
+## 3D visuals
+
+Real-time 3D (three.js via React Three Fiber) on a white background, with electric-blue rim lighting and soft shadows under floating models:
+
+| Where | What it shows |
+| --- | --- |
+| Hero | A generic phone floating and slowly turning, with small parts (chip, battery, camera module, cable) drifting beside it. It turns further as you scroll, follows the mouse on computers, and the finger or phone tilt on mobile. |
+| More than just a phone | Scroll-driven exploded view: case, screen protector, wall charger and cable float out (Max Protection Package), then settle back while the phone powers on (Ready-to-Use Package). |
+| The Gauge | A glowing blue tube that fills up to the configured %, with the number kept as normal text on top. |
+| Trade-in | An old phone floats over to a new one and is swapped for it, on a loop. |
+
+How it stays fast and safe:
+
+- **Static first.** Each spot is server-rendered as a lightweight illustration. 3D is downloaded only on capable devices, when the section comes near the screen and the browser is idle, then cross-fades in. Scenes pause when off screen. The 3D code weighs about 240 KB compressed and never loads on devices that don't use it.
+- **Fallback to the static image** without WebGL, with the system "reduce motion" setting, with "save data", on low-end devices (2 GB memory or 2 CPU cores or less), if the scene fails, or if the frame rate stays too low after lowering the resolution.
+- **Never in the way.** Canvases ignore clicks and touches and sit only in the visual columns, never behind text or over the main buttons. Tilt uses the phone's sensor only where no permission prompt is needed.
+- **Testing switch.** Add `?3d=off` to any URL to see the static version, or `?3d=on` to force 3D on any device with WebGL.
+
+Sources and licences:
+
+| Item | Source | Licence |
+| --- | --- | --- |
+| Rendering engine | three.js ([threejs.org](https://threejs.org)), pinned to r182 | MIT |
+| React bindings | React Three Fiber ([pmndrs/react-three-fiber](https://github.com/pmndrs/react-three-fiber)) | MIT |
+| Studio reflections | `RoomEnvironment`, shipped with three.js, generated in code | MIT |
+| Phones, accessories and parts | Built in code from simple geometry in `src/components/three/scenes/models.tsx` (rounded slabs, cylinders, a tube for the cable). Generic shapes, no copy of any real phone. | Part of this project |
+| Screen, glow and shadow textures | Drawn in code (`src/components/three/scenes/geometry.ts`) | Part of this project |
+
+No downloaded glTF models, images or HDR files are used. three.js is pinned to r182 because React Three Fiber 9.8 still uses `THREE.Clock`, which r183 and later flag as deprecated in the console.
+
 ## Tech stack, and why
 
 - **Next.js 16 (App Router), React 19, TypeScript.** Server rendering gives fast pages on phones and good local SEO. Server-only API routes keep AI keys secret. The same app can later host the back office (a protected `/admin` area) and serve as the storefront of a headless commerce backend.
-- **Tailwind CSS 4.** Theme tokens (dark, electric blue) in one place, mobile-first, very little CSS shipped.
+- **Tailwind CSS 4.** Theme tokens (white, black and electric blue) in one place, mobile-first, very little CSS shipped.
+- **three.js + React Three Fiber** for the 3D scenes, loaded lazily with static fallbacks.
 - **next-intl.** French at `/fr` (the default, `/` opens it), English at `/en`, Italian at `/it`; ICU messages for plurals and prices.
 - **Zod.** The same schemas validate the mock catalogue today, database or API data tomorrow, and the AI's JSON.
 - **A data access layer** (`src/lib/data`). Components only call functions like `getGreatDeals()` or `getRefurbishedPicks()`; switching from JSON files to a database means implementing one interface (`DataSource`) and changing one line in `src/lib/data/index.ts`.
@@ -94,6 +127,7 @@ src/
   components/
     home/                 homepage sections (hero, deals, refurbished, packages, Gauge, trade-in, close to you)
     product/              product cards and the neutral phone illustration
+    three/                3D scenes, their lazy loader and static fallbacks
     advisor/              chat panel, its state, cards and "Help me choose" buttons
     layout/               header, language switcher, footer
     ui/                   shared styles, carousel, placeholder page
@@ -110,8 +144,8 @@ src/
 
 ## Accessibility and design
 
-- Dark theme with an electric-blue accent; every text colour pair meets WCAG AA contrast.
+- White theme with black and electric-blue accents; every text colour pair meets WCAG AA contrast (blue text uses the darker `#0052cc`, bright `#0066ff` is for buttons, icons and the Gauge).
 - Tap targets are at least 44 px, main buttons 64 px; body text is 17 px.
 - Keyboard and screen-reader support: skip link, visible focus, labelled controls, native modal dialog for the advisor, announced replies.
-- Animations are subtle and switch off with the system's "reduce motion" setting.
+- Animations are subtle and switch off with the system's "reduce motion" setting, which also replaces 3D with static images.
 - Swipeable carousels on phones (no JavaScript needed), grids on large screens.

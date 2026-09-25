@@ -15,7 +15,7 @@ export default function NotFoundPage() {
         <h1 className="mt-4 font-display text-4xl font-extrabold tracking-[-0.03em] sm:text-5xl">{t("title")}</h1>
         <p className="mt-4 text-lg text-fg-muted">{t("text")}</p>
         <div className="mt-8 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
-          <Link href="/" className={buttonClass("light", "lg")}>
+          <Link href="/" className={buttonClass("dark", "lg")}>
             <ArrowLeft aria-hidden="true" className="size-5" />
             {common("backHome")}
           </Link>

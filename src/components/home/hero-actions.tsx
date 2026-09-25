@@ -32,7 +32,7 @@ export function HeroActions() {
           aria-expanded={expanded}
           aria-controls="hero-shortcuts"
           onClick={() => setExpanded((value) => !value)}
-          className={buttonClass("light", "lg")}
+          className={buttonClass("dark", "lg")}
         >
           {t("knowWhatIWant")}
           <ChevronDown aria-hidden="true" className={cn("size-5 transition duration-300", expanded && "rotate-180")} />

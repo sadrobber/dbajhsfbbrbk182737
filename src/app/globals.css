@@ -1,36 +1,44 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Dark theme, electric-blue accent.
- * All text/background pairs below meet WCAG AA (4.5:1 for text, 3:1 for control borders).
+ * Design tokens. Light theme: white page, black and electric blue as identity accents.
+ * "ink" is the page background, "fg" the text colour.
+ * All text/background pairs meet WCAG AA (4.5:1 for text, 3:1 for control borders):
+ * bright #0066ff is only used behind white text, for icons and for the Gauge;
+ * blue text uses the darker accent-text (#0052cc, 5.4:1 or more on every surface).
  */
 @theme {
-  --color-ink: #050507;
-  --color-surface-1: #0d0d12;
-  --color-surface-2: #15151c;
-  --color-surface-3: #1d1d26;
-  --color-line: rgb(255 255 255 / 0.09);
-  --color-line-strong: #6e6e80;
+  --color-ink: #ffffff;
+  --color-surface-1: #f6f7f9;
+  --color-surface-2: #eef0f4;
+  --color-surface-3: #e3e6ec;
+  --color-line: rgb(12 14 22 / 0.09);
+  --color-line-strong: #7a7f8c;
 
-  --color-fg: #f5f5f7;
-  --color-fg-muted: #c4c4ce;
-  --color-fg-subtle: #a3a3b2;
+  --color-fg: #0b0c10;
+  --color-fg-muted: #404552;
+  --color-fg-subtle: #5d6270;
 
-  /* Electric blue: button background (white text 4.8:1) */
+  /* Electric blue: buttons, badges, icons, the Gauge (white text on it: 4.8:1) */
   --color-accent: #0066ff;
-  /* Electric blue for text and icons on dark backgrounds (8:1) */
-  --color-accent-text: #5aa9ff;
-  --color-accent-strong: #8ec5ff;
-  --color-accent-soft: #0b1a33;
+  /* Electric blue for links and blue text on white or light grey */
+  --color-accent-text: #0052cc;
+  --color-accent-strong: #0066ff;
+  --color-accent-soft: #e8f0ff;
 
-  --color-success: #4ade80;
-  --color-success-soft: #0f2a1b;
-  --color-warning: #fbbf24;
-  --color-warning-soft: #2d2208;
+  /* Black identity areas (footer) */
+  --color-night: #0b0c10;
+  --color-night-muted: #c9ccd6;
+  --color-night-accent: #5aa9ff;
+
+  --color-success: #13773a;
+  --color-success-soft: #e6f5ec;
+  --color-warning: #9a4a05;
+  --color-warning-soft: #fff3df;
   --color-rose: #e11d48;
 
-  --shadow-glow: 0 0 0 1px rgb(0 102 255 / 0.45), 0 18px 50px -18px rgb(0 102 255 / 0.75);
-  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 20px 40px -24px rgb(0 0 0 / 0.8);
+  --shadow-glow: 0 0 0 1px rgb(0 102 255 / 0.35), 0 16px 40px -16px rgb(0 102 255 / 0.55);
+  --shadow-card: 0 1px 2px rgb(15 20 35 / 0.05), 0 16px 36px -20px rgb(15 20 35 / 0.22);
 
   --animate-float: float 7s ease-in-out infinite;
   --animate-float-slow: float 9s ease-in-out infinite;
@@ -64,7 +72,7 @@
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
@@ -151,7 +159,7 @@
   max-width: none;
   height: 100dvh;
   max-height: none;
-  background: var(--color-surface-1);
+  background: var(--color-ink);
   color: var(--color-fg);
   overflow: hidden;
 }
@@ -160,12 +168,12 @@
   .advisor-dialog {
     width: min(36rem, 100vw);
     border-left: 1px solid var(--color-line);
-    box-shadow: -30px 0 80px -20px rgb(0 0 0 / 0.8);
+    box-shadow: -30px 0 80px -20px rgb(15 20 35 / 0.35);
   }
 }
 
 .advisor-dialog::backdrop {
-  background: rgb(0 0 0 / 0.65);
+  background: rgb(11 12 16 / 0.4);
   backdrop-filter: blur(4px);
 }
 
