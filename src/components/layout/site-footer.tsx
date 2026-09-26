@@ -1,3 +1,4 @@
+import { LockKeyhole } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import NextLink from "next/link";
 import { BRAND_NAME } from "@/config/site.config";
@@ -36,20 +37,19 @@ export async function SiteFooter() {
         </ul>
       </div>
       <div className="border-t border-white/10">
-        <div className={`${container} flex flex-col gap-2 pb-28 pt-6 text-[0.9375rem] text-night-muted sm:flex-row sm:justify-between sm:pb-8`}>
+        <div className={`${container} flex flex-col gap-2 pb-4 pt-6 text-[0.9375rem] text-night-muted sm:flex-row sm:justify-between`}>
           <p>{t("copyright", { year: String(new Date().getFullYear()), brand: BRAND_NAME })}</p>
-          <p>
-            {common("prototypeNotice")}
-            {/* Only in `next dev`: the public site never links to the back office. */}
-            {process.env.NODE_ENV === "development" && (
-              <>
-                {" · "}
-                <NextLink href="/admin" className="underline underline-offset-4 hover:text-white">
-                  Admin (dev only)
-                </NextLink>
-              </>
-            )}
-          </p>
+          <p>{common("prototypeNotice")}</p>
+        </div>
+        <div className={`${container} pb-28 sm:pb-8`}>
+          {/* Plain link: /admin has no language prefix. */}
+          <NextLink
+            href="/admin"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/25 px-4 text-[0.9375rem] font-semibold text-night-muted transition hover:border-white hover:text-white focus-visible:outline-night-accent"
+          >
+            <LockKeyhole aria-hidden="true" className="size-4" />
+            {t("staffLogin")}
+          </NextLink>
         </div>
       </div>
     </footer>

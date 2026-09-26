@@ -170,7 +170,8 @@
     "rules": "Règlement officiel",
     "legal": "Mentions légales",
     "store": "La boutique",
-    "copyright": "© {year} {brand}"
+    "copyright": "© {year} {brand}",
+    "staffLogin": "Espace pro"
   },
   "Placeholder": {
     "badge": "Bientôt disponible",

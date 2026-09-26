@@ -22,7 +22,7 @@ export default async function AdminLoginPage({ searchParams }: PageProps<"/admin
         </p>
         <div className="rounded-3xl bg-ink p-6 shadow-card sm:p-8">
           <h1 className="font-display text-2xl font-extrabold tracking-[-0.02em]">Sign in</h1>
-          <p className="mt-1 text-fg-muted">Staff back office. Not linked from the public site.</p>
+          <p className="mt-1 text-fg-muted">Staff back office.</p>
 
           {credentials ? (
             <LoginForm next={target} />
