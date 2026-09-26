@@ -15,7 +15,7 @@ Open http://localhost:3000. It opens the French site at `/fr`; English is at `/e
 
 The advisor works immediately in **demo mode** (no API key). To plug in an AI provider, copy `.env.example` to `.env.local` and follow the comments in it (see [AI advisor](#ai-advisor)).
 
-The back office is at http://localhost:3000/admin (in development the footer also shows an "Admin (dev only)" link). Sign in with `admin@novacell.test` / `novacell-dev`, or with your own `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `.env.local`.
+The back office is at http://localhost:3000/admin (or use the "Espace pro / Staff login" button at the bottom of every page). Sign in with `admin@novacell.test` / `novacell-dev`, or with your own `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `.env.local`.
 
 Other commands:
 
@@ -103,7 +103,7 @@ No downloaded glTF models, images or HDR files are used. three.js is pinned to r
 
 ## Admin (back office)
 
-A separate, staff-only area at `/admin`, with its own layout and login. The public site never links to it (the footer link only exists in `npm run dev`), and every admin page is `noindex`.
+A separate, staff-only area at `/admin`, with its own layout and login. Every page of the shop has a small "Espace pro / Staff login" button in the footer that opens it; the admin pages themselves are `noindex`.
 
 ### Logging in
 

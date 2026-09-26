@@ -170,7 +170,8 @@
     "rules": "Official rules",
     "legal": "Legal notice",
     "store": "The shop",
-    "copyright": "© {year} {brand}"
+    "copyright": "© {year} {brand}",
+    "staffLogin": "Staff login"
   },
   "Placeholder": {
     "badge": "Coming soon",

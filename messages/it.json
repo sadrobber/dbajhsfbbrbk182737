@@ -170,7 +170,8 @@
     "rules": "Regolamento ufficiale",
     "legal": "Note legali",
     "store": "Il negozio",
-    "copyright": "© {year} {brand}"
+    "copyright": "© {year} {brand}",
+    "staffLogin": "Area staff"
   },
   "Placeholder": {
     "badge": "In arrivo",
