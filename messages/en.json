@@ -13,6 +13,7 @@
   "Header": {
     "home": "{brand}, home page",
     "languageLabel": "Choose your language",
+    "cart": "Cart",
     "languages": {
       "fr": "Français",
       "en": "English",
@@ -87,12 +88,151 @@
       "inStock": "In stock",
       "fewLeft": "Only {count} left",
       "lastOne": "Last one available",
-      "soldOut": "Sold out"
+      "soldOut": "Sold out",
+      "within48h": "Available in 24–48h",
+      "onRequest": "On request"
     },
     "previousPrice": "Previous price",
     "newVersionPrice": "New: {price}",
     "saving": "You save {amount}",
     "view": "View"
+  },
+  "ProductPage": {
+    "addToCart": "Add to cart",
+    "requestIt": "Request this phone",
+    "soldOut": "This phone is sold out for now. Our advisor can suggest a similar one.",
+    "supply": {
+      "in_store": {
+        "title": "In stock in our shop",
+        "text": "Order online, pay by card and pick it up in the shop."
+      },
+      "within_48h": {
+        "title": "Available in 24–48h",
+        "text": "We order it from our supplier. At checkout your card is only authorised, not charged. We charge it once availability is confirmed, or cancel the authorisation if we can’t get it."
+      },
+      "on_request": {
+        "title": "On request",
+        "text": "Nothing to pay now. Send your request: we check with our suppliers and get back to you with availability and a date."
+      }
+    }
+  },
+  "Cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "cancelled": "Payment cancelled. Your cart is still here.",
+    "quantity": "Quantity: {count}",
+    "decrease": "One less {item}",
+    "increase": "One more {item}",
+    "remove": "Remove {item}",
+    "unavailable": "No longer available. Remove it to continue.",
+    "packagesTitle": "Add a package",
+    "addPackage": "Add",
+    "summary": "Summary",
+    "total": "Total",
+    "mode": {
+      "in_store": {
+        "title": "Paid now",
+        "text": "You pay by card now. We prepare your order for pickup in the shop."
+      },
+      "within_48h": {
+        "title": "Card authorised, charged after confirmation",
+        "text": "Your card is authorised now but not charged. We confirm availability with our supplier within 24–48h: then we charge your card, or cancel the authorisation and suggest an alternative."
+      },
+      "on_request": {
+        "title": "Request: nothing to pay now",
+        "text": "We check availability with our suppliers and contact you. You only pay once you agree."
+      }
+    },
+    "form": {
+      "title": "Your details",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "town": "Town",
+      "townOther": "Another town",
+      "marketing": "Send me news and offers by email",
+      "pickup": "Pickup in our shop (click & collect)",
+      "required": "All fields are required."
+    },
+    "submit": {
+      "in_store": "Pay {total}",
+      "within_48h": "Authorise {total}",
+      "on_request": "Send my request"
+    },
+    "secure": "Secure payment by Stripe. We never see your card number.",
+    "errors": {
+      "firstName": "Please enter your first name.",
+      "lastName": "Please enter your last name.",
+      "email": "Please enter a valid email address.",
+      "phone": "Please enter a valid phone number.",
+      "town": "Please choose your town."
+    },
+    "problems": {
+      "empty": "Your cart is empty.",
+      "unavailable": "Some items are no longer available. Please check your cart.",
+      "changed": "Prices or availability have just changed. Please check your cart and confirm again.",
+      "payments_off": "Online payment isn’t available right now. Please contact the shop.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "Order": {
+    "title": "Order {number}",
+    "placedOn": "Placed on {date}",
+    "items": "Your items",
+    "total": "Total",
+    "pickup": "Pickup in our shop",
+    "alternative": "What we suggest instead",
+    "demo": "Demo mode: no real payment was made.",
+    "keepLink": "Keep this page’s address to follow your order.",
+    "refresh": "Refresh",
+    "backToShop": "Back to the shop",
+    "stage": {
+      "request_received": {
+        "title": "Request received",
+        "text": "We are checking availability with our suppliers and will contact you soon. Nothing has been charged."
+      },
+      "payment_pending": {
+        "title": "Payment being confirmed",
+        "text": "We are waiting for the payment confirmation. Refresh this page in a moment."
+      },
+      "request_confirmed": {
+        "title": "Good news: it’s available",
+        "text": "We will contact you to arrange payment and pickup in the shop."
+      },
+      "availability_check": {
+        "title": "Card authorised, availability being checked",
+        "text": "Your card has been authorised but not charged. We confirm availability with our supplier within 24–48h, then charge your card. If we can’t get it, the authorisation is cancelled and you pay nothing."
+      },
+      "paid": {
+        "title": "Order confirmed",
+        "text": "Payment received. We will let you know when your order is ready for pickup."
+      },
+      "preparing": {
+        "title": "Being prepared",
+        "text": "We are preparing your order."
+      },
+      "ready": {
+        "title": "Ready for pickup",
+        "text": "Your order is waiting for you in the shop."
+      },
+      "completed": {
+        "title": "Completed",
+        "text": "Thank you for your purchase!"
+      },
+      "unavailable": {
+        "title": "Not available",
+        "text": "Sorry, we couldn’t get this phone. Any card authorisation has been cancelled: you pay nothing."
+      },
+      "cancelled": {
+        "title": "Cancelled",
+        "text": "This order has been cancelled. You have not been charged."
+      },
+      "refunded": {
+        "title": "Refunded",
+        "text": "This order has been refunded."
+      }
+    }
   },
   "Packages": {
     "title": "More than just a phone",

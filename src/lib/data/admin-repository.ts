@@ -1,5 +1,6 @@
 import "server-only";
 import { readGaugeConfig, readRows, updateRows, writeGaugeConfig } from "./json-store";
+import { orderStatusesToCheck } from "./records";
 import type { Deal, GaugeSettings, PackageDefinition, Product } from "./schema";
 
 /**
@@ -108,13 +109,19 @@ export async function savePackage(pkg: PackageDefinition): Promise<PackageDefini
 export const getGauge = () => readGaugeConfig();
 export const saveGauge = (gauge: GaugeSettings) => writeGaugeConfig(gauge);
 
-// --- records (placeholder data for now) -------------------------------------
-// NOTE: orders, customers, trade-ins, tickets and invoices currently show
-// placeholder data since there is no real checkout or customer flow yet —
-// these screens are ready for real data once that's built.
+// --- records -----------------------------------------------------------------
+// NOTE: the rows shipped in data/*.json are placeholder examples. Orders and
+// customers from the shop's checkout are added next to them; trade-ins,
+// tickets and invoices have no customer flow yet.
 
 export const listCustomers = () => readRows("customers");
 export const listOrders = () => readRows("orders");
+export { getCustomer, getOrder } from "./order-repository";
+
+/** Orders waiting for staff to check availability ("24-48h" authorised, or "on request"). */
+export async function countOrdersToCheck(): Promise<number> {
+  return (await listOrders()).filter((o) => orderStatusesToCheck.includes(o.status)).length;
+}
 export const listTradeIns = () => readRows("trade-ins");
 export const listTickets = () => readRows("tickets");
 export const listInvoices = () => readRows("invoices");

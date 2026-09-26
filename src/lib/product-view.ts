@@ -1,6 +1,16 @@
 import type { Translator } from "@/i18n/messages";
 import type { Locale } from "@/i18n/routing";
-import { type Badge, type CatalogItem, type ColorKey, type Condition, type DealPromo, type Grade, localize, type Visual } from "@/lib/data/schema";
+import {
+  type Badge,
+  type CatalogItem,
+  type ColorKey,
+  type Condition,
+  type DealPromo,
+  type Grade,
+  localize,
+  type SupplierAvailability,
+  type Visual,
+} from "@/lib/data/schema";
 import { formatPercent, formatPrice } from "@/lib/format";
 import { localizedPath, paths } from "@/lib/paths";
 
@@ -37,7 +47,7 @@ export type ProductCardView = {
 /** "custom" is a Great Deals promo badge with text typed in the admin. */
 export type CardBadge = { key: Badge | "custom"; label: string };
 
-export type AvailabilityTone = "ok" | "low" | "last" | "out";
+export type AvailabilityTone = "ok" | "low" | "last" | "supplier" | "request" | "out";
 
 const GRADE_KEYS = { "A+": "aPlus", A: "a", B: "b" } as const;
 
@@ -55,8 +65,13 @@ export function availabilityOf(
   t: Translator,
   stock: number,
   lowStockThreshold: number,
+  supplierAvailability: SupplierAvailability = "none",
 ): { tone: AvailabilityTone; label: string } {
-  if (stock <= 0) return { tone: "out", label: t("Product.stock.soldOut") };
+  if (stock <= 0) {
+    if (supplierAvailability === "within_48h") return { tone: "supplier", label: t("Product.stock.within48h") };
+    if (supplierAvailability === "on_request") return { tone: "request", label: t("Product.stock.onRequest") };
+    return { tone: "out", label: t("Product.stock.soldOut") };
+  }
   if (stock === 1) return { tone: "last", label: t("Product.stock.lastOne") };
   if (stock <= lowStockThreshold) return { tone: "low", label: t("Product.stock.fewLeft", { count: stock }) };
   return { tone: "ok", label: t("Product.stock.inStock") };
@@ -101,7 +116,7 @@ export function buildProductCardView(
         ? t("Product.newVersionPrice", { price: formatPrice(locale, item.newVersionPrice) })
         : null,
     saving: item.saving !== null ? t("Product.saving", { amount: formatPrice(locale, item.saving) }) : null,
-    availability: availabilityOf(t, item.stock, lowStockThreshold),
+    availability: availabilityOf(t, item.stock, lowStockThreshold, item.supplierAvailability),
     badges: cardBadges(t, locale, item.badges, promo ?? null),
     goodFor: item.goodFor.map((tag) => t(`Product.goodFor.${tag}`)),
     visual: item.visual,

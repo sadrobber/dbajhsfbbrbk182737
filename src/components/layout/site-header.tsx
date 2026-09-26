@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { BRAND_NAME } from "@/config/site.config";
 import { Link } from "@/i18n/navigation";
+import { CartLink } from "@/components/checkout/cart-link";
 import { container } from "@/components/ui/styles";
 import { LanguageSwitcher } from "./language-switcher";
 import { Wordmark } from "./wordmark";
@@ -15,7 +16,10 @@ export async function SiteHeader() {
         <Link href="/" aria-label={t("home", { brand: BRAND_NAME })} className="inline-flex min-h-12 items-center rounded-lg">
           <Wordmark />
         </Link>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2">
+          <CartLink label={t("cart")} />
+          <LanguageSwitcher />
+        </div>
       </div>
     </header>
   );

@@ -33,8 +33,8 @@ export function Banner({ tone = "info", children }: { tone?: "info" | "warning";
 export function PlaceholderDataBanner() {
   return (
     <Banner tone="warning">
-      <strong>Placeholder data.</strong> There is no real checkout or customer flow yet, so these records are examples from{" "}
-      <code>data/*.json</code>. This screen is ready for real data once that&rsquo;s built.
+      <strong>Placeholder data.</strong> The records shipped in <code>data/*.json</code> are examples. Customers who order through the
+      shop&rsquo;s checkout are real and appear next to them; trade-ins, tickets and invoices have no customer flow yet.
     </Banner>
   );
 }

@@ -13,6 +13,7 @@
   "Header": {
     "home": "{brand}, page d’accueil",
     "languageLabel": "Choisir la langue",
+    "cart": "Panier",
     "languages": {
       "fr": "Français",
       "en": "English",
@@ -87,12 +88,151 @@
       "inStock": "En stock",
       "fewLeft": "Plus que {count} en stock",
       "lastOne": "Dernier disponible",
-      "soldOut": "Épuisé"
+      "soldOut": "Épuisé",
+      "within48h": "Disponible sous 24 à 48 h",
+      "onRequest": "Sur demande"
     },
     "previousPrice": "Prix précédent",
     "newVersionPrice": "Neuf : {price}",
     "saving": "Vous économisez {amount}",
     "view": "Voir"
+  },
+  "ProductPage": {
+    "addToCart": "Ajouter au panier",
+    "requestIt": "Demander ce téléphone",
+    "soldOut": "Ce téléphone est épuisé pour le moment. Notre conseiller peut vous en proposer un similaire.",
+    "supply": {
+      "in_store": {
+        "title": "En stock en boutique",
+        "text": "Commandez en ligne, payez par carte et retirez-le en boutique."
+      },
+      "within_48h": {
+        "title": "Disponible sous 24 à 48 h",
+        "text": "Nous le commandons chez notre fournisseur. À la commande, votre carte est seulement préautorisée, pas débitée. Nous la débitons une fois la disponibilité confirmée, ou annulons la préautorisation si nous ne pouvons pas l’obtenir."
+      },
+      "on_request": {
+        "title": "Sur demande",
+        "text": "Rien à payer maintenant. Envoyez votre demande : nous vérifions auprès de nos fournisseurs et revenons vers vous avec la disponibilité et un délai."
+      }
+    }
+  },
+  "Cart": {
+    "title": "Votre panier",
+    "empty": "Votre panier est vide.",
+    "cancelled": "Paiement annulé. Votre panier est toujours là.",
+    "quantity": "Quantité : {count}",
+    "decrease": "Un de moins : {item}",
+    "increase": "Un de plus : {item}",
+    "remove": "Retirer {item}",
+    "unavailable": "Plus disponible. Retirez-le pour continuer.",
+    "packagesTitle": "Ajouter un pack",
+    "addPackage": "Ajouter",
+    "summary": "Récapitulatif",
+    "total": "Total",
+    "mode": {
+      "in_store": {
+        "title": "Payé maintenant",
+        "text": "Vous payez par carte maintenant. Nous préparons votre commande pour un retrait en boutique."
+      },
+      "within_48h": {
+        "title": "Carte préautorisée, débitée après confirmation",
+        "text": "Votre carte est préautorisée maintenant, mais pas débitée. Nous confirmons la disponibilité auprès de notre fournisseur sous 24 à 48 h : nous débitons alors votre carte, ou annulons la préautorisation et vous proposons une alternative."
+      },
+      "on_request": {
+        "title": "Demande : rien à payer maintenant",
+        "text": "Nous vérifions la disponibilité auprès de nos fournisseurs et vous contactons. Vous ne payez qu’après votre accord."
+      }
+    },
+    "form": {
+      "title": "Vos coordonnées",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "town": "Ville",
+      "townOther": "Une autre ville",
+      "marketing": "Recevoir nos nouveautés et offres par e-mail",
+      "pickup": "Retrait en boutique (click & collect)",
+      "required": "Tous les champs sont obligatoires."
+    },
+    "submit": {
+      "in_store": "Payer {total}",
+      "within_48h": "Préautoriser {total}",
+      "on_request": "Envoyer ma demande"
+    },
+    "secure": "Paiement sécurisé par Stripe. Nous ne voyons jamais votre numéro de carte.",
+    "errors": {
+      "firstName": "Indiquez votre prénom.",
+      "lastName": "Indiquez votre nom.",
+      "email": "Indiquez une adresse e-mail valide.",
+      "phone": "Indiquez un numéro de téléphone valide.",
+      "town": "Choisissez votre ville."
+    },
+    "problems": {
+      "empty": "Votre panier est vide.",
+      "unavailable": "Certains articles ne sont plus disponibles. Vérifiez votre panier.",
+      "changed": "Les prix ou la disponibilité viennent de changer. Vérifiez votre panier et confirmez à nouveau.",
+      "payments_off": "Le paiement en ligne n’est pas disponible pour le moment. Contactez la boutique.",
+      "generic": "Une erreur est survenue. Veuillez réessayer."
+    }
+  },
+  "Order": {
+    "title": "Commande {number}",
+    "placedOn": "Passée le {date}",
+    "items": "Vos articles",
+    "total": "Total",
+    "pickup": "Retrait en boutique",
+    "alternative": "Ce que nous vous proposons à la place",
+    "demo": "Mode démo : aucun paiement réel n’a été effectué.",
+    "keepLink": "Gardez l’adresse de cette page pour suivre votre commande.",
+    "refresh": "Actualiser",
+    "backToShop": "Retour à la boutique",
+    "stage": {
+      "request_received": {
+        "title": "Demande reçue",
+        "text": "Nous vérifions la disponibilité auprès de nos fournisseurs et vous contactons très vite. Rien n’a été débité."
+      },
+      "payment_pending": {
+        "title": "Paiement en cours de confirmation",
+        "text": "Nous attendons la confirmation du paiement. Actualisez cette page dans un instant."
+      },
+      "request_confirmed": {
+        "title": "Bonne nouvelle : il est disponible",
+        "text": "Nous vous contactons pour organiser le paiement et le retrait en boutique."
+      },
+      "availability_check": {
+        "title": "Carte préautorisée, disponibilité en cours de vérification",
+        "text": "Votre carte a été préautorisée mais pas débitée. Nous confirmons la disponibilité auprès de notre fournisseur sous 24 à 48 h, puis nous débitons votre carte. Si nous ne pouvons pas l’obtenir, la préautorisation est annulée et vous ne payez rien."
+      },
+      "paid": {
+        "title": "Commande confirmée",
+        "text": "Paiement reçu. Nous vous prévenons dès que votre commande est prête à être retirée."
+      },
+      "preparing": {
+        "title": "En préparation",
+        "text": "Nous préparons votre commande."
+      },
+      "ready": {
+        "title": "Prête à être retirée",
+        "text": "Votre commande vous attend en boutique."
+      },
+      "completed": {
+        "title": "Terminée",
+        "text": "Merci pour votre achat !"
+      },
+      "unavailable": {
+        "title": "Non disponible",
+        "text": "Désolés, nous n’avons pas pu obtenir ce téléphone. La préautorisation éventuelle a été annulée : vous ne payez rien."
+      },
+      "cancelled": {
+        "title": "Annulée",
+        "text": "Cette commande a été annulée. Vous n’avez pas été débité."
+      },
+      "refunded": {
+        "title": "Remboursée",
+        "text": "Cette commande a été remboursée."
+      }
+    }
   },
   "Packages": {
     "title": "Bien plus qu’un téléphone",

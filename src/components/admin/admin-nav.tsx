@@ -28,12 +28,14 @@ export const ADMIN_SECTIONS: { href: string; label: string; icon: LucideIcon; gr
   { href: "/admin/invoices", label: "Invoices", icon: FileText, group: "records" },
 ];
 
-export function AdminNav() {
+/** `alerts`: count of records waiting for staff, per section href (e.g. orders to confirm). */
+export function AdminNav({ alerts = {} }: { alerts?: Record<string, number> }) {
   const pathname = usePathname();
 
   const link = (section: (typeof ADMIN_SECTIONS)[number]) => {
     const active = pathname === section.href || pathname.startsWith(`${section.href}/`);
     const Icon = section.icon;
+    const alert = alerts[section.href] ?? 0;
     return (
       <li key={section.href} className="shrink-0">
         <Link
@@ -46,6 +48,12 @@ export function AdminNav() {
         >
           <Icon aria-hidden="true" className={cn("size-5", active ? "text-accent" : "")} />
           {section.label}
+          {alert > 0 && (
+            <span className="ml-auto grid min-w-6 place-items-center rounded-full bg-danger px-1.5 text-[0.8125rem] font-bold leading-6 text-white">
+              {alert}
+              <span className="sr-only"> to confirm</span>
+            </span>
+          )}
         </Link>
       </li>
     );

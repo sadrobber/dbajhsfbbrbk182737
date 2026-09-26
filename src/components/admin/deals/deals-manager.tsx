@@ -149,8 +149,8 @@ export function DealsManager({
             {entries.map((entry, index) => {
               const item = byId.get(entry.productId);
               if (!item) return null;
-              const stock = stockTone(item.stock, lowStockThreshold);
-              const hiddenReason = shownIds.has(item.id) ? null : item.stock <= 0 ? "Hidden: sold out" : `Hidden: only ${maxItems} are shown`;
+              const stock = stockTone(item.stock, lowStockThreshold, item.supplierAvailability);
+              const hiddenReason = shownIds.has(item.id) ? null : item.stock <= 0 ? "Hidden: none in the shop" : `Hidden: only ${maxItems} are shown`;
               return (
                 <li key={entry.productId} className={cn("rounded-xl border border-line p-3", hiddenReason && "bg-surface-1")}>
                   <div className="flex flex-wrap items-center gap-3">

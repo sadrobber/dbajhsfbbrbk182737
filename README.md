@@ -1,6 +1,6 @@
 # Novacell: smartphone shop homepage prototype + AI shopping advisor
 
-First step of the e-commerce platform for a smartphone shop serving Menton, Monaco, Beausoleil, Cap-d'Ail, Roquebrune-Cap-Martin and Sospel. This version contains the **homepage** (visual prototype, FR/EN/IT), a **working "Help me choose" advisor** and a **staff back office** at `/admin` (see [Admin](#admin-back-office)). Product pages, cart, checkout and customer accounts are out of scope; their links open "coming soon" pages.
+First step of the e-commerce platform for a smartphone shop serving Menton, Monaco, Beausoleil, Cap-d'Ail, Roquebrune-Cap-Martin and Sospel. This version contains the **homepage** (visual prototype, FR/EN/IT), a **working "Help me choose" advisor** and a **staff back office** at `/admin` (see [Admin](#admin-back-office)). Product pages, a cart and a checkout with three stock states are in (see [Orders and payment](#orders-and-payment)); listing pages and customer accounts are out of scope, and their links open "coming soon" pages.
 
 ## Run it
 
@@ -124,13 +124,13 @@ Sessions last 8 hours (signed, `httpOnly` cookie limited to `/admin`); changing 
 | Great Deals | **Real, editable** (`data/deals.json`) | Pick phones, reorder them, add a promo badge (preset or custom text in three languages). Live preview of the homepage row. |
 | Packages | **Real, editable** (`data/packages.json`) | Price and contents (label in FR/EN/IT, icon, "to be confirmed") of Max Protection and Ready-to-Use, with the homepage card as preview. |
 | Gauge | **Real, editable** (`data/gauge-config.json`) | Current %, draw target (tickets), prizes, show/hide. Shows tickets issued vs target and can apply that %. |
-| Orders | Placeholder (`data/orders.json`) | List with status, channel, items, invoice link; search and filters. |
-| Customers | Placeholder (`data/customers.json`) | List with contact, town, counts of orders, tickets and trade-ins. |
+| Orders | **Real** from the checkout, next to placeholder examples (`data/orders.json`) | List with status, stock state, channel, items, invoice link; search and filters. "Availability to confirm" orders sit at the top, with a red count in the menu and a banner on every screen. Each order opens a page with its payment, customer and the **Available / Not available** decision. |
+| Customers | **Real** from the checkout, next to placeholder examples (`data/customers.json`) | List with contact, town, counts of orders, tickets and trade-ins. |
 | Trade-ins | Placeholder (`data/trade-ins.json`) | Estimate requests with device, condition, estimate and status. |
 | Tickets | Placeholder (`data/tickets.json`) | Gauge tickets grouped by customer (who has how many), against the draw target. |
 | Invoices | Placeholder (`data/invoices.json`) | One per paid order, amounts with VAT, linked to its order. |
 
-Orders, customers, trade-ins, tickets and invoices show **placeholder data**, because there is no real checkout or customer flow yet. The screens (and the data shapes) are ready for real data once that's built.
+The rows shipped in `data/orders.json` and `data/customers.json` are **placeholder examples**; orders placed through the shop's checkout are added next to them. Trade-ins, tickets and invoices are placeholder only: there is no customer flow for them yet.
 
 Saving updates the shop straight away: the homepage, product pages and the advisor read the same files. Product and deal rules still apply automatically ("Only N left", "Last one available", sold-out phones hidden). Deleting a product that appears in orders is refused (set its stock to 0 instead), like a database foreign key would.
 
@@ -147,7 +147,40 @@ Saving writes to files on the server's disk. That works with `npm run dev` and w
 1. Move the tables in `data/` to a database (PostgreSQL, or the commerce backend from [Growth path](#tech-stack-and-why)); re-implement `src/lib/data/local-source.ts` and `src/lib/data/admin-repository.ts` on top of it. The screens don't change.
 2. Store product photos in object storage (e.g. S3, Cloudflare R2, Vercel Blob) instead of `data/uploads/`.
 3. Replace the temporary login (above).
-4. Feed orders, customers, trade-ins, tickets and invoices from the real checkout and trade-in forms, and generate real invoice PDFs.
+4. Feed trade-ins, tickets and invoices from real forms, and generate real invoice PDFs.
+
+## Orders and payment
+
+Each phone can be ordered in one of three ways, from its shop stock and its "When the shop's stock runs out" setting in the admin:
+
+| Stock state | When | Payment | Then |
+| --- | --- | --- | --- |
+| In store | Stock > 0 | Charged at checkout | Order is "Paid". |
+| 24–48h | Stock 0, supplier "24–48h" | Card **authorised, not charged** (Stripe manual capture) | Order arrives as **"Availability to confirm"**. Staff check with suppliers: *Available* charges the card; *Not available* cancels the authorisation and records the alternative offered, which the customer sees on their order page. |
+| On request | Stock 0, "On request" | Nothing paid online | Same alert; *Available* tells the customer to come and pay, *Not available* closes the request with an alternative. |
+
+A cart mixing states takes the most restrictive one (one "24–48h" phone makes the whole order authorise-then-charge). Pickup in the shop only for now (no delivery address yet). Customers follow their order on a private page (`/fr/orders/<id>?t=<secret>`), linked after checkout.
+
+**Card authorisations expire after about 7 days.** The order page in the admin shows the deadline and warns when fewer than two days are left.
+
+### Setting up payment
+
+| Where | What |
+| --- | --- |
+| `npm run dev`, nothing configured | **Demo payments**: no card, the order goes straight to "paid" or "authorised". The order pages say so. |
+| Stripe (test, then live) | `PAYMENT_PROVIDER=stripe`, `STRIPE_SECRET_KEY`, and a webhook to `<SITE_URL>/api/payments/stripe` with `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `checkout.session.expired`; its signing secret goes in `STRIPE_WEBHOOK_SECRET`. Locally: `stripe listen --forward-to localhost:3000/api/payments/stripe`. |
+| Production without `PAYMENT_PROVIDER` | Online payment is off: "on request" orders still work, the others show "online payment isn't available". |
+
+The customer's return from Stripe also checks the payment, so orders update even before the webhook arrives. Staff can press "Check the payment again" on an order still waiting.
+
+### Plugging in supplier APIs later
+
+Supplier code lives in `src/server/suppliers/`. Today `manual.ts` answers "unknown" and staff check by phone or email. A supplier API is one new file implementing `SupplierConnector`:
+
+- `checkOrder(lines)`: its answer (available / unavailable / note) is shown on the admin order page next to each item to source.
+- `fetchCatalogAvailability()` (optional): a stock feed that `syncSupplierCatalog()` applies to the products' "when out of stock" setting. Run it from a scheduled job once a supplier offers one.
+
+Select the connector in `src/server/suppliers/index.ts`; the checkout, orders and admin screens stay as they are. Emails to customers (confirmed, not available) go through `src/server/orders/notify.ts`, which only logs until an email service is connected.
 
 ## Supabase
 

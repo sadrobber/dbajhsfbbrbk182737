@@ -6,6 +6,7 @@ import {
   type Grade,
   manualBadges,
   type Product,
+  type SupplierAvailability,
   type Visual,
 } from "@/lib/data/schema";
 
@@ -25,6 +26,7 @@ export type ProductDraft = {
   price: string;
   compareAtPrice: string;
   stock: string;
+  supplierAvailability: SupplierAvailability;
   badges: ManualBadge[];
   goodFor: GoodFor[];
   visual: Visual;
@@ -45,6 +47,7 @@ export function newDraft(brands: Brand[]): ProductDraft {
     price: "",
     compareAtPrice: "",
     stock: "1",
+    supplierAvailability: "none",
     badges: ["new_arrival"],
     goodFor: ["social"],
     visual: "duo",
@@ -66,6 +69,7 @@ export function draftOf(product: Product): ProductDraft {
     price: String(product.price),
     compareAtPrice: product.compareAtPrice === null ? "" : String(product.compareAtPrice),
     stock: String(product.stock),
+    supplierAvailability: product.supplierAvailability,
     badges: product.badges.filter((b): b is ManualBadge => (manualBadges as readonly string[]).includes(b)),
     goodFor: product.goodFor,
     visual: product.visual,
@@ -92,6 +96,7 @@ export function productOf(draft: ProductDraft): Product {
     price: toNumber(draft.price),
     compareAtPrice: orNull(draft.compareAtPrice),
     stock: toNumber(draft.stock),
+    supplierAvailability: draft.supplierAvailability,
     badges: draft.badges,
     goodFor: draft.goodFor,
     visual: draft.visual,

@@ -41,3 +41,6 @@ export async function getPackages() {
 export async function getPackage(id: string) {
   return (await getPackages()).find((pkg) => pkg.id === id) ?? null;
 }
+
+/** An order, for the customer's order page. The page must check the order's access token. */
+export { getOrder } from "./order-repository";

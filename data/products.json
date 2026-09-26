@@ -1,5 +1,5 @@
 {
-  "$comment": "Table: products (new + refurbished). Mock prices and stock. Edited in /admin/products. products.brand -> brands.id",
+  "$comment": "Table: products (new + refurbished). Mock prices and stock. Edited in /admin/products. products.brand -> brands.id. supplierAvailability applies when stock is 0: none (sold out), within_48h (card authorised, charged after staff confirm), on_request (no online payment).",
   "rows": [
     {
       "id": "iphone-17-256",
@@ -14,6 +14,7 @@
       "price": 969,
       "compareAtPrice": null,
       "stock": 5,
+      "supplierAvailability": "within_48h",
       "badges": [
         "new_arrival"
       ],
@@ -38,6 +39,7 @@
       "price": 769,
       "compareAtPrice": 869,
       "stock": 4,
+      "supplierAvailability": "within_48h",
       "badges": [
         "special_price"
       ],
@@ -62,6 +64,7 @@
       "price": 599,
       "compareAtPrice": null,
       "stock": 6,
+      "supplierAvailability": "within_48h",
       "badges": [],
       "goodFor": [
         "easy",
@@ -84,6 +87,7 @@
       "price": 749,
       "compareAtPrice": 959,
       "stock": 3,
+      "supplierAvailability": "within_48h",
       "badges": [
         "deal_of_the_week"
       ],
@@ -108,6 +112,7 @@
       "price": 379,
       "compareAtPrice": null,
       "stock": 7,
+      "supplierAvailability": "within_48h",
       "badges": [],
       "goodFor": [
         "battery",
@@ -130,6 +135,7 @@
       "price": 199,
       "compareAtPrice": null,
       "stock": 9,
+      "supplierAvailability": "within_48h",
       "badges": [],
       "goodFor": [
         "battery",
@@ -151,6 +157,7 @@
       "price": 449,
       "compareAtPrice": 549,
       "stock": 1,
+      "supplierAvailability": "within_48h",
       "badges": [
         "special_price"
       ],
@@ -175,6 +182,7 @@
       "price": 329,
       "compareAtPrice": null,
       "stock": 5,
+      "supplierAvailability": "within_48h",
       "badges": [
         "new_arrival"
       ],
@@ -199,6 +207,7 @@
       "price": 169,
       "compareAtPrice": null,
       "stock": 4,
+      "supplierAvailability": "within_48h",
       "badges": [],
       "goodFor": [
         "easy",
@@ -220,6 +229,7 @@
       "price": 649,
       "compareAtPrice": null,
       "stock": 2,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "photo",
@@ -242,6 +252,7 @@
       "price": 499,
       "compareAtPrice": null,
       "stock": 3,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "photo",
@@ -264,6 +275,7 @@
       "price": 379,
       "compareAtPrice": null,
       "stock": 2,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "social",
@@ -285,6 +297,7 @@
       "price": 319,
       "compareAtPrice": null,
       "stock": 1,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "social",
@@ -307,6 +320,7 @@
       "price": 599,
       "compareAtPrice": null,
       "stock": 2,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "photo",
@@ -329,6 +343,7 @@
       "price": 299,
       "compareAtPrice": null,
       "stock": 3,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "battery",
@@ -351,6 +366,7 @@
       "price": 389,
       "compareAtPrice": null,
       "stock": 0,
+      "supplierAvailability": "none",
       "badges": [],
       "goodFor": [
         "photo",
@@ -358,6 +374,54 @@
         "work"
       ],
       "visual": "column",
+      "photos": []
+    },
+    {
+      "id": "iphone-17-pro-256",
+      "brand": "apple",
+      "model": "iPhone 17 Pro",
+      "condition": "new",
+      "storageGb": 256,
+      "color": "silver",
+      "grade": null,
+      "batteryHealth": null,
+      "warrantyMonths": 24,
+      "price": 1329,
+      "compareAtPrice": null,
+      "stock": 0,
+      "supplierAvailability": "within_48h",
+      "badges": [
+        "new_arrival"
+      ],
+      "goodFor": [
+        "photo",
+        "gaming",
+        "work"
+      ],
+      "visual": "trio",
+      "photos": []
+    },
+    {
+      "id": "galaxy-z-fold7-512",
+      "brand": "samsung",
+      "model": "Galaxy Z Fold7",
+      "condition": "new",
+      "storageGb": 512,
+      "color": "black",
+      "grade": null,
+      "batteryHealth": null,
+      "warrantyMonths": 24,
+      "price": 2199,
+      "compareAtPrice": null,
+      "stock": 0,
+      "supplierAvailability": "on_request",
+      "badges": [],
+      "goodFor": [
+        "work",
+        "photo",
+        "gaming"
+      ],
+      "visual": "trio",
       "photos": []
     }
   ]

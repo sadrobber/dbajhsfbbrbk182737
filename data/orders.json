@@ -1,5 +1,5 @@
 {
-  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: orders (+ order_lines). orders.customerId -> customers.id; lines[].productId -> products.id; lines[].packageId -> packages.id. Line descriptions are a snapshot at purchase time.",
+  "$comment": "Rows ord-0001 to ord-0018 are PLACEHOLDER examples; orders placed through the shop's checkout are added after them. Table: orders (+ order_lines, + payments for `payment`). orders.customerId -> customers.id; lines[].productId -> products.id; lines[].packageId -> packages.id. Line descriptions are a snapshot at purchase time. `supply` decides the payment: in_store charged at once, within_48h card authorised then charged or released by staff, on_request no online payment.",
   "rows": [
     {
       "id": "ord-0001",
@@ -14,17 +14,24 @@
           "packageId": null,
           "description": "Apple iPhone 16 · 128 GB · green",
           "quantity": 1,
-          "unitPrice": 769
+          "unitPrice": 769,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "max-protection",
           "description": "Max Protection Package",
           "quantity": 1,
-          "unitPrice": 49
+          "unitPrice": 49,
+          "supply": "in_store"
         }
       ],
-      "total": 818
+      "total": 818,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0002",
@@ -39,10 +46,16 @@
           "packageId": null,
           "description": "Samsung Galaxy S25 · 256 GB · blue",
           "quantity": 1,
-          "unitPrice": 749
+          "unitPrice": 749,
+          "supply": "in_store"
         }
       ],
-      "total": 749
+      "total": 749,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0003",
@@ -57,17 +70,24 @@
           "packageId": null,
           "description": "Xiaomi Redmi Note 14 Pro · 256 GB · green",
           "quantity": 1,
-          "unitPrice": 329
+          "unitPrice": 329,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "max-protection",
           "description": "Max Protection Package",
           "quantity": 1,
-          "unitPrice": 49
+          "unitPrice": 49,
+          "supply": "in_store"
         }
       ],
-      "total": 378
+      "total": 378,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0004",
@@ -82,17 +102,24 @@
           "packageId": null,
           "description": "Doro 8100 · 32 GB · grey",
           "quantity": 1,
-          "unitPrice": 169
+          "unitPrice": 169,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "ready-to-use",
           "description": "Ready-to-Use Package",
           "quantity": 1,
-          "unitPrice": 79
+          "unitPrice": 79,
+          "supply": "in_store"
         }
       ],
-      "total": 248
+      "total": 248,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0005",
@@ -107,10 +134,16 @@
           "packageId": null,
           "description": "Google Pixel 9a · 128 GB · purple",
           "quantity": 1,
-          "unitPrice": 449
+          "unitPrice": 449,
+          "supply": "in_store"
         }
       ],
-      "total": 449
+      "total": 449,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0006",
@@ -125,17 +158,24 @@
           "packageId": null,
           "description": "Apple iPhone 15 · 128 GB · blue · refurbished A",
           "quantity": 1,
-          "unitPrice": 499
+          "unitPrice": 499,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "max-protection",
           "description": "Max Protection Package",
           "quantity": 1,
-          "unitPrice": 49
+          "unitPrice": 49,
+          "supply": "in_store"
         }
       ],
-      "total": 548
+      "total": 548,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0007",
@@ -150,10 +190,16 @@
           "packageId": null,
           "description": "Samsung Galaxy A16 · 128 GB · black",
           "quantity": 1,
-          "unitPrice": 199
+          "unitPrice": 199,
+          "supply": "in_store"
         }
       ],
-      "total": 199
+      "total": 199,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0008",
@@ -168,17 +214,24 @@
           "packageId": null,
           "description": "Apple iPhone 14 · 128 GB · purple · refurbished B",
           "quantity": 1,
-          "unitPrice": 379
+          "unitPrice": 379,
+          "supply": "in_store"
         },
         {
           "productId": "galaxy-a16-128",
           "packageId": null,
           "description": "Samsung Galaxy A16 · 128 GB · black",
           "quantity": 1,
-          "unitPrice": 199
+          "unitPrice": 199,
+          "supply": "in_store"
         }
       ],
-      "total": 578
+      "total": 578,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0009",
@@ -193,24 +246,32 @@
           "packageId": null,
           "description": "Apple iPhone 17 · 256 GB · black",
           "quantity": 1,
-          "unitPrice": 969
+          "unitPrice": 969,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "max-protection",
           "description": "Max Protection Package",
           "quantity": 1,
-          "unitPrice": 49
+          "unitPrice": 49,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "ready-to-use",
           "description": "Ready-to-Use Package",
           "quantity": 1,
-          "unitPrice": 79
+          "unitPrice": 79,
+          "supply": "in_store"
         }
       ],
-      "total": 1097
+      "total": 1097,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0010",
@@ -225,10 +286,16 @@
           "packageId": null,
           "description": "Samsung Galaxy A56 · 128 GB · grey",
           "quantity": 1,
-          "unitPrice": 379
+          "unitPrice": 379,
+          "supply": "in_store"
         }
       ],
-      "total": 379
+      "total": 379,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0011",
@@ -243,17 +310,24 @@
           "packageId": null,
           "description": "Doro 8100 · 32 GB · grey",
           "quantity": 1,
-          "unitPrice": 169
+          "unitPrice": 169,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "ready-to-use",
           "description": "Ready-to-Use Package",
           "quantity": 1,
-          "unitPrice": 79
+          "unitPrice": 79,
+          "supply": "in_store"
         }
       ],
-      "total": 248
+      "total": 248,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0012",
@@ -268,10 +342,16 @@
           "packageId": null,
           "description": "Samsung Galaxy A56 · 128 GB · green · refurbished A",
           "quantity": 1,
-          "unitPrice": 299
+          "unitPrice": 299,
+          "supply": "in_store"
         }
       ],
-      "total": 299
+      "total": 299,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0013",
@@ -286,17 +366,24 @@
           "packageId": null,
           "description": "Apple iPhone 16e · 128 GB · white",
           "quantity": 1,
-          "unitPrice": 599
+          "unitPrice": 599,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "max-protection",
           "description": "Max Protection Package",
           "quantity": 1,
-          "unitPrice": 49
+          "unitPrice": 49,
+          "supply": "in_store"
         }
       ],
-      "total": 648
+      "total": 648,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0014",
@@ -311,10 +398,16 @@
           "packageId": null,
           "description": "Samsung Galaxy S25 · 256 GB · silver · refurbished A+",
           "quantity": 1,
-          "unitPrice": 599
+          "unitPrice": 599,
+          "supply": "in_store"
         }
       ],
-      "total": 599
+      "total": 599,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0015",
@@ -329,17 +422,24 @@
           "packageId": null,
           "description": "Apple iPhone 13 · 128 GB · pink · refurbished A",
           "quantity": 1,
-          "unitPrice": 319
+          "unitPrice": 319,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "max-protection",
           "description": "Max Protection Package",
           "quantity": 1,
-          "unitPrice": 49
+          "unitPrice": 49,
+          "supply": "in_store"
         }
       ],
-      "total": 368
+      "total": 368,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0016",
@@ -354,10 +454,16 @@
           "packageId": null,
           "description": "Samsung Galaxy A56 · 128 GB · grey",
           "quantity": 1,
-          "unitPrice": 379
+          "unitPrice": 379,
+          "supply": "in_store"
         }
       ],
-      "total": 379
+      "total": 379,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0017",
@@ -372,17 +478,24 @@
           "packageId": null,
           "description": "Apple iPhone 16 · 128 GB · black · refurbished A+",
           "quantity": 1,
-          "unitPrice": 649
+          "unitPrice": 649,
+          "supply": "in_store"
         },
         {
           "productId": null,
           "packageId": "ready-to-use",
           "description": "Ready-to-Use Package",
           "quantity": 1,
-          "unitPrice": 79
+          "unitPrice": 79,
+          "supply": "in_store"
         }
       ],
-      "total": 728
+      "total": 728,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     },
     {
       "id": "ord-0018",
@@ -397,10 +510,16 @@
           "packageId": null,
           "description": "Apple iPhone 16e · 128 GB · white",
           "quantity": 1,
-          "unitPrice": 599
+          "unitPrice": 599,
+          "supply": "in_store"
         }
       ],
-      "total": 599
+      "total": 599,
+      "supply": "in_store",
+      "payment": null,
+      "availabilityCheck": null,
+      "accessToken": null,
+      "locale": "fr"
     }
   ]
 }

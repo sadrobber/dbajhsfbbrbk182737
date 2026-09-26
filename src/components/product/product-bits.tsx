@@ -26,6 +26,8 @@ const TONE_STYLES: Record<AvailabilityTone, { text: string; dot: string }> = {
   ok: { text: "text-success", dot: "bg-success" },
   low: { text: "text-warning", dot: "bg-warning" },
   last: { text: "text-warning", dot: "bg-warning motion-safe:animate-pulse-soft" },
+  supplier: { text: "text-accent-text", dot: "bg-accent" },
+  request: { text: "text-fg-muted", dot: "bg-fg-muted" },
   out: { text: "text-fg-subtle", dot: "bg-fg-subtle" },
 };
 

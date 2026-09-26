@@ -155,7 +155,7 @@ export function ProductsManager({
           </thead>
           <tbody>
             {visible.map((p) => {
-              const stockInfo = stockTone(p.stock, lowStockThreshold);
+              const stockInfo = stockTone(p.stock, lowStockThreshold, p.supplierAvailability);
               return (
                 <tr
                   key={p.id}

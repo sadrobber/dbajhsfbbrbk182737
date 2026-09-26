@@ -32,6 +32,19 @@ export const iconKeys = [
 export const prizeKeys = ["smartphone", "computer", "console"] as const;
 /** Extra badge on a Great Deals card. "custom" uses the deal's own text. */
 export const promoBadges = ["deal_of_the_week", "special_price", "new_arrival", "custom"] as const;
+/**
+ * What the shop offers once its own stock is used up. Set in the admin today;
+ * a supplier feed can set it later (src/server/suppliers).
+ */
+export const supplierAvailabilities = ["none", "within_48h", "on_request"] as const;
+/**
+ * How a phone can be ordered right now:
+ * in_store   - in the shop, paid at once;
+ * within_48h - from a supplier in 24-48h, card authorised and charged once staff confirm;
+ * on_request - no payment online, staff check and get back to the customer.
+ * Listed from least to most restrictive.
+ */
+export const supplies = ["in_store", "within_48h", "on_request"] as const;
 
 export type Condition = (typeof conditions)[number];
 export type Grade = (typeof grades)[number];
@@ -42,6 +55,8 @@ export type Visual = (typeof visuals)[number];
 export type IconKey = (typeof iconKeys)[number];
 export type PrizeKey = (typeof prizeKeys)[number];
 export type PromoBadge = (typeof promoBadges)[number];
+export type SupplierAvailability = (typeof supplierAvailabilities)[number];
+export type Supply = (typeof supplies)[number];
 
 export const slug = z.string().regex(/^[a-z0-9-]+$/, "use lowercase letters, digits and dashes");
 
@@ -83,6 +98,8 @@ export const productSchema = z
     /** Previous price, shown crossed out when the item is on special price. */
     compareAtPrice: z.number().positive().nullable(),
     stock: z.number().int().min(0),
+    /** Used when stock is 0: "none" means sold out, the others keep the phone orderable. */
+    supplierAvailability: z.enum(supplierAvailabilities),
     badges: z.array(z.enum(badges)),
     /** Most relevant first. */
     goodFor: z.array(z.enum(goodForTags)).min(1, "Pick at least one"),

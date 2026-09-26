@@ -1,4 +1,4 @@
-import type { Badge, Catalog, CatalogItem, DealPromo, Merchandising } from "./schema";
+import { type Badge, type Catalog, type CatalogItem, type DealPromo, type Merchandising, type Product, type Supply, supplies } from "./schema";
 
 /** A Great Deals product, with the extra badge set for it in the admin. */
 export type DealItem = CatalogItem & { promo: DealPromo | null };
@@ -38,6 +38,21 @@ export function enrichCatalog(catalog: Catalog): CatalogItem[] {
       saving,
     };
   });
+}
+
+/**
+ * How `quantity` of a product can be ordered now, or null when it can't.
+ * The shop's own stock comes first; past it, the supplier availability applies.
+ */
+export function supplyOf(product: Pick<Product, "stock" | "supplierAvailability">, quantity = 1): Supply | null {
+  if (product.stock >= quantity) return "in_store";
+  if (product.supplierAvailability === "none") return null;
+  return product.supplierAvailability;
+}
+
+/** The order-level supply: its most restrictive line decides how it is paid. */
+export function strictestSupply(list: Supply[]): Supply {
+  return list.reduce<Supply>((worst, supply) => (supplies.indexOf(supply) > supplies.indexOf(worst) ? supply : worst), "in_store");
 }
 
 export function inStock(items: CatalogItem[]): CatalogItem[] {

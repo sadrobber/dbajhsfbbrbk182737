@@ -1,10 +1,13 @@
-import type { InvoiceStatus, OrderStatus, TradeInStatus } from "@/lib/data/records";
+import type { InvoiceStatus, OrderStatus, PaymentStatus, TradeInStatus } from "@/lib/data/records";
+import type { SupplierAvailability, Supply } from "@/lib/data/schema";
 import type { PillTone } from "./ui";
 
 /** Labels and colours for statuses shown in the back office. */
 
 export const ORDER_STATUS: Record<OrderStatus, { label: string; tone: PillTone }> = {
+  quote_requested: { label: "On request · availability to confirm", tone: "danger" },
   pending_payment: { label: "Awaiting payment", tone: "warning" },
+  awaiting_availability: { label: "Availability to confirm", tone: "danger" },
   paid: { label: "Paid", tone: "info" },
   preparing: { label: "Preparing", tone: "info" },
   ready_for_pickup: { label: "Ready for pickup", tone: "info" },
@@ -14,6 +17,26 @@ export const ORDER_STATUS: Record<OrderStatus, { label: string; tone: PillTone }
 };
 
 export const ORDER_CHANNEL = { in_store: "In store", click_and_collect: "Click & collect", delivery: "Delivery" } as const;
+
+export const SUPPLY: Record<Supply, { label: string; tone: PillTone }> = {
+  in_store: { label: "In store", tone: "success" },
+  within_48h: { label: "Supplier 24–48h", tone: "info" },
+  on_request: { label: "On request", tone: "neutral" },
+};
+
+export const SUPPLIER_AVAILABILITY: Record<SupplierAvailability, string> = {
+  none: "Sold out (not orderable)",
+  within_48h: "Supplier, 24–48h (card authorised, charged after you confirm)",
+  on_request: "On request (no online payment)",
+};
+
+export const PAYMENT_STATUS: Record<PaymentStatus, { label: string; tone: PillTone }> = {
+  pending: { label: "Waiting for the customer", tone: "warning" },
+  authorized: { label: "Authorised, not charged", tone: "info" },
+  captured: { label: "Charged", tone: "success" },
+  released: { label: "Authorisation cancelled", tone: "neutral" },
+  failed: { label: "Not completed", tone: "neutral" },
+};
 
 export const TRADE_IN_STATUS: Record<TradeInStatus, { label: string; tone: PillTone }> = {
   submitted: { label: "New request", tone: "warning" },

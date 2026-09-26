@@ -3,12 +3,14 @@ import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { Banner } from "@/components/admin/ui";
 import { Wordmark } from "@/components/layout/wordmark";
+import { countOrdersToCheck } from "@/lib/data/admin-repository";
 import { requireAdmin } from "@/server/admin/auth";
 import { getAdminCredentials } from "@/server/admin/session";
 import { logout } from "../login/actions";
 
 export default async function AdminPanelLayout({ children }: LayoutProps<"/admin">) {
   const session = await requireAdmin();
+  const ordersToCheck = await countOrdersToCheck();
   const usingDevPassword = getAdminCredentials()?.source === "dev-default";
   const readOnlyHost = Boolean(process.env.VERCEL);
 
@@ -22,7 +24,7 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
           </Link>
         </div>
         <div className="px-2 pb-2 lg:flex-1 lg:overflow-y-auto lg:px-3 lg:pt-4">
-          <AdminNav />
+          <AdminNav alerts={{ "/admin/orders": ordersToCheck }} />
         </div>
         <div className="hidden border-t border-white/10 p-3 lg:block">
           <Link
@@ -50,8 +52,19 @@ export default async function AdminPanelLayout({ children }: LayoutProps<"/admin
 
       <div className="min-w-0">
         <main id="main" className="mx-auto grid max-w-[90rem] gap-6 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-          {(usingDevPassword || readOnlyHost) && (
+          {(usingDevPassword || readOnlyHost || ordersToCheck > 0) && (
             <div className="grid gap-3">
+              {ordersToCheck > 0 && (
+                <Banner tone="warning">
+                  <strong>
+                    {ordersToCheck === 1 ? "1 order" : `${ordersToCheck} orders`}: availability to confirm.
+                  </strong>{" "}
+                  Check with your suppliers, then confirm (the card is charged) or decline (the authorisation is cancelled).{" "}
+                  <Link href="/admin/orders#to-confirm" className="font-semibold text-accent-text underline">
+                    Review {ordersToCheck === 1 ? "it" : "them"}
+                  </Link>
+                </Banner>
+              )}
               {usingDevPassword && (
                 <Banner tone="warning">
                   <strong>Temporary development login.</strong> Set <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code> in{" "}

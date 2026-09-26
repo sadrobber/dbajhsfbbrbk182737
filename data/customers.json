@@ -1,5 +1,5 @@
 {
-  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: customers.",
+  "$comment": "Rows cus-001 to cus-014 are PLACEHOLDER examples; customers who order through the shop's checkout are added after them (matched by email). Table: customers.",
   "rows": [
     {
       "id": "cus-001",

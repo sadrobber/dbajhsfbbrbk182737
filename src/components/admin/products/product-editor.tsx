@@ -5,6 +5,7 @@ import Image from "next/image";
 import { type ReactNode, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { saveProductAction, deleteProductAction, uploadProductPhotosAction } from "@/app/admin/(panel)/products/actions";
 import { fieldErrorsOf } from "@/components/admin/form-errors";
+import { SUPPLIER_AVAILABILITY } from "@/components/admin/labels";
 import { useUnsavedChangesWarning } from "@/components/admin/save-bar";
 import { PreviewFrame, type PreviewMessages, usePreviewTranslator } from "@/components/admin/preview";
 import { adminButton, adminCheckbox, adminInput, adminSelect, iconButton } from "@/components/admin/styles";
@@ -23,6 +24,7 @@ import {
   manualBadges,
   type Product,
   productSchema,
+  supplierAvailabilities,
   visuals,
 } from "@/lib/data/schema";
 import { buildProductCardView } from "@/lib/product-view";
@@ -337,7 +339,7 @@ export function ProductEditor({
                     className={adminInput}
                   />
                 </Field>
-                <Field label="Stock" error={errors.stock} hint={`0 hides it from the shop. ≤ ${lowStockThreshold} shows “Only X left”.`}>
+                <Field label="Stock in the shop" error={errors.stock} hint={`≤ ${lowStockThreshold} shows “Only X left”. At 0, see below.`}>
                   <input
                     inputMode="numeric"
                     value={draft.stock}
@@ -354,6 +356,24 @@ export function ProductEditor({
                     aria-invalid={Boolean(errors.warrantyMonths)}
                     className={adminInput}
                   />
+                </Field>
+                <Field
+                  label="When the shop’s stock runs out"
+                  error={errors.supplierAvailability}
+                  className="sm:col-span-2 lg:col-span-4"
+                  hint="“Supplier, 24–48h”: customers can still order; their card is authorised and only charged once you confirm availability in Orders. “On request”: they send a request, nothing is paid online."
+                >
+                  <select
+                    value={draft.supplierAvailability}
+                    onChange={(e) => set("supplierAvailability", e.target.value as ProductDraft["supplierAvailability"])}
+                    className={adminSelect}
+                  >
+                    {supplierAvailabilities.map((value) => (
+                      <option key={value} value={value}>
+                        {SUPPLIER_AVAILABILITY[value]}
+                      </option>
+                    ))}
+                  </select>
                 </Field>
               </div>
             </Section>

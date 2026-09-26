@@ -13,6 +13,7 @@
   "Header": {
     "home": "{brand}, pagina iniziale",
     "languageLabel": "Scegli la lingua",
+    "cart": "Carrello",
     "languages": {
       "fr": "Français",
       "en": "English",
@@ -87,12 +88,151 @@
       "inStock": "Disponibile",
       "fewLeft": "Solo {count} disponibili",
       "lastOne": "Ultimo disponibile",
-      "soldOut": "Esaurito"
+      "soldOut": "Esaurito",
+      "within48h": "Disponibile in 24–48 ore",
+      "onRequest": "Su richiesta"
     },
     "previousPrice": "Prezzo precedente",
     "newVersionPrice": "Nuovo: {price}",
     "saving": "Risparmi {amount}",
     "view": "Vedi"
+  },
+  "ProductPage": {
+    "addToCart": "Aggiungi al carrello",
+    "requestIt": "Richiedi questo telefono",
+    "soldOut": "Questo telefono è esaurito per ora. Il nostro consulente può suggerirtene uno simile.",
+    "supply": {
+      "in_store": {
+        "title": "Disponibile in negozio",
+        "text": "Ordina online, paga con carta e ritiralo in negozio."
+      },
+      "within_48h": {
+        "title": "Disponibile in 24–48 ore",
+        "text": "Lo ordiniamo dal nostro fornitore. Al momento dell’ordine la tua carta viene solo preautorizzata, non addebitata. La addebitiamo quando la disponibilità è confermata, oppure annulliamo la preautorizzazione se non riusciamo ad averlo."
+      },
+      "on_request": {
+        "title": "Su richiesta",
+        "text": "Niente da pagare ora. Invia la tua richiesta: verifichiamo con i nostri fornitori e ti ricontattiamo con disponibilità e tempi."
+      }
+    }
+  },
+  "Cart": {
+    "title": "Il tuo carrello",
+    "empty": "Il tuo carrello è vuoto.",
+    "cancelled": "Pagamento annullato. Il tuo carrello è ancora qui.",
+    "quantity": "Quantità: {count}",
+    "decrease": "Uno in meno: {item}",
+    "increase": "Uno in più: {item}",
+    "remove": "Rimuovi {item}",
+    "unavailable": "Non più disponibile. Rimuovilo per continuare.",
+    "packagesTitle": "Aggiungi un pacchetto",
+    "addPackage": "Aggiungi",
+    "summary": "Riepilogo",
+    "total": "Totale",
+    "mode": {
+      "in_store": {
+        "title": "Pagato subito",
+        "text": "Paghi con carta ora. Prepariamo il tuo ordine per il ritiro in negozio."
+      },
+      "within_48h": {
+        "title": "Carta preautorizzata, addebitata dopo la conferma",
+        "text": "La tua carta viene preautorizzata ora ma non addebitata. Confermiamo la disponibilità con il nostro fornitore entro 24–48 ore: poi addebitiamo la carta, oppure annulliamo la preautorizzazione e ti proponiamo un’alternativa."
+      },
+      "on_request": {
+        "title": "Richiesta: niente da pagare ora",
+        "text": "Verifichiamo la disponibilità con i nostri fornitori e ti contattiamo. Paghi solo dopo il tuo consenso."
+      }
+    },
+    "form": {
+      "title": "I tuoi dati",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "E-mail",
+      "phone": "Telefono",
+      "town": "Città",
+      "townOther": "Un’altra città",
+      "marketing": "Ricevi novità e offerte via e-mail",
+      "pickup": "Ritiro in negozio (click & collect)",
+      "required": "Tutti i campi sono obbligatori."
+    },
+    "submit": {
+      "in_store": "Paga {total}",
+      "within_48h": "Preautorizza {total}",
+      "on_request": "Invia la mia richiesta"
+    },
+    "secure": "Pagamento sicuro con Stripe. Non vediamo mai il numero della tua carta.",
+    "errors": {
+      "firstName": "Inserisci il tuo nome.",
+      "lastName": "Inserisci il tuo cognome.",
+      "email": "Inserisci un indirizzo e-mail valido.",
+      "phone": "Inserisci un numero di telefono valido.",
+      "town": "Scegli la tua città."
+    },
+    "problems": {
+      "empty": "Il tuo carrello è vuoto.",
+      "unavailable": "Alcuni articoli non sono più disponibili. Controlla il carrello.",
+      "changed": "Prezzi o disponibilità sono appena cambiati. Controlla il carrello e conferma di nuovo.",
+      "payments_off": "Il pagamento online non è disponibile al momento. Contatta il negozio.",
+      "generic": "Si è verificato un errore. Riprova."
+    }
+  },
+  "Order": {
+    "title": "Ordine {number}",
+    "placedOn": "Effettuato il {date}",
+    "items": "I tuoi articoli",
+    "total": "Totale",
+    "pickup": "Ritiro in negozio",
+    "alternative": "Cosa ti proponiamo invece",
+    "demo": "Modalità demo: nessun pagamento reale è stato effettuato.",
+    "keepLink": "Conserva l’indirizzo di questa pagina per seguire il tuo ordine.",
+    "refresh": "Aggiorna",
+    "backToShop": "Torna al negozio",
+    "stage": {
+      "request_received": {
+        "title": "Richiesta ricevuta",
+        "text": "Stiamo verificando la disponibilità con i nostri fornitori e ti contatteremo presto. Non è stato addebitato nulla."
+      },
+      "payment_pending": {
+        "title": "Pagamento in fase di conferma",
+        "text": "Stiamo aspettando la conferma del pagamento. Aggiorna questa pagina tra un momento."
+      },
+      "request_confirmed": {
+        "title": "Buone notizie: è disponibile",
+        "text": "Ti contatteremo per organizzare il pagamento e il ritiro in negozio."
+      },
+      "availability_check": {
+        "title": "Carta preautorizzata, disponibilità in verifica",
+        "text": "La tua carta è stata preautorizzata ma non addebitata. Confermiamo la disponibilità con il nostro fornitore entro 24–48 ore, poi addebitiamo la carta. Se non riusciamo ad averlo, la preautorizzazione viene annullata e non paghi nulla."
+      },
+      "paid": {
+        "title": "Ordine confermato",
+        "text": "Pagamento ricevuto. Ti avviseremo quando il tuo ordine sarà pronto per il ritiro."
+      },
+      "preparing": {
+        "title": "In preparazione",
+        "text": "Stiamo preparando il tuo ordine."
+      },
+      "ready": {
+        "title": "Pronto per il ritiro",
+        "text": "Il tuo ordine ti aspetta in negozio."
+      },
+      "completed": {
+        "title": "Completato",
+        "text": "Grazie per il tuo acquisto!"
+      },
+      "unavailable": {
+        "title": "Non disponibile",
+        "text": "Ci dispiace, non siamo riusciti ad avere questo telefono. L’eventuale preautorizzazione è stata annullata: non paghi nulla."
+      },
+      "cancelled": {
+        "title": "Annullato",
+        "text": "Questo ordine è stato annullato. Non ti è stato addebitato nulla."
+      },
+      "refunded": {
+        "title": "Rimborsato",
+        "text": "Questo ordine è stato rimborsato."
+      }
+    }
   },
   "Packages": {
     "title": "Molto più di un telefono",
