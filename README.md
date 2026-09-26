@@ -1,6 +1,6 @@
 # Novacell: smartphone shop homepage prototype + AI shopping advisor
 
-First step of the e-commerce platform for a smartphone shop serving Menton, Monaco, Beausoleil, Cap-d'Ail, Roquebrune-Cap-Martin and Sospel. This version contains the **homepage** (visual prototype, FR/EN/IT) and a **working "Help me choose" advisor**. Product pages, cart, checkout, accounts and the back office are out of scope; their links open "coming soon" pages.
+First step of the e-commerce platform for a smartphone shop serving Menton, Monaco, Beausoleil, Cap-d'Ail, Roquebrune-Cap-Martin and Sospel. This version contains the **homepage** (visual prototype, FR/EN/IT), a **working "Help me choose" advisor** and a **staff back office** at `/admin` (see [Admin](#admin-back-office)). Product pages, cart, checkout and customer accounts are out of scope; their links open "coming soon" pages.
 
 ## Run it
 
@@ -15,12 +15,14 @@ Open http://localhost:3000. It opens the French site at `/fr`; English is at `/e
 
 The advisor works immediately in **demo mode** (no API key). To plug in an AI provider, copy `.env.example` to `.env.local` and follow the comments in it (see [AI advisor](#ai-advisor)).
 
+The back office is at http://localhost:3000/admin (in development the footer also shows an "Admin (dev only)" link). Sign in with `admin@novacell.test` / `novacell-dev`, or with your own `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `.env.local`.
+
 Other commands:
 
 | Command | What it does |
 | --- | --- |
 | `npm run build` then `npm start` | Production build and server |
-| `npm test` | Unit tests (advisor rules, catalogue guard, translations) |
+| `npm test` | Unit tests (advisor rules, catalogue guard, translations, data consistency, admin login) |
 | `npm run check` | Typecheck + lint + tests |
 
 ## Where to change things
@@ -28,13 +30,13 @@ Other commands:
 | What | Where |
 | --- | --- |
 | Brand name (text wordmark, titles, app icon letter), currently "Novacell" | `BRAND_NAME` in `src/config/site.config.ts` |
-| Gauge % (and on/off, prizes, rules page) | `merchandising.gauge` in `src/config/site.config.ts` |
-| Products shown in Great Deals | `merchandising.greatDeals.productIds` in `src/config/site.config.ts` (ids from the catalogue; sold-out ones are skipped) |
-| Catalogue (models, prices, stock, grades, battery, warranty, badges, "good for" tags) | `src/data/catalog.json` (validated at startup, errors name the faulty product) |
-| Packages (price, contents, icons, TODO markers) | `merchandising.packages` in `src/config/site.config.ts` |
-| Package names, taglines and item labels | `Packages` in `messages/fr.json`, `en.json`, `it.json` |
-| Towns and services in "Close to you" | `merchandising.serviceArea` in `src/config/site.config.ts` + `Local` in the message files |
-| "Only N left" threshold | `merchandising.lowStockThreshold` |
+| Products (prices, stock, grades, battery, colours, photos, badges) | **Admin → Products** (stored in `data/products.json`) |
+| Great Deals (which phones, order, promo badges) | **Admin → Great Deals** (`data/deals.json`; sold-out phones are skipped) |
+| Packages (price, contents, "to be confirmed" markers) | **Admin → Packages** (`data/packages.json`) |
+| Gauge (%, target, prizes, on/off) | **Admin → Gauge** (`data/gauge-config.json`) |
+| Package names and taglines | `Packages` in `messages/fr.json`, `en.json`, `it.json` |
+| Towns and services in "Close to you" | `storefrontSettings.serviceArea` in `src/config/site.config.ts` + `Local` in the message files |
+| "Only N left" threshold, number of Great Deals / refurbished picks shown | `storefrontSettings` in `src/config/site.config.ts` |
 | Any text on the site | `messages/{fr,en,it}.json` (French is the default language) |
 | AI provider | `.env.local` (see below); the only vendor-specific code is `src/server/advisor/ai-adapter.ts` |
 | Search engine indexing (off while prices are mock data) | `ALLOW_SEARCH_INDEXING` in `src/config/site.config.ts` |
@@ -44,9 +46,9 @@ Other commands:
 Notes:
 
 - "Last one available" is added automatically when stock is 1. For a refurbished phone, the "New: €X / You save €Y" line appears when the catalogue has the same model and storage new.
-- Package items marked `todo: true` are shown with a dashed border and a **TODO** tag until their contents are confirmed.
+- Package items marked "to be confirmed" in the admin are shown with a dashed border and a **TODO** tag until their contents are confirmed.
 - The Gauge copy ("When it reaches 100%, a winner is drawn", steps, prizes) lives in the `Gauge` section of the message files and still needs legal review.
-- Phone pictures on product cards are neutral illustrations (`src/components/product/phone-visual.tsx`), no brand-owned photos.
+- Phone pictures on product cards are neutral illustrations (`src/components/product/phone-visual.tsx`) until staff upload product photos in the admin.
 
 ## AI advisor
 
@@ -99,6 +101,71 @@ Sources and licences:
 
 No downloaded glTF models, images or HDR files are used. three.js is pinned to r182 because React Three Fiber 9.8 still uses `THREE.Clock`, which r183 and later flag as deprecated in the console.
 
+## Admin (back office)
+
+A separate, staff-only area at `/admin`, with its own layout and login. The public site never links to it (the footer link only exists in `npm run dev`), and every admin page is `noindex`.
+
+### Logging in
+
+| Where | Credentials |
+| --- | --- |
+| `npm run dev`, nothing configured | `admin@novacell.test` / `novacell-dev` (shown on the login page, with a warning banner in the admin) |
+| Anywhere else | `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env.local` or the host's environment variables. Without them, the admin stays locked in production. |
+
+Sessions last 8 hours (signed, `httpOnly` cookie limited to `/admin`); changing the password signs everyone out. Sign-in is limited to 5 attempts per minute per address.
+
+> **⚠️ This is NOT production-grade authentication.** It is one shared password in an environment variable: no individual accounts, no roles (e.g. staff vs manager), no hashed passwords, no two-factor, no audit log. Replace it with real authentication (e.g. Auth.js or the commerce backend's admin users, with roles and hashed passwords) before launch. The code is in `src/server/admin/session.ts`, clearly marked as temporary.
+
+### What each screen does
+
+| Screen | Data | What staff can do |
+| --- | --- | --- |
+| Products | **Real, editable** (`data/products.json`, `data/uploads/`) | Add, edit, delete new and refurbished phones: price, previous price, stock, grade, battery health, colour, storage, warranty, photos, badges, "good for" tags. A live preview shows the Great Deals and Refurbished cards exactly as the shop draws them, in FR/EN/IT. |
+| Great Deals | **Real, editable** (`data/deals.json`) | Pick phones, reorder them, add a promo badge (preset or custom text in three languages). Live preview of the homepage row. |
+| Packages | **Real, editable** (`data/packages.json`) | Price and contents (label in FR/EN/IT, icon, "to be confirmed") of Max Protection and Ready-to-Use, with the homepage card as preview. |
+| Gauge | **Real, editable** (`data/gauge-config.json`) | Current %, draw target (tickets), prizes, show/hide. Shows tickets issued vs target and can apply that %. |
+| Orders | Placeholder (`data/orders.json`) | List with status, channel, items, invoice link; search and filters. |
+| Customers | Placeholder (`data/customers.json`) | List with contact, town, counts of orders, tickets and trade-ins. |
+| Trade-ins | Placeholder (`data/trade-ins.json`) | Estimate requests with device, condition, estimate and status. |
+| Tickets | Placeholder (`data/tickets.json`) | Gauge tickets grouped by customer (who has how many), against the draw target. |
+| Invoices | Placeholder (`data/invoices.json`) | One per paid order, amounts with VAT, linked to its order. |
+
+Orders, customers, trade-ins, tickets and invoices show **placeholder data**, because there is no real checkout or customer flow yet. The screens (and the data shapes) are ready for real data once that's built.
+
+Saving updates the shop straight away: the homepage, product pages and the advisor read the same files. Product and deal rules still apply automatically ("Only N left", "Last one available", sold-out phones hidden). Deleting a product that appears in orders is refused (set its stock to 0 instead), like a database foreign key would.
+
+### The data files: a stand-in for the database
+
+Each file in `data/` is one future database table: `{ "$comment": "...", "rows": [...] }` with a stable `id` per row and `<thing>Id` references between them (`order.customerId`, `order.lines[].productId`, `tradeIn.customerId`, `ticket.orderId`, `invoice.orderId`...). The schemas are in `src/lib/data/schema.ts` and `src/lib/data/records.ts`; `npm test` checks every file against them and checks that no reference points to a missing row (`src/lib/data/integrity.ts`).
+
+The admin only goes through `src/lib/data/admin-repository.ts`, and the shop through `src/lib/data/queries.ts`. Writes are validated, one at a time per file, and atomic (temporary file then rename). `NOVACELL_DATA_DIR` points them to another folder (handy for tests).
+
+### Before going live: what needs a real database
+
+Saving writes to files on the server's disk. That works with `npm run dev` and with `npm start` on a normal server, but **not on serverless hosts such as Vercel**, whose files are read-only (the admin says so and refuses to save). Files also don't work with several servers, have no history and no concurrent editing. Before launch:
+
+1. Move the tables in `data/` to a database (PostgreSQL, or the commerce backend from [Growth path](#tech-stack-and-why)); re-implement `src/lib/data/local-source.ts` and `src/lib/data/admin-repository.ts` on top of it. The screens don't change.
+2. Store product photos in object storage (e.g. S3, Cloudflare R2, Vercel Blob) instead of `data/uploads/`.
+3. Replace the temporary login (above).
+4. Feed orders, customers, trade-ins, tickets and invoices from the real checkout and trade-in forms, and generate real invoice PDFs.
+
+## Supabase
+
+Supabase is set up but not used by any screen yet: the shop and the admin still read and write `data/*.json`. It's the planned database for [Before going live](#before-going-live-what-needs-a-real-database).
+
+- Package: `@supabase/server` (with `@supabase/supabase-js`).
+- Client: `getSupabaseAdmin()` in `src/lib/supabase/server.ts`. It uses the **secret key**, so it bypasses Row Level Security, and it is marked `server-only`: importing it from a client component fails the build, so the key can't reach the browser.
+- No browser code needs Supabase today, so there are no `NEXT_PUBLIC_` variables. If that changes, expose only the URL and the publishable key (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), never the secret key.
+
+Environment variables (in `.env.local` locally, never committed; in Vercel under Settings → Environment Variables):
+
+| Name | Value | Used for |
+| --- | --- | --- |
+| `SUPABASE_URL` | `https://<project-ref>.supabase.co` | Always |
+| `SUPABASE_SECRET_KEY` | `sb_secret_...` | The server client (`getSupabaseAdmin()`) |
+| `SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_...` | Future RLS-scoped server access |
+| `SUPABASE_JWKS_URL` | `https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json` | Future signed-in users (JWT checks) |
+
 ## Tech stack, and why
 
 - **Next.js 16 (App Router), React 19, TypeScript.** Server rendering gives fast pages on phones and good local SEO. Server-only API routes keep AI keys secret. The same app can later host the back office (a protected `/admin` area) and serve as the storefront of a headless commerce backend.
@@ -106,40 +173,45 @@ No downloaded glTF models, images or HDR files are used. three.js is pinned to r
 - **three.js + React Three Fiber** for the 3D scenes, loaded lazily with static fallbacks.
 - **next-intl.** French at `/fr` (the default, `/` opens it), English at `/en`, Italian at `/it`; ICU messages for plurals and prices.
 - **Zod.** The same schemas validate the mock catalogue today, database or API data tomorrow, and the AI's JSON.
-- **A data access layer** (`src/lib/data`). Components only call functions like `getGreatDeals()` or `getRefurbishedPicks()`; switching from JSON files to a database means implementing one interface (`DataSource`) and changing one line in `src/lib/data/index.ts`.
+- **A data access layer** (`src/lib/data`). Components only call functions like `getGreatDeals()` or `getRefurbishedPicks()`, and the admin only calls `admin-repository.ts`; switching from JSON files to a database means re-implementing those two files (`DataSource` for the shop), not touching the UI.
+- **Server Actions** for admin saves: validated on the server, the page and the shop refresh in the same round trip (no reload).
 - **Vitest** for the advisor rules, the guard and translation completeness.
 
 Growth path:
 
-- **E-commerce and back office:** PostgreSQL plus a headless commerce engine such as Medusa (open source, TypeScript) for products, variants, stock per location, orders, customer accounts, promotions and an admin dashboard, plugged in behind `src/lib/data`. The Great Deals list, Gauge % and packages move from `site.config.ts` into the admin.
+- **E-commerce and back office:** PostgreSQL plus a headless commerce engine such as Medusa (open source, TypeScript) for products, variants, stock per location, orders, customer accounts, promotions and an admin dashboard, plugged in behind `src/lib/data`. The admin screens built here can stay as the shop's own merchandising tool, or be replaced by the engine's dashboard.
 - **Real-time stock with the physical shop:** the point-of-sale pushes stock changes (webhook or sync job) to the stock module; the site refreshes affected pages on demand (`revalidateTag`) and product pages read live availability. The advisor already reads stock through the same layer.
 - **PWA and mobile app:** the web manifest and app icon are in place (`src/app/manifest.ts`); a service worker adds offline support. A React Native (Expo) app can reuse the TypeScript types, the translation files and the same API.
 
 ## Folder structure
 
 ```text
+data/                     the JSON "database": one file per table, uploads/ for product photos
 messages/                 fr.json, en.json, it.json: every text on the site
 src/
   app/
     [locale]/             pages per language: homepage, placeholder routes, 404
+    admin/                back office: login/, (panel)/ with one folder (page + actions) per screen
     api/advisor/          the advisor API (POST: ask, GET: demo or AI mode)
+    api/media/            serves product photos uploaded in the admin
     manifest.ts, icon.tsx PWA manifest and generated app icons
   components/
     home/                 homepage sections (hero, deals, refurbished, packages, Gauge, trade-in, close to you)
     product/              product cards and the neutral phone illustration
     three/                3D scenes, their lazy loader and static fallbacks
     advisor/              chat panel, its state, cards and "Help me choose" buttons
+    admin/                admin screens, tables, previews and form pieces
     layout/               header, language switcher, footer
     ui/                   shared styles, carousel, placeholder page
-  config/site.config.ts   brand name, Gauge, Great Deals, packages, service area
-  data/catalog.json       mock catalogue (16 phones)
+  config/site.config.ts   brand name, stock threshold, service area
   i18n/                   language routing and message loading
   lib/
-    data/                 schemas, data source interface, queries used by the UI
+    data/                 schemas, JSON store, queries used by the shop, admin repository
     advisor/              request/response contract shared by browser and server
     product-view.ts       turns a product into translated, formatted card text
   server/advisor/         orchestrator, AI adapter, prompt, output schema, guard, demo engine
-  proxy.ts                adds the language to each request (Next.js 16 "proxy")
+  server/admin/           temporary admin login, action helpers
+  proxy.ts                adds the language to each request; first login check for /admin
 ```
 
 ## Accessibility and design

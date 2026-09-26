@@ -106,16 +106,6 @@
     "ready-to-use": {
       "name": "Pacchetto Pronto all’uso",
       "tagline": "Ricevi il tuo smartphone. È tutto pronto."
-    },
-    "items": {
-      "wall_charger": "Caricatore da muro",
-      "charging_cable": "Cavo di ricarica",
-      "screen_protection": "Protezione schermo",
-      "case": "Cover protettiva",
-      "setup": "Acceso e configurato",
-      "data_transfer": "I tuoi dati trasferiti",
-      "accounts": "Account e app pronti",
-      "final_check": "Controllo finale insieme"
     }
   },
   "Gauge": {

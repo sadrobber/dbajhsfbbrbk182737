@@ -58,7 +58,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang={locale} data-scroll-behavior="smooth" className={`${inter.variable} ${jakarta.variable}`}>
       <body className="min-h-dvh bg-ink font-sans text-fg antialiased">
         <NextIntlClientProvider messages={pick(messages, CLIENT_NAMESPACES)}>
           <AdvisorProvider>

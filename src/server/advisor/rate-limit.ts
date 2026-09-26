@@ -6,9 +6,9 @@ const WINDOW_MS = 60_000;
 const MAX_REQUESTS_PER_WINDOW = 12;
 const hits = new Map<string, number[]>();
 
-export function allowRequest(key: string, now = Date.now()): boolean {
+export function allowRequest(key: string, now = Date.now(), maxPerMinute = MAX_REQUESTS_PER_WINDOW): boolean {
   const recent = (hits.get(key) ?? []).filter((time) => now - time < WINDOW_MS);
-  if (recent.length >= MAX_REQUESTS_PER_WINDOW) {
+  if (recent.length >= maxPerMinute) {
     hits.set(key, recent);
     return false;
   }

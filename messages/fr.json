@@ -106,16 +106,6 @@
     "ready-to-use": {
       "name": "Pack Prêt à l’emploi",
       "tagline": "Recevez votre smartphone. Tout est prêt."
-    },
-    "items": {
-      "wall_charger": "Chargeur secteur",
-      "charging_cable": "Câble de charge",
-      "screen_protection": "Protection d’écran",
-      "case": "Coque de protection",
-      "setup": "Allumé et configuré",
-      "data_transfer": "Vos données transférées",
-      "accounts": "Comptes et applis prêts",
-      "final_check": "Vérification finale ensemble"
     }
   },
   "Gauge": {

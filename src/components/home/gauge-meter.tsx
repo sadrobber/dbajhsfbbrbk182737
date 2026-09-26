@@ -74,39 +74,7 @@ export function GaugeMeter({
         <GaugeThree
           value={target}
           className="size-full"
-          fallback={
-      <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="size-full -rotate-[225deg]" aria-hidden="true">
-        <defs>
-          <linearGradient id="gauge-gradient" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0" stopColor="#0047ff" />
-            <stop offset="0.55" stopColor="#0a84ff" />
-            <stop offset="1" stopColor="#8ec5ff" />
-          </linearGradient>
-        </defs>
-        <circle
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          r={RADIUS}
-          fill="none"
-          stroke="#e3e6ec"
-          strokeWidth={STROKE}
-          strokeLinecap="round"
-          strokeDasharray={`${ARC} ${CIRCUMFERENCE}`}
-        />
-        <circle
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          r={RADIUS}
-          fill="none"
-          stroke="url(#gauge-gradient)"
-          strokeWidth={STROKE}
-          strokeLinecap="round"
-          strokeDasharray={`${ARC} ${CIRCUMFERENCE}`}
-          strokeDashoffset={ARC * (1 - target / 100)}
-          className="gauge-arc"
-        />
-      </svg>
-          }
+          fallback={<GaugeRing value={target} />}
         />
       </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -117,5 +85,42 @@ export function GaugeMeter({
         <p className="mt-1 text-lg font-semibold text-fg-muted">{caption}</p>
       </div>
     </div>
+  );
+}
+
+/** The static ring (no animation, no 3D): fallback of the 3D Gauge, and the admin preview. */
+export function GaugeRing({ value }: { value: number }) {
+  return (
+    <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="size-full -rotate-[225deg]" aria-hidden="true">
+      <defs>
+        <linearGradient id="gauge-gradient" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stopColor="#0047ff" />
+          <stop offset="0.55" stopColor="#0a84ff" />
+          <stop offset="1" stopColor="#8ec5ff" />
+        </linearGradient>
+      </defs>
+      <circle
+        cx={SIZE / 2}
+        cy={SIZE / 2}
+        r={RADIUS}
+        fill="none"
+        stroke="#e3e6ec"
+        strokeWidth={STROKE}
+        strokeLinecap="round"
+        strokeDasharray={`${ARC} ${CIRCUMFERENCE}`}
+      />
+      <circle
+        cx={SIZE / 2}
+        cy={SIZE / 2}
+        r={RADIUS}
+        fill="none"
+        stroke="url(#gauge-gradient)"
+        strokeWidth={STROKE}
+        strokeLinecap="round"
+        strokeDasharray={`${ARC} ${CIRCUMFERENCE}`}
+        strokeDashoffset={ARC * (1 - value / 100)}
+        className="gauge-arc"
+      />
+    </svg>
   );
 }

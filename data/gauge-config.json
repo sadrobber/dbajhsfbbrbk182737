@@ -1,0 +1,12 @@
+{
+  "$comment": "Single-row table: gauge_config. Edited in /admin/gauge. `percent` is shown on the homepage; `targetTickets` is how many tickets trigger the draw.",
+  "enabled": true,
+  "percent": 67,
+  "targetTickets": 39,
+  "prizes": [
+    "smartphone",
+    "computer",
+    "console"
+  ],
+  "rulesPath": "/rules"
+}

@@ -1,0 +1,117 @@
+{
+  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: trade_ins (estimate requests). tradeIns.customerId -> customers.id; tradeIns.orderId -> orders.id when the value was used on a purchase.",
+  "rows": [
+    {
+      "id": "tri-0001",
+      "customerId": "cus-004",
+      "createdAt": "2026-05-18T14:30:00.000Z",
+      "device": {
+        "brand": "Apple",
+        "model": "iPhone 11",
+        "storageGb": 64
+      },
+      "condition": "good",
+      "estimate": 90,
+      "status": "completed",
+      "orderId": "ord-0004"
+    },
+    {
+      "id": "tri-0002",
+      "customerId": "cus-006",
+      "createdAt": "2026-05-30T14:30:00.000Z",
+      "device": {
+        "brand": "Samsung",
+        "model": "Galaxy S21",
+        "storageGb": 128
+      },
+      "condition": "good",
+      "estimate": 110,
+      "status": "completed",
+      "orderId": "ord-0006"
+    },
+    {
+      "id": "tri-0003",
+      "customerId": "cus-008",
+      "createdAt": "2026-06-20T14:30:00.000Z",
+      "device": {
+        "brand": "Apple",
+        "model": "iPhone 13 Pro",
+        "storageGb": 256
+      },
+      "condition": "like_new",
+      "estimate": 320,
+      "status": "completed",
+      "orderId": "ord-0009"
+    },
+    {
+      "id": "tri-0004",
+      "customerId": "cus-010",
+      "createdAt": "2026-07-02T14:30:00.000Z",
+      "device": {
+        "brand": "Huawei",
+        "model": "P30",
+        "storageGb": 128
+      },
+      "condition": "worn",
+      "estimate": 35,
+      "status": "rejected",
+      "orderId": null
+    },
+    {
+      "id": "tri-0005",
+      "customerId": "cus-011",
+      "createdAt": "2026-08-01T14:30:00.000Z",
+      "device": {
+        "brand": "Apple",
+        "model": "iPhone 12",
+        "storageGb": 128
+      },
+      "condition": "good",
+      "estimate": 150,
+      "status": "accepted",
+      "orderId": null
+    },
+    {
+      "id": "tri-0006",
+      "customerId": "cus-001",
+      "createdAt": "2026-08-22T14:30:00.000Z",
+      "device": {
+        "brand": "Xiaomi",
+        "model": "Redmi Note 11",
+        "storageGb": 128
+      },
+      "condition": "broken",
+      "estimate": 15,
+      "status": "quoted",
+      "orderId": null
+    },
+    {
+      "id": "tri-0007",
+      "customerId": "cus-012",
+      "createdAt": "2026-09-10T14:30:00.000Z",
+      "device": {
+        "brand": "Google",
+        "model": "Pixel 6",
+        "storageGb": 128
+      },
+      "condition": "good",
+      "estimate": 95,
+      "status": "submitted",
+      "orderId": null
+    },
+    {
+      "id": "tri-0008",
+      "customerId": "cus-014",
+      "createdAt": "2026-09-14T14:30:00.000Z",
+      "device": {
+        "brand": "Samsung",
+        "model": "Galaxy A52",
+        "storageGb": 128
+      },
+      "condition": "worn",
+      "estimate": 55,
+      "status": "submitted",
+      "orderId": null
+    }
+  ]
+}

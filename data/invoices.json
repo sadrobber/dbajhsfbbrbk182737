@@ -1,0 +1,165 @@
+{
+  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: invoices. invoices.orderId -> orders.id. Amounts in euros, 20% VAT included in total.",
+  "rows": [
+    {
+      "id": "inv-0001",
+      "number": "FA-2026-00301",
+      "orderId": "ord-0001",
+      "issuedAt": "2026-05-03T09:15:00.000Z",
+      "totalExclVat": 681.67,
+      "vat": 136.33,
+      "total": 818,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0002",
+      "number": "FA-2026-00302",
+      "orderId": "ord-0002",
+      "issuedAt": "2026-05-09T10:15:00.000Z",
+      "totalExclVat": 624.17,
+      "vat": 124.83,
+      "total": 749,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0003",
+      "number": "FA-2026-00303",
+      "orderId": "ord-0003",
+      "issuedAt": "2026-05-14T11:15:00.000Z",
+      "totalExclVat": 315,
+      "vat": 63,
+      "total": 378,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0004",
+      "number": "FA-2026-00304",
+      "orderId": "ord-0004",
+      "issuedAt": "2026-05-20T12:15:00.000Z",
+      "totalExclVat": 206.67,
+      "vat": 41.33,
+      "total": 248,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0005",
+      "number": "FA-2026-00305",
+      "orderId": "ord-0005",
+      "issuedAt": "2026-05-27T13:15:00.000Z",
+      "totalExclVat": 374.17,
+      "vat": 74.83,
+      "total": 449,
+      "status": "credited"
+    },
+    {
+      "id": "inv-0006",
+      "number": "FA-2026-00306",
+      "orderId": "ord-0006",
+      "issuedAt": "2026-06-02T14:15:00.000Z",
+      "totalExclVat": 456.67,
+      "vat": 91.33,
+      "total": 548,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0007",
+      "number": "FA-2026-00307",
+      "orderId": "ord-0007",
+      "issuedAt": "2026-06-08T15:15:00.000Z",
+      "totalExclVat": 165.83,
+      "vat": 33.17,
+      "total": 199,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0008",
+      "number": "FA-2026-00308",
+      "orderId": "ord-0008",
+      "issuedAt": "2026-06-15T16:15:00.000Z",
+      "totalExclVat": 481.67,
+      "vat": 96.33,
+      "total": 578,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0009",
+      "number": "FA-2026-00309",
+      "orderId": "ord-0009",
+      "issuedAt": "2026-06-22T09:15:00.000Z",
+      "totalExclVat": 914.17,
+      "vat": 182.83,
+      "total": 1097,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0010",
+      "number": "FA-2026-00310",
+      "orderId": "ord-0011",
+      "issuedAt": "2026-07-07T11:15:00.000Z",
+      "totalExclVat": 206.67,
+      "vat": 41.33,
+      "total": 248,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0011",
+      "number": "FA-2026-00311",
+      "orderId": "ord-0012",
+      "issuedAt": "2026-07-16T12:15:00.000Z",
+      "totalExclVat": 249.17,
+      "vat": 49.83,
+      "total": 299,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0012",
+      "number": "FA-2026-00312",
+      "orderId": "ord-0013",
+      "issuedAt": "2026-08-04T13:15:00.000Z",
+      "totalExclVat": 540,
+      "vat": 108,
+      "total": 648,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0013",
+      "number": "FA-2026-00313",
+      "orderId": "ord-0014",
+      "issuedAt": "2026-08-12T14:15:00.000Z",
+      "totalExclVat": 499.17,
+      "vat": 99.83,
+      "total": 599,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0014",
+      "number": "FA-2026-00314",
+      "orderId": "ord-0015",
+      "issuedAt": "2026-08-19T15:15:00.000Z",
+      "totalExclVat": 306.67,
+      "vat": 61.33,
+      "total": 368,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0015",
+      "number": "FA-2026-00315",
+      "orderId": "ord-0017",
+      "issuedAt": "2026-09-02T09:15:00.000Z",
+      "totalExclVat": 606.67,
+      "vat": 121.33,
+      "total": 728,
+      "status": "paid"
+    },
+    {
+      "id": "inv-0016",
+      "number": "FA-2026-00316",
+      "orderId": "ord-0018",
+      "issuedAt": "2026-09-09T10:15:00.000Z",
+      "totalExclVat": 499.17,
+      "vat": 99.83,
+      "total": 599,
+      "status": "paid"
+    }
+  ]
+}

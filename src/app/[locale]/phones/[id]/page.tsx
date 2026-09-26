@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { PhoneVisual } from "@/components/product/phone-visual";
+import { ProductPicture } from "@/components/product/product-picture";
 import { Availability, visualBackdrop } from "@/components/product/product-bits";
 import { PlaceholderPage } from "@/components/ui/placeholder-page";
 import { getTranslator } from "@/i18n/messages";
@@ -45,7 +45,14 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/phone
           className="relative h-40 w-28 shrink-0 overflow-hidden rounded-2xl bg-surface-2"
           style={{ backgroundImage: visualBackdrop(card.color) }}
         >
-          <PhoneVisual color={card.color} visual={card.visual} className="fade-bottom absolute bottom-[-20%] left-1/2 h-[112%] -translate-x-1/2" />
+          <ProductPicture
+            photo={card.photo}
+            color={card.color}
+            visual={card.visual}
+            sizes="7rem"
+            photoClassName="p-2"
+            className="fade-bottom absolute bottom-[-20%] left-1/2 h-[112%] -translate-x-1/2"
+          />
         </div>
         <div className="min-w-0">
           <p className="text-fg-muted">{details}</p>

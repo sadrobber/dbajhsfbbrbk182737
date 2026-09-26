@@ -1,4 +1,7 @@
-import type { Badge, Catalog, CatalogItem, Merchandising } from "./schema";
+import type { Badge, Catalog, CatalogItem, DealPromo, Merchandising } from "./schema";
+
+/** A Great Deals product, with the extra badge set for it in the admin. */
+export type DealItem = CatalogItem & { promo: DealPromo | null };
 
 /** Display priority when a card has room for only one or two badges. */
 const BADGE_PRIORITY: Badge[] = ["deal_of_the_week", "special_price", "last_one", "new_arrival"];
@@ -41,13 +44,17 @@ export function inStock(items: CatalogItem[]): CatalogItem[] {
   return items.filter((item) => item.stock > 0);
 }
 
-/** Products listed in the Great Deals settings, in that order, sold-out ones skipped. */
-export function selectGreatDeals(items: CatalogItem[], settings: Merchandising): CatalogItem[] {
+/** Products listed in Great Deals, in their order, sold-out ones skipped. */
+export function selectGreatDeals(items: CatalogItem[], greatDeals: Merchandising["greatDeals"]): DealItem[] {
   const byId = new Map(items.map((item) => [item.id, item]));
-  return settings.greatDeals.productIds
-    .map((id) => byId.get(id))
-    .filter((item): item is CatalogItem => item !== undefined && item.stock > 0)
-    .slice(0, settings.greatDeals.maxItems);
+  return greatDeals.deals
+    .flatMap((deal) => {
+      const item = byId.get(deal.productId);
+      if (!item || item.stock <= 0) return [];
+      const promo = deal.promoBadge ? { badge: deal.promoBadge, label: deal.promoLabel } : null;
+      return [{ ...item, promo }];
+    })
+    .slice(0, greatDeals.maxItems);
 }
 
 /** Refurbished phones in stock, most premium first. */

@@ -1,0 +1,406 @@
+{
+  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: orders (+ order_lines). orders.customerId -> customers.id; lines[].productId -> products.id; lines[].packageId -> packages.id. Line descriptions are a snapshot at purchase time.",
+  "rows": [
+    {
+      "id": "ord-0001",
+      "number": "NC-2026-0101",
+      "customerId": "cus-001",
+      "createdAt": "2026-05-03T09:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "iphone-16-128",
+          "packageId": null,
+          "description": "Apple iPhone 16 · 128 GB · green",
+          "quantity": 1,
+          "unitPrice": 769
+        },
+        {
+          "productId": null,
+          "packageId": "max-protection",
+          "description": "Max Protection Package",
+          "quantity": 1,
+          "unitPrice": 49
+        }
+      ],
+      "total": 818
+    },
+    {
+      "id": "ord-0002",
+      "number": "NC-2026-0102",
+      "customerId": "cus-002",
+      "createdAt": "2026-05-09T10:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "galaxy-s25-256",
+          "packageId": null,
+          "description": "Samsung Galaxy S25 · 256 GB · blue",
+          "quantity": 1,
+          "unitPrice": 749
+        }
+      ],
+      "total": 749
+    },
+    {
+      "id": "ord-0003",
+      "number": "NC-2026-0103",
+      "customerId": "cus-003",
+      "createdAt": "2026-05-14T11:15:00.000Z",
+      "status": "completed",
+      "channel": "click_and_collect",
+      "lines": [
+        {
+          "productId": "redmi-note-14-pro-256",
+          "packageId": null,
+          "description": "Xiaomi Redmi Note 14 Pro · 256 GB · green",
+          "quantity": 1,
+          "unitPrice": 329
+        },
+        {
+          "productId": null,
+          "packageId": "max-protection",
+          "description": "Max Protection Package",
+          "quantity": 1,
+          "unitPrice": 49
+        }
+      ],
+      "total": 378
+    },
+    {
+      "id": "ord-0004",
+      "number": "NC-2026-0104",
+      "customerId": "cus-004",
+      "createdAt": "2026-05-20T12:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "doro-8100-32",
+          "packageId": null,
+          "description": "Doro 8100 · 32 GB · grey",
+          "quantity": 1,
+          "unitPrice": 169
+        },
+        {
+          "productId": null,
+          "packageId": "ready-to-use",
+          "description": "Ready-to-Use Package",
+          "quantity": 1,
+          "unitPrice": 79
+        }
+      ],
+      "total": 248
+    },
+    {
+      "id": "ord-0005",
+      "number": "NC-2026-0105",
+      "customerId": "cus-005",
+      "createdAt": "2026-05-27T13:15:00.000Z",
+      "status": "refunded",
+      "channel": "delivery",
+      "lines": [
+        {
+          "productId": "pixel-9a-128",
+          "packageId": null,
+          "description": "Google Pixel 9a · 128 GB · purple",
+          "quantity": 1,
+          "unitPrice": 449
+        }
+      ],
+      "total": 449
+    },
+    {
+      "id": "ord-0006",
+      "number": "NC-2026-0106",
+      "customerId": "cus-006",
+      "createdAt": "2026-06-02T14:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "iphone-15-128-refurb",
+          "packageId": null,
+          "description": "Apple iPhone 15 · 128 GB · blue · refurbished A",
+          "quantity": 1,
+          "unitPrice": 499
+        },
+        {
+          "productId": null,
+          "packageId": "max-protection",
+          "description": "Max Protection Package",
+          "quantity": 1,
+          "unitPrice": 49
+        }
+      ],
+      "total": 548
+    },
+    {
+      "id": "ord-0007",
+      "number": "NC-2026-0107",
+      "customerId": "cus-001",
+      "createdAt": "2026-06-08T15:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "galaxy-a16-128",
+          "packageId": null,
+          "description": "Samsung Galaxy A16 · 128 GB · black",
+          "quantity": 1,
+          "unitPrice": 199
+        }
+      ],
+      "total": 199
+    },
+    {
+      "id": "ord-0008",
+      "number": "NC-2026-0108",
+      "customerId": "cus-007",
+      "createdAt": "2026-06-15T16:15:00.000Z",
+      "status": "completed",
+      "channel": "click_and_collect",
+      "lines": [
+        {
+          "productId": "iphone-14-128-refurb",
+          "packageId": null,
+          "description": "Apple iPhone 14 · 128 GB · purple · refurbished B",
+          "quantity": 1,
+          "unitPrice": 379
+        },
+        {
+          "productId": "galaxy-a16-128",
+          "packageId": null,
+          "description": "Samsung Galaxy A16 · 128 GB · black",
+          "quantity": 1,
+          "unitPrice": 199
+        }
+      ],
+      "total": 578
+    },
+    {
+      "id": "ord-0009",
+      "number": "NC-2026-0109",
+      "customerId": "cus-008",
+      "createdAt": "2026-06-22T09:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "iphone-17-256",
+          "packageId": null,
+          "description": "Apple iPhone 17 · 256 GB · black",
+          "quantity": 1,
+          "unitPrice": 969
+        },
+        {
+          "productId": null,
+          "packageId": "max-protection",
+          "description": "Max Protection Package",
+          "quantity": 1,
+          "unitPrice": 49
+        },
+        {
+          "productId": null,
+          "packageId": "ready-to-use",
+          "description": "Ready-to-Use Package",
+          "quantity": 1,
+          "unitPrice": 79
+        }
+      ],
+      "total": 1097
+    },
+    {
+      "id": "ord-0010",
+      "number": "NC-2026-0110",
+      "customerId": "cus-009",
+      "createdAt": "2026-07-01T10:15:00.000Z",
+      "status": "cancelled",
+      "channel": "delivery",
+      "lines": [
+        {
+          "productId": "galaxy-a56-128",
+          "packageId": null,
+          "description": "Samsung Galaxy A56 · 128 GB · grey",
+          "quantity": 1,
+          "unitPrice": 379
+        }
+      ],
+      "total": 379
+    },
+    {
+      "id": "ord-0011",
+      "number": "NC-2026-0111",
+      "customerId": "cus-010",
+      "createdAt": "2026-07-07T11:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "doro-8100-32",
+          "packageId": null,
+          "description": "Doro 8100 · 32 GB · grey",
+          "quantity": 1,
+          "unitPrice": 169
+        },
+        {
+          "productId": null,
+          "packageId": "ready-to-use",
+          "description": "Ready-to-Use Package",
+          "quantity": 1,
+          "unitPrice": 79
+        }
+      ],
+      "total": 248
+    },
+    {
+      "id": "ord-0012",
+      "number": "NC-2026-0112",
+      "customerId": "cus-002",
+      "createdAt": "2026-07-16T12:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "galaxy-a56-128-refurb",
+          "packageId": null,
+          "description": "Samsung Galaxy A56 · 128 GB · green · refurbished A",
+          "quantity": 1,
+          "unitPrice": 299
+        }
+      ],
+      "total": 299
+    },
+    {
+      "id": "ord-0013",
+      "number": "NC-2026-0113",
+      "customerId": "cus-011",
+      "createdAt": "2026-08-04T13:15:00.000Z",
+      "status": "ready_for_pickup",
+      "channel": "click_and_collect",
+      "lines": [
+        {
+          "productId": "iphone-16e-128",
+          "packageId": null,
+          "description": "Apple iPhone 16e · 128 GB · white",
+          "quantity": 1,
+          "unitPrice": 599
+        },
+        {
+          "productId": null,
+          "packageId": "max-protection",
+          "description": "Max Protection Package",
+          "quantity": 1,
+          "unitPrice": 49
+        }
+      ],
+      "total": 648
+    },
+    {
+      "id": "ord-0014",
+      "number": "NC-2026-0114",
+      "customerId": "cus-012",
+      "createdAt": "2026-08-12T14:15:00.000Z",
+      "status": "preparing",
+      "channel": "delivery",
+      "lines": [
+        {
+          "productId": "galaxy-s25-256-refurb",
+          "packageId": null,
+          "description": "Samsung Galaxy S25 · 256 GB · silver · refurbished A+",
+          "quantity": 1,
+          "unitPrice": 599
+        }
+      ],
+      "total": 599
+    },
+    {
+      "id": "ord-0015",
+      "number": "NC-2026-0115",
+      "customerId": "cus-008",
+      "createdAt": "2026-08-19T15:15:00.000Z",
+      "status": "paid",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "iphone-13-128-refurb",
+          "packageId": null,
+          "description": "Apple iPhone 13 · 128 GB · pink · refurbished A",
+          "quantity": 1,
+          "unitPrice": 319
+        },
+        {
+          "productId": null,
+          "packageId": "max-protection",
+          "description": "Max Protection Package",
+          "quantity": 1,
+          "unitPrice": 49
+        }
+      ],
+      "total": 368
+    },
+    {
+      "id": "ord-0016",
+      "number": "NC-2026-0116",
+      "customerId": "cus-013",
+      "createdAt": "2026-08-26T16:15:00.000Z",
+      "status": "pending_payment",
+      "channel": "click_and_collect",
+      "lines": [
+        {
+          "productId": "galaxy-a56-128",
+          "packageId": null,
+          "description": "Samsung Galaxy A56 · 128 GB · grey",
+          "quantity": 1,
+          "unitPrice": 379
+        }
+      ],
+      "total": 379
+    },
+    {
+      "id": "ord-0017",
+      "number": "NC-2026-0117",
+      "customerId": "cus-003",
+      "createdAt": "2026-09-02T09:15:00.000Z",
+      "status": "completed",
+      "channel": "in_store",
+      "lines": [
+        {
+          "productId": "iphone-16-128-refurb",
+          "packageId": null,
+          "description": "Apple iPhone 16 · 128 GB · black · refurbished A+",
+          "quantity": 1,
+          "unitPrice": 649
+        },
+        {
+          "productId": null,
+          "packageId": "ready-to-use",
+          "description": "Ready-to-Use Package",
+          "quantity": 1,
+          "unitPrice": 79
+        }
+      ],
+      "total": 728
+    },
+    {
+      "id": "ord-0018",
+      "number": "NC-2026-0118",
+      "customerId": "cus-014",
+      "createdAt": "2026-09-09T10:15:00.000Z",
+      "status": "paid",
+      "channel": "delivery",
+      "lines": [
+        {
+          "productId": "iphone-16e-128",
+          "packageId": null,
+          "description": "Apple iPhone 16e · 128 GB · white",
+          "quantity": 1,
+          "unitPrice": 599
+        }
+      ],
+      "total": 599
+    }
+  ]
+}

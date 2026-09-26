@@ -1,0 +1,187 @@
+{
+  "$comment": "PLACEHOLDER DATA: there is no real checkout or customer flow yet. The admin screens are ready for real data once that's built. Table: gauge_tickets. One ticket per phone or package on a paid order. tickets.customerId -> customers.id; tickets.orderId -> orders.id",
+  "rows": [
+    {
+      "id": "tkt-0001",
+      "number": "G-01007",
+      "customerId": "cus-001",
+      "orderId": "ord-0001",
+      "issuedAt": "2026-05-03T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0002",
+      "number": "G-01014",
+      "customerId": "cus-001",
+      "orderId": "ord-0001",
+      "issuedAt": "2026-05-03T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0003",
+      "number": "G-01021",
+      "customerId": "cus-002",
+      "orderId": "ord-0002",
+      "issuedAt": "2026-05-09T10:15:00.000Z"
+    },
+    {
+      "id": "tkt-0004",
+      "number": "G-01028",
+      "customerId": "cus-003",
+      "orderId": "ord-0003",
+      "issuedAt": "2026-05-14T11:15:00.000Z"
+    },
+    {
+      "id": "tkt-0005",
+      "number": "G-01035",
+      "customerId": "cus-003",
+      "orderId": "ord-0003",
+      "issuedAt": "2026-05-14T11:15:00.000Z"
+    },
+    {
+      "id": "tkt-0006",
+      "number": "G-01042",
+      "customerId": "cus-004",
+      "orderId": "ord-0004",
+      "issuedAt": "2026-05-20T12:15:00.000Z"
+    },
+    {
+      "id": "tkt-0007",
+      "number": "G-01049",
+      "customerId": "cus-004",
+      "orderId": "ord-0004",
+      "issuedAt": "2026-05-20T12:15:00.000Z"
+    },
+    {
+      "id": "tkt-0008",
+      "number": "G-01056",
+      "customerId": "cus-006",
+      "orderId": "ord-0006",
+      "issuedAt": "2026-06-02T14:15:00.000Z"
+    },
+    {
+      "id": "tkt-0009",
+      "number": "G-01063",
+      "customerId": "cus-006",
+      "orderId": "ord-0006",
+      "issuedAt": "2026-06-02T14:15:00.000Z"
+    },
+    {
+      "id": "tkt-0010",
+      "number": "G-01070",
+      "customerId": "cus-001",
+      "orderId": "ord-0007",
+      "issuedAt": "2026-06-08T15:15:00.000Z"
+    },
+    {
+      "id": "tkt-0011",
+      "number": "G-01077",
+      "customerId": "cus-007",
+      "orderId": "ord-0008",
+      "issuedAt": "2026-06-15T16:15:00.000Z"
+    },
+    {
+      "id": "tkt-0012",
+      "number": "G-01084",
+      "customerId": "cus-007",
+      "orderId": "ord-0008",
+      "issuedAt": "2026-06-15T16:15:00.000Z"
+    },
+    {
+      "id": "tkt-0013",
+      "number": "G-01091",
+      "customerId": "cus-008",
+      "orderId": "ord-0009",
+      "issuedAt": "2026-06-22T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0014",
+      "number": "G-01098",
+      "customerId": "cus-008",
+      "orderId": "ord-0009",
+      "issuedAt": "2026-06-22T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0015",
+      "number": "G-01105",
+      "customerId": "cus-008",
+      "orderId": "ord-0009",
+      "issuedAt": "2026-06-22T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0016",
+      "number": "G-01112",
+      "customerId": "cus-010",
+      "orderId": "ord-0011",
+      "issuedAt": "2026-07-07T11:15:00.000Z"
+    },
+    {
+      "id": "tkt-0017",
+      "number": "G-01119",
+      "customerId": "cus-010",
+      "orderId": "ord-0011",
+      "issuedAt": "2026-07-07T11:15:00.000Z"
+    },
+    {
+      "id": "tkt-0018",
+      "number": "G-01126",
+      "customerId": "cus-002",
+      "orderId": "ord-0012",
+      "issuedAt": "2026-07-16T12:15:00.000Z"
+    },
+    {
+      "id": "tkt-0019",
+      "number": "G-01133",
+      "customerId": "cus-011",
+      "orderId": "ord-0013",
+      "issuedAt": "2026-08-04T13:15:00.000Z"
+    },
+    {
+      "id": "tkt-0020",
+      "number": "G-01140",
+      "customerId": "cus-011",
+      "orderId": "ord-0013",
+      "issuedAt": "2026-08-04T13:15:00.000Z"
+    },
+    {
+      "id": "tkt-0021",
+      "number": "G-01147",
+      "customerId": "cus-012",
+      "orderId": "ord-0014",
+      "issuedAt": "2026-08-12T14:15:00.000Z"
+    },
+    {
+      "id": "tkt-0022",
+      "number": "G-01154",
+      "customerId": "cus-008",
+      "orderId": "ord-0015",
+      "issuedAt": "2026-08-19T15:15:00.000Z"
+    },
+    {
+      "id": "tkt-0023",
+      "number": "G-01161",
+      "customerId": "cus-008",
+      "orderId": "ord-0015",
+      "issuedAt": "2026-08-19T15:15:00.000Z"
+    },
+    {
+      "id": "tkt-0024",
+      "number": "G-01168",
+      "customerId": "cus-003",
+      "orderId": "ord-0017",
+      "issuedAt": "2026-09-02T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0025",
+      "number": "G-01175",
+      "customerId": "cus-003",
+      "orderId": "ord-0017",
+      "issuedAt": "2026-09-02T09:15:00.000Z"
+    },
+    {
+      "id": "tkt-0026",
+      "number": "G-01182",
+      "customerId": "cus-014",
+      "orderId": "ord-0018",
+      "issuedAt": "2026-09-09T10:15:00.000Z"
+    }
+  ]
+}

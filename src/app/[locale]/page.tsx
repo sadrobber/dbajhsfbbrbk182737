@@ -39,13 +39,15 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     getMerchandising(),
   ]);
   const t = getTranslator(locale);
-  const toCard = (item: (typeof deals)[number]) =>
+  const toCard = (item: (typeof refurbished)[number]) =>
     buildProductCardView(item, { t, locale, lowStockThreshold: settings.lowStockThreshold });
+  const toDealCard = (item: (typeof deals)[number]) =>
+    buildProductCardView(item, { t, locale, lowStockThreshold: settings.lowStockThreshold, promo: item.promo });
 
   return (
     <>
       <Hero />
-      <GreatDeals products={deals.map(toCard)} />
+      <GreatDeals products={deals.map(toDealCard)} />
       <RefurbishedPicks products={refurbished.map(toCard)} />
       <PackagesSection packages={settings.packages} locale={locale} />
       {settings.gauge.enabled && <GaugeSection gauge={settings.gauge} locale={locale} />}

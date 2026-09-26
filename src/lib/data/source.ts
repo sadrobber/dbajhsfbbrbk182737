@@ -3,10 +3,10 @@ import type { Catalog, Merchandising } from "./schema";
 /**
  * Where the storefront gets its data.
  *
- * Today: local files (src/data/catalog.json + src/config/site.config.ts).
- * Later: a database or a headless commerce backend with an admin panel and
- * real-time stock. Implement this interface for the new backend and switch
- * it in ./index.ts. Nothing in the UI needs to change.
+ * Today: the JSON tables in /data (edited from /admin) + src/config/site.config.ts.
+ * Later: a real database with real-time stock. Implement this interface for
+ * it and switch it in ./index.ts (and replace ./admin-repository.ts for the
+ * admin's writes). Nothing in the UI needs to change.
  */
 export interface DataSource {
   getCatalog(): Promise<Catalog>;

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ConfigIcon } from "@/components/ui/config-icon";
-import { PhoneVisual } from "@/components/product/phone-visual";
+import { ProductPicture } from "@/components/product/product-picture";
 import { Availability, visualBackdrop } from "@/components/product/product-bits";
 import type { AdvisorCard, AdvisorPackageCard } from "@/lib/advisor/contract";
 import type { Slot } from "@/lib/advisor/constants";
@@ -26,9 +26,12 @@ export function AdvisorProductCard({ card }: { card: AdvisorCard }) {
         className="relative h-32 w-[5.5rem] shrink-0 overflow-hidden rounded-2xl bg-surface-3"
         style={{ backgroundImage: visualBackdrop(product.color) }}
       >
-        <PhoneVisual
+        <ProductPicture
+          photo={product.photo}
           color={product.color}
           visual={product.visual}
+          sizes="5.5rem"
+          photoClassName="p-2"
           className="fade-bottom absolute bottom-[-20%] left-1/2 h-[110%] -translate-x-1/2"
         />
       </div>

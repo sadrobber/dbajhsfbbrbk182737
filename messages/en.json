@@ -106,16 +106,6 @@
     "ready-to-use": {
       "name": "Ready-to-Use Package",
       "tagline": "Receive your smartphone. Everything is ready."
-    },
-    "items": {
-      "wall_charger": "Wall charger",
-      "charging_cable": "Charging cable",
-      "screen_protection": "Screen protection",
-      "case": "Protective case",
-      "setup": "Switched on and set up",
-      "data_transfer": "Your data transferred",
-      "accounts": "Accounts and apps ready",
-      "final_check": "Final check together"
     }
   },
   "Gauge": {
