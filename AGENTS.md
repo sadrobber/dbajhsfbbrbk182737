@@ -15,6 +15,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Data access: UI and advisor only call `src/lib/data/queries.ts`. Swap the source in `src/lib/data/index.ts`.
 - Brand name and fixed settings: `src/config/site.config.ts`. Products, Great Deals, packages, Gauge: edited in `/admin`, stored in `data/*.json` (one file per future DB table; schemas in `src/lib/data/schema.ts` + `records.ts`, FK check in `integrity.ts`).
 - Admin: `src/app/admin/` (own root layout). Screens call only `src/lib/data/admin-repository.ts`; every page and server action calls `requireAdmin()` (the proxy is only the first gate). Login in `src/server/admin/session.ts` is temporary, not production auth.
+- Supabase: server-only client in `src/lib/supabase/server.ts` (`@supabase/server`, secret key, bypasses RLS). Env: `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_JWKS_URL`. Not wired into the data layer yet.
 - AI advisor: `src/server/advisor/`. Vendor code lives only in `ai-adapter.ts`; `guard.ts` re-checks every AI answer against the catalogue; `demo/` is the rule-based fallback.
 - 3D: `src/components/three/`. Scenes load lazily through `three-slot.tsx`; each has a static fallback. `?3d=off|on` switches for testing.
 - Before pushing: `npm run check` (typecheck, lint, unit tests) and `npm run build`.

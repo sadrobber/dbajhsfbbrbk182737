@@ -149,6 +149,23 @@ Saving writes to files on the server's disk. That works with `npm run dev` and w
 3. Replace the temporary login (above).
 4. Feed orders, customers, trade-ins, tickets and invoices from the real checkout and trade-in forms, and generate real invoice PDFs.
 
+## Supabase
+
+Supabase is set up but not used by any screen yet: the shop and the admin still read and write `data/*.json`. It's the planned database for [Before going live](#before-going-live-what-needs-a-real-database).
+
+- Package: `@supabase/server` (with `@supabase/supabase-js`).
+- Client: `getSupabaseAdmin()` in `src/lib/supabase/server.ts`. It uses the **secret key**, so it bypasses Row Level Security, and it is marked `server-only`: importing it from a client component fails the build, so the key can't reach the browser.
+- No browser code needs Supabase today, so there are no `NEXT_PUBLIC_` variables. If that changes, expose only the URL and the publishable key (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), never the secret key.
+
+Environment variables (in `.env.local` locally, never committed; in Vercel under Settings → Environment Variables):
+
+| Name | Value | Used for |
+| --- | --- | --- |
+| `SUPABASE_URL` | `https://<project-ref>.supabase.co` | Always |
+| `SUPABASE_SECRET_KEY` | `sb_secret_...` | The server client (`getSupabaseAdmin()`) |
+| `SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_...` | Future RLS-scoped server access |
+| `SUPABASE_JWKS_URL` | `https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json` | Future signed-in users (JWT checks) |
+
 ## Tech stack, and why
 
 - **Next.js 16 (App Router), React 19, TypeScript.** Server rendering gives fast pages on phones and good local SEO. Server-only API routes keep AI keys secret. The same app can later host the back office (a protected `/admin` area) and serve as the storefront of a headless commerce backend.
