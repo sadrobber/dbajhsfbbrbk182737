@@ -3,6 +3,7 @@
 import { Search } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
+import { useAdminI18n } from "./i18n";
 import { adminCard, adminInput, adminSelect, tableCell, tableHead } from "./styles";
 
 export type RecordColumn = { key: string; label: string; align?: "right" };
@@ -34,6 +35,7 @@ export function RecordTable({
   searchPlaceholder: string;
   minWidth?: string;
 }) {
+  const { t } = useAdminI18n();
   const [query, setQuery] = useState(initialQuery);
   const [selected, setSelected] = useState<Record<string, string>>({});
 
@@ -50,7 +52,7 @@ export function RecordTable({
     <div className="grid gap-3">
       <div className={cn(adminCard, "flex flex-wrap gap-3 p-3")}>
         <label className="relative min-w-[min(100%,16rem)] flex-1">
-          <span className="sr-only">Search</span>
+          <span className="sr-only">{t("Common.search")}</span>
           <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-fg-subtle" />
           <input
             type="search"
@@ -82,7 +84,7 @@ export function RecordTable({
       <div className={cn(adminCard, "overflow-x-auto")}>
         <table className="w-full border-collapse text-[0.9375rem]" style={{ minWidth }}>
           <caption className="sr-only">
-            {caption}, {visible.length} shown
+            {t("Common.captionShown", { caption, count: visible.length })}
           </caption>
           <thead className="border-b border-line bg-surface-1">
             <tr>
@@ -105,10 +107,10 @@ export function RecordTable({
             ))}
           </tbody>
         </table>
-        {visible.length === 0 && <p className="p-6 text-center text-fg-muted">Nothing matches.</p>}
+        {visible.length === 0 && <p className="p-6 text-center text-fg-muted">{t("Common.nothingMatches")}</p>}
       </div>
       <p className="text-[0.875rem] text-fg-subtle">
-        {visible.length} of {rows.length}
+        {t("Common.shownOf", { shown: visible.length, total: rows.length })}
       </p>
     </div>
   );

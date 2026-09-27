@@ -12,19 +12,6 @@ import {
 
 export type ManualBadge = (typeof manualBadges)[number];
 
-/** Admin labels (the shop's own labels are in messages/*.json). */
-export const GRADE_LABELS: Record<Grade, string> = {
-  premium: "Premium · no sign of use",
-  excellent: "Excellent · almost flawless",
-  very_good: "Very good · light marks",
-  correct: "Good · visible signs of use",
-};
-
-export const BATTERY_LABELS: Record<BatteryOption, string> = {
-  standard: "Standard (original, tested)",
-  new: "New battery (100%)",
-};
-
 /** What the product form edits. Numbers stay text while typing, so fields can be empty. */
 export type ProductDraft = {
   id: string | null;

@@ -1,26 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { adminDate } from "@/components/admin/labels";
 import { CustomerLink, customerSearchText, RecordLink } from "@/components/admin/record-links";
 import { type RecordRow, RecordTable } from "@/components/admin/record-table";
 import { adminCard } from "@/components/admin/styles";
 import { PageHeader, Pill, PlaceholderDataBanner } from "@/components/admin/ui";
 import { getGauge, listCustomers, listOrders, listTickets } from "@/lib/data/admin-repository";
 import { requireAdmin } from "@/server/admin/auth";
+import { getAdminI18n } from "@/server/admin/i18n";
 
-// NOTE: orders, customers, trade-ins, tickets and invoices currently show placeholder data since there is
-// no real checkout or customer flow yet — these screens are ready for real data once that's built.
+// NOTE: tickets are placeholder data until paid orders issue them.
 
-export const metadata: Metadata = { title: "Tickets" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getAdminI18n();
+  return { title: t("Tickets.title") };
+}
 
 export default async function TicketsPage({ searchParams }: PageProps<"/admin/tickets">) {
   await requireAdmin();
-  const [tickets, customers, orders, gauge, { q }] = await Promise.all([
+  const [tickets, customers, orders, gauge, { q }, { t, formats }] = await Promise.all([
     listTickets(),
     listCustomers(),
     listOrders(),
     getGauge(),
     searchParams,
+    getAdminI18n(),
   ]);
   const customerById = new Map(customers.map((c) => [c.id, c]));
   const orderById = new Map(orders.map((o) => [o.id, o]));
@@ -36,12 +39,15 @@ export default async function TicketsPage({ searchParams }: PageProps<"/admin/ti
     .map(([customerId, list]) => {
       const customer = customerById.get(customerId);
       const sorted = [...list].sort((a, b) => a.issuedAt.localeCompare(b.issuedAt));
-      const orderNumbers = [...new Set(sorted.map((t) => orderById.get(t.orderId)?.number).filter(Boolean))] as string[];
+      const linkedOrders = [...new Map(sorted.flatMap((ticket) => {
+        const order = orderById.get(ticket.orderId);
+        return order ? [[order.id, order] as const] : [];
+      })).values()];
       return {
         id: customerId,
-        search: `${customerSearchText(customer)} ${sorted.map((t) => t.number).join(" ")} ${orderNumbers.join(" ")}`.toLowerCase(),
+        search: `${customerSearchText(customer)} ${sorted.map((ticket) => ticket.number).join(" ")} ${linkedOrders.map((o) => o.number).join(" ")}`.toLowerCase(),
         cells: {
-          customer: <CustomerLink customer={customer} />,
+          customer: <CustomerLink customer={customer} t={t} />,
           count: (
             <span className="flex items-center justify-end gap-3">
               <span aria-hidden="true" className="hidden h-2 w-24 overflow-hidden rounded-full bg-surface-2 sm:block">
@@ -52,67 +58,64 @@ export default async function TicketsPage({ searchParams }: PageProps<"/admin/ti
           ),
           numbers: (
             <span className="flex flex-wrap gap-1">
-              {sorted.map((t) => (
-                <Pill key={t.id}>{t.number}</Pill>
+              {sorted.map((ticket) => (
+                <Pill key={ticket.id}>{ticket.number}</Pill>
               ))}
             </span>
           ),
           orders: (
             <span className="flex flex-wrap gap-x-2">
-              {orderNumbers.map((number) => (
-                <RecordLink key={number} href={`/admin/orders?q=${number}`}>
-                  {number}
+              {linkedOrders.map((order) => (
+                <RecordLink key={order.id} href={`/admin/orders/${order.id}`}>
+                  {order.number}
                 </RecordLink>
               ))}
             </span>
           ),
-          latest: adminDate.format(new Date(sorted[sorted.length - 1].issuedAt)),
+          latest: formats.date.format(new Date(sorted[sorted.length - 1].issuedAt)),
         },
       };
     });
 
   return (
     <>
-      <PageHeader
-        title="Tickets"
-        description="Gauge tickets: one per phone or package on a paid order. This is who takes part in the next draw, and with how many chances."
-      />
-      <PlaceholderDataBanner />
+      <PageHeader title={t("Tickets.title")} description={t("Tickets.description")} />
+      <PlaceholderDataBanner t={t} />
       <dl className={`${adminCard} grid grid-cols-2 gap-4 p-4 sm:grid-cols-4`}>
         <div>
-          <dt className="text-[0.875rem] text-fg-muted">Tickets issued</dt>
+          <dt className="text-[0.875rem] text-fg-muted">{t("Tickets.issued")}</dt>
           <dd className="font-display text-2xl font-extrabold">{tickets.length}</dd>
         </div>
         <div>
-          <dt className="text-[0.875rem] text-fg-muted">Customers taking part</dt>
+          <dt className="text-[0.875rem] text-fg-muted">{t("Tickets.customers")}</dt>
           <dd className="font-display text-2xl font-extrabold">{byCustomer.size}</dd>
         </div>
         <div>
-          <dt className="text-[0.875rem] text-fg-muted">Draw target</dt>
+          <dt className="text-[0.875rem] text-fg-muted">{t("Tickets.target")}</dt>
           <dd className="font-display text-2xl font-extrabold">
-            {gauge.targetTickets} <span className="text-base font-semibold text-fg-muted">({share}% reached)</span>
+            {gauge.targetTickets} <span className="text-base font-semibold text-fg-muted">{t("Tickets.reached", { percent: share })}</span>
           </dd>
         </div>
         <div>
-          <dt className="text-[0.875rem] text-fg-muted">Gauge on the homepage</dt>
+          <dt className="text-[0.875rem] text-fg-muted">{t("Tickets.gauge")}</dt>
           <dd className="font-display text-2xl font-extrabold">
-            {gauge.enabled ? `${gauge.percent}%` : "Hidden"}{" "}
+            {gauge.enabled ? `${gauge.percent} %` : t("Tickets.hidden")}{" "}
             <Link href="/admin/gauge" className="text-base font-semibold text-accent-text underline">
-              Edit
+              {t("Tickets.edit")}
             </Link>
           </dd>
         </div>
       </dl>
       <RecordTable
-        caption="Tickets per customer"
-        searchPlaceholder="Search by customer, ticket or order number…"
+        caption={t("Tickets.caption")}
+        searchPlaceholder={t("Tickets.searchPlaceholder")}
         initialQuery={typeof q === "string" ? q : ""}
         columns={[
-          { key: "customer", label: "Customer" },
-          { key: "count", label: "Tickets", align: "right" },
-          { key: "numbers", label: "Ticket numbers" },
-          { key: "orders", label: "From orders" },
-          { key: "latest", label: "Latest ticket" },
+          { key: "customer", label: t("Tickets.colCustomer") },
+          { key: "count", label: t("Tickets.colCount"), align: "right" },
+          { key: "numbers", label: t("Tickets.colNumbers") },
+          { key: "orders", label: t("Tickets.colOrders") },
+          { key: "latest", label: t("Tickets.colLatest") },
         ]}
         rows={rows}
       />

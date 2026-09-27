@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { saveGaugeAction } from "@/app/admin/(panel)/gauge/actions";
 import { fieldErrorsOf } from "@/components/admin/form-errors";
+import { useAdminI18n } from "@/components/admin/i18n";
 import { PreviewFrame, type PreviewMessages, usePreviewTranslator } from "@/components/admin/preview";
 import { SaveBar, useUnsavedChangesWarning } from "@/components/admin/save-bar";
 import { adminButton, adminCard, adminCheckbox, adminInput } from "@/components/admin/styles";
@@ -41,13 +42,14 @@ export function GaugeManager({
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState(false);
   const [pending, startTransition] = useTransition();
-  const [locale, setLocale] = useState<Locale>("fr");
-  const t = usePreviewTranslator(messages, locale);
+  const { t, locale } = useAdminI18n();
+  const [previewLocale, setPreviewLocale] = useState<Locale>("fr");
+  const previewT = usePreviewTranslator(messages, previewLocale);
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(baseline);
   useUnsavedChangesWarning(dirty);
   const result = gaugeSchema.safeParse(fromDraft(draft));
-  const errors = submitted && !result.success ? fieldErrorsOf(result.error) : {};
+  const errors = submitted && !result.success ? fieldErrorsOf(result.error, t) : {};
 
   const target = Number(draft.targetTickets);
   const fromTickets = Number.isFinite(target) && target > 0 ? Math.min(100, Math.round((ticketsIssued / target) * 100)) : null;
@@ -62,7 +64,7 @@ export function GaugeManager({
   function save() {
     setSubmitted(true);
     if (!result.success) {
-      setError("Some fields need attention.");
+      setError(t("Common.fieldsNeedAttention"));
       return;
     }
     startTransition(async () => {
@@ -82,16 +84,16 @@ export function GaugeManager({
   return (
     <>
       <PageHeader
-        title="The Gauge"
-        description="Each purchase gives the customer a ticket; when the Gauge reaches 100% the prizes are drawn. The homepage shows the percentage below."
+        title={t("Gauge.title")}
+        description={t("Gauge.description")}
       />
 
       <div className="grid items-start gap-6 xl:grid-cols-[1fr_26rem]">
         <div className={cn(adminCard, "grid gap-6 p-4 sm:p-6")}>
           <label className="flex items-center justify-between gap-4 rounded-xl bg-surface-1 p-4">
             <span>
-              <span className="block font-semibold">Show the Gauge on the homepage</span>
-              <span className="text-[0.875rem] text-fg-muted">Turn off between two draws.</span>
+              <span className="block font-semibold">{t("Gauge.show")}</span>
+              <span className="text-[0.875rem] text-fg-muted">{t("Gauge.showHint")}</span>
             </span>
             <input
               type="checkbox"
@@ -104,7 +106,7 @@ export function GaugeManager({
 
           <div className="grid gap-1.5">
             <label htmlFor="gauge-percent" className="text-[0.9375rem] font-semibold">
-              Current fill (%)
+              {t("Gauge.fill")}
             </label>
             <div className="flex items-center gap-4">
               <input
@@ -113,7 +115,7 @@ export function GaugeManager({
                 max={100}
                 value={previewPercent}
                 onChange={(e) => set({ percent: e.target.value })}
-                aria-label="Current fill (%), slider"
+                aria-label={t("Gauge.fillSlider")}
                 className="h-2 flex-1 cursor-pointer accent-[#0066ff]"
               />
               <input
@@ -127,12 +129,12 @@ export function GaugeManager({
               />
             </div>
             <span id="gauge-percent-help" className={cn("text-[0.8125rem]", errors.percent ? "font-semibold text-danger" : "text-fg-subtle")}>
-              {errors.percent ?? "What customers see on the homepage."}
+              {errors.percent ?? t("Gauge.fillHint")}
             </span>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Target (tickets for the draw)" error={errors.targetTickets}>
+            <Field label={t("Gauge.target")} error={errors.targetTickets}>
               <input
                 inputMode="numeric"
                 value={draft.targetTickets}
@@ -142,27 +144,27 @@ export function GaugeManager({
               />
             </Field>
             <div className="grid content-start gap-1.5">
-              <span className="text-[0.9375rem] font-semibold">Tickets issued so far</span>
+              <span className="text-[0.9375rem] font-semibold">{t("Gauge.issued")}</span>
               <p className="flex min-h-11 flex-wrap items-center gap-x-3 gap-y-1">
                 <span className="font-display text-2xl font-extrabold tabular-nums">{ticketsIssued}</span>
                 {fromTickets !== null && (
                   <span className="text-fg-muted">
-                    = {fromTickets}% of the target
+                    {t("Gauge.ofTarget", { percent: fromTickets })}
                     {String(fromTickets) !== draft.percent && (
                       <button type="button" className="ml-2 font-semibold text-accent-text underline" onClick={() => set({ percent: String(fromTickets) })}>
-                        Use {fromTickets}%
+                        {t("Gauge.use", { percent: fromTickets })}
                       </button>
                     )}
                   </span>
                 )}
               </p>
               <Link href="/admin/tickets" className="w-fit text-[0.875rem] text-accent-text underline">
-                See who has tickets
+                {t("Gauge.whoHasTickets")}
               </Link>
             </div>
           </div>
 
-          <Fieldset legend="Prizes" error={errors.prizes}>
+          <Fieldset legend={t("Gauge.prizes")} error={errors.prizes}>
             <div className="grid gap-2 sm:grid-cols-3">
               {prizeKeys.map((prize) => {
                 const Icon = PRIZE_ICONS[prize];
@@ -184,48 +186,46 @@ export function GaugeManager({
                       className={adminCheckbox}
                     />
                     <Icon aria-hidden="true" className="size-5 text-accent-text" />
-                    {messages.en.Gauge.prizes[prize]}
+                    {messages[locale].Gauge.prizes[prize]}
                   </label>
                 );
               })}
             </div>
           </Fieldset>
 
-          <p className="text-[0.875rem] text-fg-subtle">
-            The official rules page is <code>{draft.rulesPath}</code>. Its text lives in <code>messages/*.json</code> until the rules are final.
-          </p>
-          <a href="/fr#gauge-title" target="_blank" rel="noreferrer" className={adminButton("secondary", "w-fit")}>
-            Open the homepage
+          <p className="text-[0.875rem] text-fg-subtle">{t("Gauge.rulesNote", { path: draft.rulesPath })}</p>
+          <a href={`/${locale}#gauge-title`} target="_blank" rel="noreferrer" className={adminButton("secondary", "w-fit")}>
+            {t("Gauge.openHomepage")}
           </a>
         </div>
 
-        <PreviewFrame title="Live preview · homepage" locale={locale} onLocaleChange={setLocale} className="xl:sticky xl:top-4">
+        <PreviewFrame title={t("Gauge.preview")} locale={previewLocale} onLocaleChange={setPreviewLocale} className="xl:sticky xl:top-4">
           {draft.enabled ? (
             <div className="grid gap-4">
               <div className="relative mx-auto aspect-square w-full max-w-[16rem]">
                 <GaugeRing value={previewPercent} />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <p className="font-display text-[3.5rem] font-extrabold leading-none tracking-[-0.04em]">
-                    {formatPercent(locale, previewPercent)}
+                    {formatPercent(previewLocale, previewPercent)}
                   </p>
-                  <p className="mt-1 font-semibold text-fg-muted">{t("Gauge.filled")}</p>
+                  <p className="mt-1 font-semibold text-fg-muted">{previewT("Gauge.filled")}</p>
                 </div>
               </div>
-              <p className="text-center text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">{t("Gauge.prizesTitle")}</p>
+              <p className="text-center text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">{previewT("Gauge.prizesTitle")}</p>
               <ul className="grid grid-cols-3 gap-2">
                 {draft.prizes.map((prize) => {
                   const Icon = PRIZE_ICONS[prize];
                   return (
                     <li key={prize} className="flex flex-col items-center gap-1.5 rounded-xl border border-line bg-surface-2/70 p-3 text-center text-[0.875rem] font-semibold">
                       <Icon aria-hidden="true" className="size-6 text-accent-text" />
-                      {t(`Gauge.prizes.${prize}`)}
+                      {previewT(`Gauge.prizes.${prize}`)}
                     </li>
                   );
                 })}
               </ul>
             </div>
           ) : (
-            <p className="py-10 text-center text-fg-muted">The Gauge section is hidden on the homepage.</p>
+            <p className="py-10 text-center text-fg-muted">{t("Gauge.hidden")}</p>
           )}
         </PreviewFrame>
       </div>

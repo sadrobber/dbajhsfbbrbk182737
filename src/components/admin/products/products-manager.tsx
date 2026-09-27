@@ -3,19 +3,17 @@
 import { Pencil, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { adminButton, adminCard, adminInput, adminSelect, tableCell, tableHead } from "@/components/admin/styles";
-import { stockTone } from "@/components/admin/stock";
+import { useAdminI18n } from "@/components/admin/i18n";
+import { storageText, stockTone } from "@/components/admin/stock";
 import { PageHeader, Pill } from "@/components/admin/ui";
 import type { PreviewMessages } from "@/components/admin/preview";
 import { cn } from "@/lib/cn";
 import type { AdminModel } from "@/lib/data/admin-repository";
-import type { Brand, Product } from "@/lib/data/schema";
-import { GRADE_LABELS } from "./product-draft";
+import { type Brand, modelColorName, type Product } from "@/lib/data/schema";
 import { ProductEditor } from "./product-editor";
 import { ProductThumb } from "./product-thumb";
 
 type StockFilter = "all" | "in" | "low" | "out";
-
-const euro = new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR" });
 
 export function ProductsManager({
   products,
@@ -36,6 +34,7 @@ export function ProductsManager({
   messages: PreviewMessages;
   initialQuery: string;
 }) {
+  const { t, locale, formats } = useAdminI18n();
   const [query, setQuery] = useState(initialQuery);
   const [condition, setCondition] = useState<"all" | Product["condition"]>("all");
   const [brand, setBrand] = useState("all");
@@ -53,6 +52,11 @@ export function ProductsManager({
   const brandNameById = useMemo(() => new Map(brands.map((b) => [b.id, b.name])), [brands]);
   const deals = useMemo(() => new Set(dealProductIds), [dealProductIds]);
   const nameOf = (p: Pick<Product, "modelId">) => modelById.get(p.modelId)?.label ?? p.modelId;
+  /** The official colour name in the admin's language, English until the French one is filled in. */
+  const colourName = (p: Pick<Product, "modelId" | "colorName">) => {
+    const colour = modelById.get(p.modelId)?.colors.find((c) => c.name_en === p.colorName);
+    return (colour ? modelColorName(colour, locale) : null) ?? p.colorName;
+  };
 
   const visible = useMemo(() => {
     const words = query.toLowerCase().split(/\s+/).filter(Boolean);
@@ -64,50 +68,50 @@ export function ProductsManager({
       if (stock === "low" && (p.stock <= 0 || p.stock > lowStockThreshold)) return false;
       if (stock === "out" && p.stock > 0) return false;
       const haystack =
-        `${model?.label ?? ""} ${p.modelId} ${p.id} ${p.sku} ${p.storageGb}gb ${p.colorName} ${p.grade ? GRADE_LABELS[p.grade] : ""}`.toLowerCase();
+        `${model?.label ?? ""} ${p.modelId} ${p.id} ${p.sku} ${p.storageGb}gb ${p.colorName} ${p.grade ? t(`Labels.gradeShort.${p.grade}`) : ""}`.toLowerCase();
       return words.every((word) => haystack.includes(word));
     });
-  }, [products, query, condition, brand, stock, lowStockThreshold, modelById, brandNameById]);
+  }, [products, query, condition, brand, stock, lowStockThreshold, modelById, brandNameById, t]);
 
   const editedProduct = editing?.id ? (products.find((p) => p.id === editing.id) ?? null) : null;
 
   return (
     <>
       <PageHeader
-        title="Products"
-        description="New and refurbished phones. Changes appear on the shop as soon as you save."
+        title={t("Products.title")}
+        description={t("Products.description")}
         actions={
           <button type="button" className={adminButton("primary")} onClick={() => setEditing({ id: null })}>
             <Plus aria-hidden="true" className="size-5" />
-            Add product
+            {t("Products.add")}
           </button>
         }
       />
 
       <div className={cn(adminCard, "grid gap-3 p-3 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto_auto]")}>
         <label className="relative sm:col-span-2 lg:col-span-1">
-          <span className="sr-only">Search products</span>
+          <span className="sr-only">{t("Products.searchLabel")}</span>
           <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-fg-subtle" />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by brand, model, colour…"
+            placeholder={t("Products.searchPlaceholder")}
             className={cn(adminInput, "pl-10")}
           />
         </label>
         <label>
-          <span className="sr-only">Condition</span>
+          <span className="sr-only">{t("Products.condition")}</span>
           <select value={condition} onChange={(e) => setCondition(e.target.value as typeof condition)} className={adminSelect}>
-            <option value="all">New and refurbished</option>
-            <option value="new">New only</option>
-            <option value="refurbished">Refurbished only</option>
+            <option value="all">{t("Products.allConditions")}</option>
+            <option value="new">{t("Products.newOnly")}</option>
+            <option value="refurbished">{t("Products.refurbishedOnly")}</option>
           </select>
         </label>
         <label>
-          <span className="sr-only">Brand</span>
+          <span className="sr-only">{t("Products.brand")}</span>
           <select value={brand} onChange={(e) => setBrand(e.target.value)} className={adminSelect}>
-            <option value="all">All brands</option>
+            <option value="all">{t("Products.allBrands")}</option>
             {brands.map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
@@ -116,12 +120,12 @@ export function ProductsManager({
           </select>
         </label>
         <label className="sm:col-span-2 lg:col-span-1">
-          <span className="sr-only">Stock</span>
+          <span className="sr-only">{t("Products.stock")}</span>
           <select value={stock} onChange={(e) => setStock(e.target.value as StockFilter)} className={adminSelect}>
-            <option value="all">Any stock</option>
-            <option value="in">In stock</option>
-            <option value="low">Low stock (≤ {lowStockThreshold})</option>
-            <option value="out">Sold out</option>
+            <option value="all">{t("Products.anyStock")}</option>
+            <option value="in">{t("Products.inStock")}</option>
+            <option value="low">{t("Products.lowStock", { threshold: lowStockThreshold })}</option>
+            <option value="out">{t("Products.soldOut")}</option>
           </select>
         </label>
       </div>
@@ -134,35 +138,35 @@ export function ProductsManager({
 
       <div className={cn(adminCard, "overflow-x-auto")}>
         <table className="w-full min-w-[56rem] border-collapse text-[0.9375rem]">
-          <caption className="sr-only">Products, {visible.length} shown</caption>
+          <caption className="sr-only">{t("Products.caption", { count: visible.length })}</caption>
           <thead className="border-b border-line bg-surface-1">
             <tr>
               <th scope="col" className={tableHead}>
-                Product
+                {t("Products.colProduct")}
               </th>
               <th scope="col" className={tableHead}>
-                Condition
+                {t("Products.colCondition")}
               </th>
               <th scope="col" className={tableHead}>
-                Storage · colour
+                {t("Products.colStorageColour")}
               </th>
               <th scope="col" className={cn(tableHead, "text-right")}>
-                Price
+                {t("Products.colPrice")}
               </th>
               <th scope="col" className={tableHead}>
-                Stock
+                {t("Products.colStock")}
               </th>
               <th scope="col" className={tableHead}>
-                Badges
+                {t("Products.colBadges")}
               </th>
               <th scope="col" className={tableHead}>
-                <span className="sr-only">Actions</span>
+                <span className="sr-only">{t("Products.colActions")}</span>
               </th>
             </tr>
           </thead>
           <tbody>
             {visible.map((p) => {
-              const stockInfo = stockTone(p.stock, lowStockThreshold, p.supplierAvailability);
+              const stockInfo = stockTone(t, p.stock, lowStockThreshold, p.supplierAvailability);
               return (
                 <tr
                   key={p.id}
@@ -182,23 +186,23 @@ export function ProductsManager({
                   </td>
                   <td className={tableCell}>
                     {p.condition === "new" || !p.grade ? (
-                      <Pill tone="info">New</Pill>
+                      <Pill tone="info">{t("Products.new")}</Pill>
                     ) : (
                       <span className="grid gap-0.5">
-                        <Pill>Refurbished · {GRADE_LABELS[p.grade]}</Pill>
+                        <Pill>{t("Products.refurbishedGrade", { grade: t(`Labels.gradeShort.${p.grade}`) })}</Pill>
                         <span className="text-[0.8125rem] text-fg-subtle">
-                          {p.battery === "new" ? "New battery" : `Battery ${p.batteryHealth}%`}
+                          {p.battery === "new" ? t("Products.newBattery") : t("Products.batteryPercent", { value: p.batteryHealth ?? 0 })}
                         </span>
                       </span>
                     )}
                   </td>
                   <td className={tableCell}>
-                    {p.storageGb >= 1024 ? `${p.storageGb / 1024} TB` : `${p.storageGb} GB`} · {p.colorName}
+                    {storageText(t, p.storageGb)} · {colourName(p)}
                   </td>
                   <td className={cn(tableCell, "text-right tabular-nums")}>
-                    <span className="font-semibold">{euro.format(p.price)}</span>
+                    <span className="font-semibold">{formats.euro.format(p.price)}</span>
                     {p.compareAtPrice !== null && (
-                      <s className="block text-[0.8125rem] text-fg-subtle">{euro.format(p.compareAtPrice)}</s>
+                      <s className="block text-[0.8125rem] text-fg-subtle">{formats.euro.format(p.compareAtPrice)}</s>
                     )}
                   </td>
                   <td className={tableCell}>
@@ -206,9 +210,9 @@ export function ProductsManager({
                   </td>
                   <td className={tableCell}>
                     <div className="flex flex-wrap gap-1">
-                      {deals.has(p.id) && <Pill tone="info">Great Deal</Pill>}
+                      {deals.has(p.id) && <Pill tone="info">{t("Products.greatDeal")}</Pill>}
                       {p.badges.map((badge) => (
-                        <Pill key={badge}>{messages.en.Product.badges[badge]}</Pill>
+                        <Pill key={badge}>{messages[locale].Product.badges[badge]}</Pill>
                       ))}
                     </div>
                   </td>
@@ -217,10 +221,10 @@ export function ProductsManager({
                       type="button"
                       className={adminButton("secondary", "min-h-9")}
                       onClick={() => setEditing({ id: p.id })}
-                      aria-label={`Edit ${nameOf(p)} (${p.sku})`}
+                      aria-label={t("Products.editLabel", { name: nameOf(p), sku: p.sku })}
                     >
                       <Pencil aria-hidden="true" className="size-4" />
-                      Edit
+                      {t("Common.edit")}
                     </button>
                   </td>
                 </tr>
@@ -228,10 +232,10 @@ export function ProductsManager({
             })}
           </tbody>
         </table>
-        {visible.length === 0 && <p className="p-6 text-center text-fg-muted">No product matches these filters.</p>}
+        {visible.length === 0 && <p className="p-6 text-center text-fg-muted">{t("Products.noMatch")}</p>}
       </div>
       <p className="text-[0.875rem] text-fg-subtle">
-        {visible.length} of {products.length} products
+        {t("Products.count", { shown: visible.length, total: products.length })}
       </p>
 
       {editing && (
@@ -248,11 +252,11 @@ export function ProductsManager({
           onClose={() => setEditing(null)}
           onSaved={(saved, created) => {
             setEditing(null);
-            setNotice({ text: `${created ? "Added" : "Saved"} ${nameOf(saved)} (${saved.sku}).`, id: saved.id });
+            setNotice({ text: t(created ? "Products.added" : "Products.saved", { name: nameOf(saved), sku: saved.sku }), id: saved.id });
           }}
           onDeleted={(label) => {
             setEditing(null);
-            setNotice({ text: `Deleted ${label}.`, id: null });
+            setNotice({ text: t("Products.deleted", { label }), id: null });
           }}
         />
       )}

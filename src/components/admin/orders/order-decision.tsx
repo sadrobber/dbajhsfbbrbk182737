@@ -4,6 +4,7 @@ import { Check, Loader2, RefreshCw, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { confirmAvailabilityAction, declineAvailabilityAction, refreshPaymentAction } from "@/app/admin/(panel)/orders/actions";
+import { useAdminI18n } from "@/components/admin/i18n";
 import { adminButton, adminInput } from "@/components/admin/styles";
 import { Field } from "@/components/admin/ui";
 import type { ActionResult } from "@/server/admin/action-result";
@@ -26,6 +27,7 @@ export function OrderDecision({
   /** In-stock phones staff can offer instead, in one click. */
   suggestions: string[];
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [step, setStep] = useState<"choose" | "confirm" | "decline">("choose");
@@ -53,11 +55,11 @@ export function OrderDecision({
         <div className="flex flex-wrap gap-2">
           <button type="button" className={adminButton("primary")} onClick={() => setStep("confirm")}>
             <Check aria-hidden="true" className="size-4" />
-            Available
+            {t("OrderDetail.available")}
           </button>
           <button type="button" className={adminButton("danger")} onClick={() => setStep("decline")}>
             <X aria-hidden="true" className="size-4" />
-            Not available
+            {t("OrderDetail.notAvailable")}
           </button>
         </div>
       )}
@@ -65,17 +67,15 @@ export function OrderDecision({
       {step === "confirm" && (
         <div className="grid gap-3 rounded-xl border border-line bg-surface-1 p-4">
           <p className="font-semibold">
-            {charges
-              ? `Charge ${amount} to the customer’s card and confirm the order?`
-              : "Confirm that it’s available? The customer is told to come and pay in the shop."}
+            {charges ? t("OrderDetail.confirmCharge", { amount }) : t("OrderDetail.confirmOnRequest")}
           </p>
           <div className="flex flex-wrap gap-2">
             <button type="button" className={adminButton("primary")} disabled={pending} onClick={() => run(() => confirmAvailabilityAction(orderId))}>
               {pending && <Loader2 aria-hidden="true" className="size-4 animate-spin" />}
-              {charges ? `Yes, charge ${amount}` : "Yes, confirm"}
+              {charges ? t("OrderDetail.yesCharge", { amount }) : t("OrderDetail.yesConfirm")}
             </button>
             <button type="button" className={adminButton("ghost")} disabled={pending} onClick={() => setStep("choose")}>
-              Back
+              {t("Common.back")}
             </button>
           </div>
         </div>
@@ -84,9 +84,9 @@ export function OrderDecision({
       {step === "decline" && (
         <div className="grid gap-3 rounded-xl border border-line bg-surface-1 p-4">
           <p className="font-semibold">
-            {charges ? "The card authorisation is cancelled: the customer pays nothing." : "The request is closed."} Suggest an alternative:
+            {charges ? t("OrderDetail.declineCharged") : t("OrderDetail.declineRequest")} {t("OrderDetail.suggest")}
           </p>
-          <Field label="What you offer instead (shown to the customer)" hint={`Write it in the customer’s language: ${customerLanguage}.`}>
+          <Field label={t("OrderDetail.offerLabel")} hint={t("OrderDetail.offerHint", { language: customerLanguage })}>
             <textarea
               value={alternative}
               onChange={(e) => setAlternative(e.target.value)}
@@ -97,7 +97,7 @@ export function OrderDecision({
           </Field>
           {suggestions.length > 0 && (
             <div className="grid gap-1.5">
-              <p className="text-[0.875rem] font-semibold text-fg-muted">In stock now, similar price:</p>
+              <p className="text-[0.875rem] font-semibold text-fg-muted">{t("OrderDetail.suggestions")}</p>
               <div className="flex flex-wrap gap-2">
                 {suggestions.map((suggestion) => (
                   <button
@@ -120,10 +120,10 @@ export function OrderDecision({
               onClick={() => run(() => declineAvailabilityAction(orderId, alternative))}
             >
               {pending && <Loader2 aria-hidden="true" className="size-4 animate-spin" />}
-              {charges ? "Cancel the authorisation" : "Close the request"}
+              {charges ? t("OrderDetail.cancelAuthorisation") : t("OrderDetail.closeRequest")}
             </button>
             <button type="button" className={adminButton("ghost")} disabled={pending} onClick={() => setStep("choose")}>
-              Back
+              {t("Common.back")}
             </button>
           </div>
         </div>
@@ -134,6 +134,7 @@ export function OrderDecision({
 
 /** For an order still waiting for payment: asks the provider again (useful when webhooks aren't set up). */
 export function RefreshPaymentButton({ orderId }: { orderId: string }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -152,7 +153,7 @@ export function RefreshPaymentButton({ orderId }: { orderId: string }) {
         }
       >
         {pending ? <Loader2 aria-hidden="true" className="size-4 animate-spin" /> : <RefreshCw aria-hidden="true" className="size-4" />}
-        Check the payment again
+        {t("OrderDetail.checkPayment")}
       </button>
       {error && <p className="font-semibold text-danger">{error}</p>}
     </div>

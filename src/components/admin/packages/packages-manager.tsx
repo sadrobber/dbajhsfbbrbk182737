@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
 import { useState, useTransition } from "react";
 import { savePackagesAction } from "@/app/admin/(panel)/packages/actions";
 import { fieldErrorsOf } from "@/components/admin/form-errors";
+import { useAdminI18n } from "@/components/admin/i18n";
 import { LocalizedTextInput } from "@/components/admin/localized-text-input";
 import { PreviewFrame, type PreviewMessages, usePreviewTranslator } from "@/components/admin/preview";
 import { SaveBar, useUnsavedChangesWarning } from "@/components/admin/save-bar";
@@ -15,22 +16,6 @@ import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
 import { type IconKey, iconKeys, type PackageDefinition, type PackageItem, packageSchema } from "@/lib/data/schema";
 import { buildPackageCardView } from "@/lib/package-view";
-
-const ICON_LABELS: Record<IconKey, string> = {
-  plug: "Charger / plug",
-  cable: "Cable",
-  screen: "Screen",
-  case: "Case",
-  settings: "Settings",
-  transfer: "Transfer",
-  user: "Person / accounts",
-  check: "Check mark",
-  shield: "Shield",
-  sparkles: "Sparkles",
-  store: "Shop",
-  support: "Support",
-  repair: "Repair",
-};
 
 type PackageDraft = Omit<PackageDefinition, "price"> & { price: string };
 
@@ -47,8 +32,9 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
   const [submitted, setSubmitted] = useState(false);
   const [saved, setSaved] = useState(false);
   const [pending, startTransition] = useTransition();
-  const [locale, setLocale] = useState<Locale>("fr");
-  const t = usePreviewTranslator(messages, locale);
+  const { t, locale } = useAdminI18n();
+  const [previewLocale, setPreviewLocale] = useState<Locale>("fr");
+  const previewT = usePreviewTranslator(messages, previewLocale);
 
   const dirty = JSON.stringify(drafts) !== JSON.stringify(baseline);
   useUnsavedChangesWarning(dirty);
@@ -65,7 +51,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
   function save() {
     setSubmitted(true);
     if (results.some((result) => !result.success)) {
-      setError("Some fields need attention.");
+      setError(t("Common.fieldsNeedAttention"));
       return;
     }
     startTransition(async () => {
@@ -85,15 +71,15 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
   return (
     <>
       <PageHeader
-        title="Packages"
-        description="Price and contents of the “More than just a phone” packages. Contents marked “to be confirmed” show a TODO tag on the shop."
+        title={t("Packages.title")}
+        description={t("Packages.description")}
       />
 
       {drafts.map((draft, packageIndex) => {
         const result = results[packageIndex];
-        const errors = submitted && !result.success ? fieldErrorsOf(result.error) : {};
-        const name = messages.en.Packages[draft.id as "max-protection"]?.name ?? draft.id;
-        const preview = buildPackageCardView(result.success ? result.data : { ...fromDraft(draft), price: 0 }, t, locale);
+        const errors = submitted && !result.success ? fieldErrorsOf(result.error, t) : {};
+        const name = messages[locale].Packages[draft.id as "max-protection"]?.name ?? draft.id;
+        const preview = buildPackageCardView(result.success ? result.data : { ...fromDraft(draft), price: 0 }, previewT, previewLocale);
 
         return (
           <section key={draft.id} aria-labelledby={`pkg-${draft.id}`} className="grid items-start gap-5 xl:grid-cols-[1fr_26rem]">
@@ -102,7 +88,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                 <h2 id={`pkg-${draft.id}`} className="font-display text-xl font-extrabold tracking-[-0.02em]">
                   {name}
                 </h2>
-                <Field label="Price (€)" error={errors.price} className="w-40">
+                <Field label={t("Packages.price")} error={errors.price} className="w-40">
                   <input
                     inputMode="decimal"
                     value={draft.price}
@@ -114,11 +100,8 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
               </div>
 
               <div>
-                <h3 className="text-[0.9375rem] font-semibold">What&rsquo;s included</h3>
-                <p className="text-[0.8125rem] text-fg-subtle">
-                  French is required; English and Italian use the French text when left empty. The name and tagline are in{" "}
-                  <code>messages/*.json</code>.
-                </p>
+                <h3 className="text-[0.9375rem] font-semibold">{t("Packages.included")}</h3>
+                <p className="text-[0.8125rem] text-fg-subtle">{t("Packages.includedHint")}</p>
                 <ol className="mt-3 grid gap-3">
                   {draft.items.map((item, index) => (
                     <li key={item.id} className="grid gap-3 rounded-xl border border-line p-3">
@@ -127,7 +110,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                           <ConfigIcon name={item.icon} className="size-5" />
                         </span>
                         <label className="min-w-44 flex-1">
-                          <span className="sr-only">Icon for item {index + 1}</span>
+                          <span className="sr-only">{t("Packages.iconFor", { number: index + 1 })}</span>
                           <select
                             value={item.icon}
                             onChange={(e) => updateItem(draft.id, index, { icon: e.target.value as IconKey })}
@@ -135,7 +118,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                           >
                             {iconKeys.map((icon) => (
                               <option key={icon} value={icon}>
-                                Icon: {ICON_LABELS[icon]}
+                                {t("Packages.iconOption", { name: t(`Labels.icon.${icon}`) })}
                               </option>
                             ))}
                           </select>
@@ -147,14 +130,14 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                             onChange={(e) => updateItem(draft.id, index, { todo: e.target.checked })}
                             className={adminCheckbox}
                           />
-                          To be confirmed
+                          {t("Packages.toConfirm")}
                         </label>
                         <div className="ml-auto flex">
                           <button
                             type="button"
                             className={iconButton}
                             disabled={index === 0}
-                            aria-label={`Move item ${index + 1} up`}
+                            aria-label={t("Packages.moveUp", { number: index + 1 })}
                             onClick={() =>
                               updatePackage(draft.id, (d) => {
                                 const items = [...d.items];
@@ -169,7 +152,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                             type="button"
                             className={iconButton}
                             disabled={index === draft.items.length - 1}
-                            aria-label={`Move item ${index + 1} down`}
+                            aria-label={t("Packages.moveDown", { number: index + 1 })}
                             onClick={() =>
                               updatePackage(draft.id, (d) => {
                                 const items = [...d.items];
@@ -183,7 +166,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                           <button
                             type="button"
                             className={iconButton}
-                            aria-label={`Remove item ${index + 1}`}
+                            aria-label={t("Packages.remove", { number: index + 1 })}
                             onClick={() => updatePackage(draft.id, (d) => ({ ...d, items: d.items.filter((_, i) => i !== index) }))}
                           >
                             <X aria-hidden="true" className="size-4" />
@@ -191,7 +174,7 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                         </div>
                       </div>
                       <LocalizedTextInput
-                        label={`Item ${index + 1}`}
+                        label={t("Packages.item", { number: index + 1 })}
                         maxLength={40}
                         value={item.label}
                         onChange={(label) => updateItem(draft.id, index, { label })}
@@ -215,12 +198,12 @@ export function PackagesManager({ packages, messages }: { packages: PackageDefin
                   }
                 >
                   <Plus aria-hidden="true" className="size-4" />
-                  Add an item
+                  {t("Packages.addItem")}
                 </button>
               </div>
             </div>
 
-            <PreviewFrame title="Live preview · homepage card" locale={locale} onLocaleChange={setLocale} className="xl:sticky xl:top-4">
+            <PreviewFrame title={t("Packages.preview")} locale={previewLocale} onLocaleChange={setPreviewLocale} className="xl:sticky xl:top-4">
               <PackageCard pkg={preview} highlighted={packageIndex === 0} />
             </PreviewFrame>
           </section>

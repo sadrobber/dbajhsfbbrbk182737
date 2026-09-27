@@ -79,7 +79,7 @@ describe("order workflow", () => {
 
     const confirmed = await confirmAvailability(placed.id, "staff@shop.test");
     expect(confirmed).toMatchObject({ status: "paid", payment: { status: "captured" }, availabilityCheck: { status: "confirmed", checkedBy: "staff@shop.test" } });
-    await expect(confirmAvailability(placed.id, "staff@shop.test")).rejects.toThrow(/no longer waiting/);
+    await expect(confirmAvailability(placed.id, "staff@shop.test")).rejects.toThrow(/orderNotWaiting/);
   });
 
   it("24-48h declined: authorisation released, in-store stock put back, alternative kept", async () => {

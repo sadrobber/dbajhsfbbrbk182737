@@ -2,6 +2,7 @@
 
 import { Check, Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { useAdminI18n } from "./i18n";
 import { adminButton } from "./styles";
 
 /** Sticky bar at the bottom of an editing screen: unsaved state, discard, save. */
@@ -12,7 +13,7 @@ export function SaveBar({
   error,
   onDiscard,
   onSave,
-  saveLabel = "Save changes",
+  saveLabel,
 }: {
   dirty: boolean;
   pending: boolean;
@@ -23,6 +24,7 @@ export function SaveBar({
   onSave: () => void;
   saveLabel?: string;
 }) {
+  const { t } = useAdminI18n();
   return (
     <div className="sticky bottom-0 z-20 -mx-4 border-t border-line bg-ink/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -32,23 +34,23 @@ export function SaveBar({
               {error}
             </span>
           ) : dirty ? (
-            <span className="text-warning">Unsaved changes</span>
+            <span className="text-warning">{t("Common.unsavedChanges")}</span>
           ) : saved ? (
             <span className="inline-flex items-center gap-1.5 text-success">
               <Check aria-hidden="true" className="size-4" />
-              Saved. The shop is up to date.
+              {t("Common.savedShopUpToDate")}
             </span>
           ) : (
-            <span className="text-fg-subtle">No changes</span>
+            <span className="text-fg-subtle">{t("Common.noChanges")}</span>
           )}
         </p>
         <div className="flex gap-2">
           <button type="button" className={adminButton("secondary")} onClick={onDiscard} disabled={!dirty || pending}>
-            Discard
+            {t("Common.discard")}
           </button>
           <button type="button" className={adminButton("primary", "min-w-36")} onClick={onSave} disabled={!dirty || pending}>
             {pending && <Loader2 aria-hidden="true" className="size-4 animate-spin" />}
-            {saveLabel}
+            {saveLabel ?? t("Common.save")}
           </button>
         </div>
       </div>

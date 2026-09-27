@@ -62,11 +62,12 @@ export type PromoBadge = (typeof promoBadges)[number];
 export type SupplierAvailability = (typeof supplierAvailabilities)[number];
 export type Supply = (typeof supplies)[number];
 
-export const slug = z.string().regex(/^[a-z0-9-]+$/, "use lowercase letters, digits and dashes");
+/** Custom validation messages are codes; the admin translates them (messages/admin Validation.<code>). */
+export const slug = z.string().regex(/^[a-z0-9-]+$/, "slugFormat");
 
 /** Text typed by staff in the admin. English and Italian fall back to French when left empty. */
 export const localizedTextSchema = z.object({
-  fr: z.string().trim().min(1, "French text is required").max(60),
+  fr: z.string().trim().min(1, "frenchRequired").max(60),
   en: z.string().trim().max(60),
   it: z.string().trim().max(60),
 });
@@ -234,12 +235,12 @@ export const productSchema = z
     /** models.id */
     modelId: slug,
     /** Shown at the bottom of the product page. */
-    sku: z.string().regex(/^[A-Z0-9-]{3,80}$/, "Capital letters, digits and dashes"),
+    sku: z.string().regex(/^[A-Z0-9-]{3,80}$/, "skuFormat"),
     condition: z.enum(conditions),
     /** One of the model's storage options. */
     storageGb: z.number().int().positive(),
     /** The model's official colour (colors[].name_en). */
-    colorName: z.string().trim().min(1, "Pick a colour").max(40),
+    colorName: z.string().trim().min(1, "pickColour").max(40),
     /** Colour family, for the neutral illustration and filters. */
     color: z.enum(colors),
     /** Refurbished only. */
@@ -258,7 +259,7 @@ export const productSchema = z
     supplierAvailability: z.enum(supplierAvailabilities),
     badges: z.array(z.enum(badges)),
     /** Most relevant first. */
-    goodFor: z.array(z.enum(goodForTags)).min(1, "Pick at least one"),
+    goodFor: z.array(z.enum(goodForTags)).min(1, "pickAtLeastOne"),
     /** Neutral illustration drawn when there is no photo. */
     visual: z.enum(visuals),
     /** First photo is the main one. Empty: the illustration is used. */
@@ -266,20 +267,20 @@ export const productSchema = z
   })
   .superRefine((p, ctx) => {
     if (p.condition === "refurbished") {
-      if (p.grade === null) ctx.addIssue({ code: "custom", path: ["grade"], message: "A refurbished phone needs a grade" });
-      if (p.battery === null) ctx.addIssue({ code: "custom", path: ["battery"], message: "Pick the battery option" });
+      if (p.grade === null) ctx.addIssue({ code: "custom", path: ["grade"], message: "gradeRequired" });
+      if (p.battery === null) ctx.addIssue({ code: "custom", path: ["battery"], message: "batteryRequired" });
       if (p.batteryHealth === null) {
-        ctx.addIssue({ code: "custom", path: ["batteryHealth"], message: "A refurbished phone needs a battery health" });
+        ctx.addIssue({ code: "custom", path: ["batteryHealth"], message: "batteryHealthRequired" });
       }
       if (p.battery === "new" && p.batteryHealth !== null && p.batteryHealth < 100) {
-        ctx.addIssue({ code: "custom", path: ["batteryHealth"], message: "A new battery is at 100%" });
+        ctx.addIssue({ code: "custom", path: ["batteryHealth"], message: "newBatteryFull" });
       }
     }
     if (p.condition === "new" && (p.grade !== null || p.battery !== null || p.batteryHealth !== null)) {
-      ctx.addIssue({ code: "custom", path: ["grade"], message: "A new phone has no grade or battery details" });
+      ctx.addIssue({ code: "custom", path: ["grade"], message: "newPhoneNoGrade" });
     }
     if (p.compareAtPrice !== null && p.compareAtPrice <= p.price) {
-      ctx.addIssue({ code: "custom", path: ["compareAtPrice"], message: "Must be higher than the price" });
+      ctx.addIssue({ code: "custom", path: ["compareAtPrice"], message: "higherThanPrice" });
     }
   });
 
@@ -323,7 +324,7 @@ export const dealSchema = z
   })
   .superRefine((deal, ctx) => {
     if (deal.promoBadge === "custom" && deal.promoLabel === null) {
-      ctx.addIssue({ code: "custom", path: ["promoLabel"], message: "Type the badge text" });
+      ctx.addIssue({ code: "custom", path: ["promoLabel"], message: "badgeTextRequired" });
     }
   });
 
@@ -356,7 +357,7 @@ export const gaugeSchema = z.object({
   percent: z.number().int().min(0).max(100),
   /** Number of tickets at which the draw happens. */
   targetTickets: z.number().int().positive(),
-  prizes: z.array(z.enum(prizeKeys)).min(1, "Pick at least one prize"),
+  prizes: z.array(z.enum(prizeKeys)).min(1, "pickPrize"),
   /** Page with the official rules. */
   rulesPath: z.string().startsWith("/"),
 });

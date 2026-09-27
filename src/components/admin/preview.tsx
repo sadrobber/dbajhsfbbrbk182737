@@ -5,6 +5,7 @@ import { type ReactNode, useMemo } from "react";
 import type { Messages, Translator } from "@/i18n/messages";
 import { type Locale, locales } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
+import { useAdminI18n } from "./i18n";
 
 export type PreviewMessages = Record<Locale, Pick<Messages, "Product" | "Packages" | "Common" | "Gauge" | "Deals">>;
 
@@ -20,8 +21,9 @@ export function usePreviewTranslator(messages: PreviewMessages, locale: Locale):
 const LANGUAGE_LABELS: Record<Locale, string> = { fr: "FR", en: "EN", it: "IT" };
 
 export function PreviewLanguageSwitch({ value, onChange }: { value: Locale; onChange: (locale: Locale) => void }) {
+  const { t } = useAdminI18n();
   return (
-    <div role="group" aria-label="Preview language" className="inline-flex rounded-lg bg-surface-2 p-0.5">
+    <div role="group" aria-label={t("Common.previewLanguage")} className="inline-flex rounded-lg bg-surface-2 p-0.5">
       {locales.map((locale) => (
         <button
           key={locale}

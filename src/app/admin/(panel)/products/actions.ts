@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { createProduct, deleteProduct, updateProduct } from "@/lib/data/admin-repository";
 import { saveUpload } from "@/lib/data/json-store";
 import { manualBadges, type Product, productSchema } from "@/lib/data/schema";
-import { type ActionResult, failure, refreshEverywhere } from "@/server/admin/action-result";
+import { type ActionResult, failure, failWith, refreshEverywhere } from "@/server/admin/action-result";
 import { requireAdmin } from "@/server/admin/auth";
 
 export async function saveProductAction(input: Product, isNew: boolean): Promise<ActionResult<Product>> {
@@ -54,16 +54,16 @@ function imageExtension(bytes: Uint8Array): "jpg" | "png" | "webp" | "avif" | nu
 export async function uploadProductPhotosAction(formData: FormData): Promise<ActionResult<string[]>> {
   await requireAdmin();
   const files = formData.getAll("photos").filter((value): value is File => value instanceof File && value.size > 0);
-  if (files.length === 0) return { ok: false, error: "Choose at least one photo." };
-  if (files.length > 6) return { ok: false, error: "Six photos at most per product." };
+  if (files.length === 0) return failWith("choosePhotos");
+  if (files.length > 6) return failWith("tooManyPhotos");
 
   try {
     const urls: string[] = [];
     for (const file of files) {
-      if (file.size > MAX_PHOTO_BYTES) return { ok: false, error: `"${file.name}" is over 5 MB.` };
+      if (file.size > MAX_PHOTO_BYTES) return failWith("photoTooBig", { name: file.name });
       const bytes = new Uint8Array(await file.arrayBuffer());
       const extension = imageExtension(bytes);
-      if (!extension) return { ok: false, error: `"${file.name}" isn't a JPEG, PNG, WebP or AVIF image.` };
+      if (!extension) return failWith("photoNotImage", { name: file.name });
       const name = `p-${randomUUID()}.${extension}`;
       await saveUpload(name, bytes);
       urls.push(`/api/media/${name}`);

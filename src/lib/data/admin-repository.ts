@@ -1,6 +1,7 @@
 import "server-only";
 import { readGaugeConfig, readRows, updateRows, writeGaugeConfig } from "./json-store";
 import { orderStatusesToCheck } from "./records";
+import type { AdminMessages } from "@/i18n/admin";
 import type { Deal, GaugeSettings, ModelRef, PackageDefinition, PhoneModel, Product } from "./schema";
 
 /**
@@ -9,7 +10,18 @@ import type { Deal, GaugeSettings, ModelRef, PackageDefinition, PhoneModel, Prod
  * ./local-source.ts for the shop), not touching the screens.
  */
 
-export class AdminDataError extends Error {}
+/** An error staff should read. The code is a key of messages/admin Errors.<code>, translated by the admin. */
+export type AdminErrorCode = keyof AdminMessages["Errors"];
+
+export class AdminDataError extends Error {
+  constructor(
+    readonly code: AdminErrorCode,
+    readonly values: Record<string, string | number> = {},
+  ) {
+    super(code);
+    this.name = "AdminDataError";
+  }
+}
 
 // --- catalogue ---------------------------------------------------------------
 
@@ -53,12 +65,12 @@ function slugify(text: string): string {
 /** The product must match its model: the model exists, and offers this storage and colour. */
 async function assertFitsModel(product: Omit<Product, "id">) {
   const model = (await listModels()).find((m) => m.id === product.modelId);
-  if (!model) throw new AdminDataError("Pick a model from the list.");
+  if (!model) throw new AdminDataError("pickModel");
   if (!model.specs.storage_gb.includes(product.storageGb)) {
-    throw new AdminDataError(`${model.full_name} doesn't come in ${product.storageGb} GB.`);
+    throw new AdminDataError("storageNotOffered", { model: `${model.brand} ${model.name}`, storage: product.storageGb });
   }
   if (model.colors.length > 0 && !model.colors.some((c) => c.name_en === product.colorName)) {
-    throw new AdminDataError(`${model.full_name} doesn't come in “${product.colorName}”.`);
+    throw new AdminDataError("colourNotOffered", { model: `${model.brand} ${model.name}`, colour: product.colorName });
   }
   return model;
 }
@@ -88,7 +100,7 @@ export async function updateProduct(product: Product): Promise<Product> {
   let saved: Product | undefined;
   await updateRows("products", (rows) => {
     const current = rows.find((row) => row.id === product.id);
-    if (!current) throw new AdminDataError("This product no longer exists.");
+    if (!current) throw new AdminDataError("productGone");
     saved = { ...product, sku: current.sku };
     return rows.map((row) => (row.id === product.id ? saved! : row));
   });
@@ -104,9 +116,7 @@ export async function deleteProduct(id: string): Promise<void> {
   const orders = await readRows("orders");
   const used = orders.filter((order) => order.lines.some((line) => line.productId === id)).length;
   if (used > 0) {
-    throw new AdminDataError(
-      `This product appears in ${used} order${used > 1 ? "s" : ""}, so it can't be deleted. Set its stock to 0 to hide it from the shop.`,
-    );
+    throw new AdminDataError("productInOrders", { count: used });
   }
   await updateRows("deals", (rows) => rows.filter((deal) => deal.productId !== id).map((deal, position) => ({ ...deal, position })));
   await updateRows("products", (rows) => rows.filter((row) => row.id !== id));
@@ -122,8 +132,8 @@ export async function listDeals(): Promise<Deal[]> {
 export async function saveDeals(entries: Omit<Deal, "id" | "position">[]): Promise<Deal[]> {
   const products = new Set((await listProducts()).map((p) => p.id));
   const missing = entries.find((entry) => !products.has(entry.productId));
-  if (missing) throw new AdminDataError(`Product "${missing.productId}" no longer exists.`);
-  if (new Set(entries.map((e) => e.productId)).size !== entries.length) throw new AdminDataError("A product is listed twice.");
+  if (missing) throw new AdminDataError("dealProductGone", { product: missing.productId });
+  if (new Set(entries.map((e) => e.productId)).size !== entries.length) throw new AdminDataError("dealListedTwice");
 
   return updateRows("deals", () =>
     entries.map((entry, position) => ({
@@ -144,7 +154,7 @@ export async function listPackages(): Promise<PackageDefinition[]> {
 export async function savePackage(pkg: PackageDefinition): Promise<PackageDefinition> {
   await updateRows("packages", (rows) => {
     const current = rows.find((row) => row.id === pkg.id);
-    if (!current) throw new AdminDataError("Unknown package.");
+    if (!current) throw new AdminDataError("unknownPackage");
     return rows.map((row) => (row.id === pkg.id ? { ...pkg, position: current.position, icon: current.icon } : row));
   });
   return pkg;

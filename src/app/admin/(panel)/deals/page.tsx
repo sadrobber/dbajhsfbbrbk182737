@@ -3,9 +3,13 @@ import { DealsManager } from "@/components/admin/deals/deals-manager";
 import { storefrontSettings } from "@/config/site.config";
 import { listAdminModels, listBrands, listDeals, listProducts } from "@/lib/data/admin-repository";
 import { requireAdmin } from "@/server/admin/auth";
+import { getAdminI18n } from "@/server/admin/i18n";
 import { getPreviewMessages } from "@/server/admin/preview-messages";
 
-export const metadata: Metadata = { title: "Great Deals" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getAdminI18n();
+  return { title: t("Nav.deals") };
+}
 
 export default async function DealsPage() {
   await requireAdmin();

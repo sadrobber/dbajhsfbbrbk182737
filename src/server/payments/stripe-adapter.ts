@@ -23,7 +23,7 @@ const cents = (euros: number) => Math.round(euros * 100);
 
 function toPaymentError(error: unknown): unknown {
   if (error instanceof Stripe.errors.StripeError && error.type === "StripeInvalidRequestError") {
-    return new PaymentError(`Stripe refused: ${error.message}`);
+    return new PaymentError(error.message);
   }
   return error;
 }

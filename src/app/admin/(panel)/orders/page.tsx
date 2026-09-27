@@ -1,20 +1,31 @@
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { adminDate, adminEuro, optionsOf, ORDER_CHANNEL, ORDER_STATUS, SUPPLY } from "@/components/admin/labels";
+import { optionsFrom, ORDER_STATUS_TONE, SUPPLY_TONE } from "@/components/admin/labels";
 import { CustomerLink, customerSearchText, RecordLink } from "@/components/admin/record-links";
 import { type RecordRow, RecordTable } from "@/components/admin/record-table";
 import { adminButton, adminCard } from "@/components/admin/styles";
 import { Banner, PageHeader, Pill } from "@/components/admin/ui";
 import { listCustomers, listInvoices, listOrders } from "@/lib/data/admin-repository";
-import { orderStatusesToCheck } from "@/lib/data/records";
+import { orderChannels, orderStatuses, orderStatusesToCheck } from "@/lib/data/records";
+import { supplies } from "@/lib/data/schema";
 import { requireAdmin } from "@/server/admin/auth";
+import { getAdminI18n } from "@/server/admin/i18n";
 
-export const metadata: Metadata = { title: "Orders" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getAdminI18n();
+  return { title: t("Orders.title") };
+}
 
 export default async function OrdersPage({ searchParams }: PageProps<"/admin/orders">) {
   await requireAdmin();
-  const [orders, customers, invoices, { q }] = await Promise.all([listOrders(), listCustomers(), listInvoices(), searchParams]);
+  const [orders, customers, invoices, { q }, { t, formats }] = await Promise.all([
+    listOrders(),
+    listCustomers(),
+    listInvoices(),
+    searchParams,
+    getAdminI18n(),
+  ]);
   const customerById = new Map(customers.map((c) => [c.id, c]));
   const invoiceByOrder = new Map(invoices.map((i) => [i.orderId, i]));
   const newestFirst = [...orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -23,15 +34,14 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
   const rows: RecordRow[] = newestFirst.map((order) => {
     const customer = customerById.get(order.customerId);
     const invoice = invoiceByOrder.get(order.id);
-    const status = ORDER_STATUS[order.status];
     return {
       id: order.id,
       search: `${order.number} ${customerSearchText(customer)} ${order.lines.map((l) => l.description).join(" ")}`.toLowerCase(),
       facets: { status: order.status, channel: order.channel, supply: order.supply },
       cells: {
         number: <RecordLink href={`/admin/orders/${order.id}`}>{order.number}</RecordLink>,
-        date: adminDate.format(new Date(order.createdAt)),
-        customer: <CustomerLink customer={customer} />,
+        date: formats.date.format(new Date(order.createdAt)),
+        customer: <CustomerLink customer={customer} t={t} />,
         items: (
           <ul className="grid gap-0.5 text-[0.875rem]">
             {order.lines.map((line, i) => (
@@ -42,10 +52,10 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
             ))}
           </ul>
         ),
-        supply: <Pill tone={SUPPLY[order.supply].tone}>{SUPPLY[order.supply].label}</Pill>,
-        channel: ORDER_CHANNEL[order.channel],
-        total: <span className="font-semibold">{adminEuro.format(order.total)}</span>,
-        status: <Pill tone={status.tone}>{status.label}</Pill>,
+        supply: <Pill tone={SUPPLY_TONE[order.supply]}>{t(`Labels.supply.${order.supply}`)}</Pill>,
+        channel: t(`Labels.orderChannel.${order.channel}`),
+        total: <span className="font-semibold">{formats.euro.format(order.total)}</span>,
+        status: <Pill tone={ORDER_STATUS_TONE[order.status]}>{t(`Labels.orderStatus.${order.status}`)}</Pill>,
         invoice: invoice ? <RecordLink href={`/admin/invoices?q=${invoice.number}`}>{invoice.number}</RecordLink> : <span className="text-fg-subtle">—</span>,
       },
     };
@@ -53,12 +63,12 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
 
   return (
     <>
-      <PageHeader title="Orders" description="Every sale, in store or online, newest first. Open an order to see its payment and act on it." />
+      <PageHeader title={t("Orders.title")} description={t("Orders.description")} />
 
       {toCheck.length > 0 && (
         <section id="to-confirm" aria-labelledby="to-confirm-title" className="grid scroll-mt-6 gap-3">
           <h2 id="to-confirm-title" className="font-display text-xl font-bold">
-            Availability to confirm ({toCheck.length})
+            {t("Orders.toConfirmTitle", { count: toCheck.length })}
           </h2>
           <ul className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
             {toCheck.map((order) => {
@@ -67,7 +77,7 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
                 <li key={order.id} className={`${adminCard} grid gap-2 border-danger/30 p-4`}>
                   <p className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-semibold tabular-nums">{order.number}</span>
-                    <Pill tone={ORDER_STATUS[order.status].tone}>{ORDER_STATUS[order.status].label}</Pill>
+                    <Pill tone={ORDER_STATUS_TONE[order.status]}>{t(`Labels.orderStatus.${order.status}`)}</Pill>
                   </p>
                   <p className="text-[0.9375rem]">
                     {order.lines
@@ -76,11 +86,11 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
                       .join(", ")}
                   </p>
                   <p className="text-[0.875rem] text-fg-muted">
-                    {customer ? `${customer.firstName} ${customer.lastName}` : "Unknown customer"} · {adminDate.format(new Date(order.createdAt))} ·{" "}
-                    {adminEuro.format(order.total)}
+                    {customer ? `${customer.firstName} ${customer.lastName}` : t("Common.unknownCustomer")} ·{" "}
+                    {formats.date.format(new Date(order.createdAt))} · {formats.euro.format(order.total)}
                   </p>
                   <Link href={`/admin/orders/${order.id}`} className={adminButton("primary", "mt-1 w-fit")}>
-                    Check and decide
+                    {t("Orders.checkAndDecide")}
                     <ArrowRight aria-hidden="true" className="size-4" />
                   </Link>
                 </li>
@@ -91,29 +101,38 @@ export default async function OrdersPage({ searchParams }: PageProps<"/admin/ord
       )}
 
       <Banner tone="warning">
-        <strong>Placeholder data mixed in.</strong> Orders NC-2026-0101 to NC-2026-0118 are examples from <code>data/orders.json</code>. Orders placed
-        through the shop&rsquo;s checkout are real and appear next to them.
+        <strong>{t("Orders.placeholderTitle")}</strong> {t("Orders.placeholderText")}
       </Banner>
       <RecordTable
-        caption="Orders"
-        searchPlaceholder="Search by order number, customer or phone…"
+        caption={t("Orders.caption")}
+        searchPlaceholder={t("Orders.searchPlaceholder")}
         initialQuery={typeof q === "string" ? q : ""}
         minWidth="76rem"
         columns={[
-          { key: "number", label: "Order" },
-          { key: "date", label: "Date" },
-          { key: "customer", label: "Customer" },
-          { key: "items", label: "Items" },
-          { key: "supply", label: "Stock" },
-          { key: "channel", label: "Channel" },
-          { key: "total", label: "Total", align: "right" },
-          { key: "status", label: "Status" },
-          { key: "invoice", label: "Invoice" },
+          { key: "number", label: t("Orders.colOrder") },
+          { key: "date", label: t("Orders.colDate") },
+          { key: "customer", label: t("Orders.colCustomer") },
+          { key: "items", label: t("Orders.colItems") },
+          { key: "supply", label: t("Orders.colStock") },
+          { key: "channel", label: t("Orders.colChannel") },
+          { key: "total", label: t("Orders.colTotal"), align: "right" },
+          { key: "status", label: t("Orders.colStatus") },
+          { key: "invoice", label: t("Orders.colInvoice") },
         ]}
         filters={[
-          { key: "status", label: "Status", allLabel: "All statuses", options: optionsOf(ORDER_STATUS) },
-          { key: "supply", label: "Stock", allLabel: "Any stock", options: optionsOf(SUPPLY) },
-          { key: "channel", label: "Channel", allLabel: "All channels", options: optionsOf(ORDER_CHANNEL) },
+          {
+            key: "status",
+            label: t("Orders.status"),
+            allLabel: t("Orders.allStatuses"),
+            options: optionsFrom(orderStatuses, (s) => t(`Labels.orderStatus.${s}`)),
+          },
+          { key: "supply", label: t("Orders.stock"), allLabel: t("Orders.anyStock"), options: optionsFrom(supplies, (s) => t(`Labels.supply.${s}`)) },
+          {
+            key: "channel",
+            label: t("Orders.channel"),
+            allLabel: t("Orders.allChannels"),
+            options: optionsFrom(orderChannels, (c) => t(`Labels.orderChannel.${c}`)),
+          },
         ]}
         rows={rows}
       />

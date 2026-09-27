@@ -5,8 +5,9 @@ import Image from "next/image";
 import { type ReactNode, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { saveProductAction, deleteProductAction, uploadProductPhotosAction } from "@/app/admin/(panel)/products/actions";
 import { fieldErrorsOf } from "@/components/admin/form-errors";
-import { SUPPLIER_AVAILABILITY } from "@/components/admin/labels";
+import { useAdminI18n } from "@/components/admin/i18n";
 import { useUnsavedChangesWarning } from "@/components/admin/save-bar";
+import { storageText } from "@/components/admin/stock";
 import { PreviewFrame, type PreviewMessages, usePreviewTranslator } from "@/components/admin/preview";
 import { adminButton, adminCheckbox, adminInput, adminSelect, iconButton } from "@/components/admin/styles";
 import { Banner, Field, Fieldset } from "@/components/admin/ui";
@@ -25,22 +26,15 @@ import {
   grades,
   manualBadges,
   type Product,
+  modelColorName,
   productSchema,
   supplierAvailabilities,
   visuals,
 } from "@/lib/data/schema";
 import { buildProductCardView } from "@/lib/product-view";
-import { BATTERY_LABELS, draftOf, GRADE_LABELS, newDraft, type ProductDraft, previewProductOf, productOf } from "./product-draft";
+import { draftOf, newDraft, type ProductDraft, previewProductOf, productOf } from "./product-draft";
 
 const MAX_PHOTOS = 6;
-
-const VISUAL_LABELS: Record<(typeof visuals)[number], string> = {
-  duo: "Two lenses in a square",
-  trio: "Three lenses in a square",
-  column: "Lenses in a column",
-  bar: "Camera bar",
-  single: "Single lens",
-};
 
 export function ProductEditor({
   product,
@@ -77,9 +71,11 @@ export function ProductEditor({
   const [pending, startTransition] = useTransition();
   const [uploading, setUploading] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [locale, setLocale] = useState<Locale>("fr");
+  const { t, locale } = useAdminI18n();
+  const [previewLocale, setPreviewLocale] = useState<Locale>("fr");
   const isNew = product === null;
-  const en = messages.en.Product;
+  /** The shop's own labels (badges, colours, uses) in the admin's language. */
+  const shopLabels = messages[locale].Product;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -89,13 +85,13 @@ export function ProductEditor({
   const dirty = JSON.stringify(draft) !== JSON.stringify(initial);
   useUnsavedChangesWarning(dirty);
   const validation = productSchema.safeParse(productOf(draft));
-  const errors = submitted && !validation.success ? fieldErrorsOf(validation.error) : serverFieldErrors;
+  const errors = submitted && !validation.success ? fieldErrorsOf(validation.error, t) : serverFieldErrors;
 
   const set = <K extends keyof ProductDraft>(key: K, value: ProductDraft[K]) => setDraft((d) => ({ ...d, [key]: value }));
 
   function requestClose() {
     if (pending || uploading) return;
-    if (dirty && !window.confirm("Discard your changes to this product?")) return;
+    if (dirty && !window.confirm(t("ProductEditor.discardConfirm"))) return;
     onClose();
   }
 
@@ -141,7 +137,7 @@ export function ProductEditor({
     setSubmitted(true);
     setServerFieldErrors({});
     if (!validation.success) {
-      setError("Some fields need attention.");
+      setError(t("Common.fieldsNeedAttention"));
       return;
     }
     setError(null);
@@ -172,7 +168,7 @@ export function ProductEditor({
   async function upload(files: FileList | null) {
     if (!files || files.length === 0) return;
     if (draft.photos.length + files.length > MAX_PHOTOS) {
-      setError(`A product can have ${MAX_PHOTOS} photos at most.`);
+      setError(t("ProductEditor.maxPhotos", { max: MAX_PHOTOS }));
       return;
     }
     const form = new FormData();
@@ -189,23 +185,23 @@ export function ProductEditor({
   }
 
   // Live preview: the same card components and view builder as the shop.
-  const t = usePreviewTranslator(messages, locale);
+  const previewT = usePreviewTranslator(messages, previewLocale);
   const previewItem = useMemo(() => {
     const candidate = previewProductOf(draft);
     const others = products.filter((p) => p.id !== candidate.id);
     // Before a model is picked, the card shows a placeholder name.
     const previewModels = candidate.modelId
       ? models
-      : [...models, { id: "", brand: "", name: "New phone", colors: [] }];
+      : [...models, { id: "", brand: "", name: t("ProductEditor.newPhone"), colors: [] }];
     return enrichCatalog({ currency: "EUR", brands, models: previewModels, products: [...others, candidate] }).find(
       (item) => item.id === candidate.id,
     )!;
-  }, [draft, products, brands, models]);
-  const card = buildProductCardView(previewItem, { t, locale, lowStockThreshold });
+  }, [draft, products, brands, models, t]);
+  const card = buildProductCardView(previewItem, { t: previewT, locale: previewLocale, lowStockThreshold });
 
   const title = isNew
-    ? "Add a product"
-    : `Edit ${models.find((m) => m.id === product.modelId)?.label ?? product.modelId}`;
+    ? t("ProductEditor.addTitle")
+    : t("ProductEditor.editTitle", { name: models.find((m) => m.id === product.modelId)?.label ?? product.modelId });
 
   return (
     <dialog
@@ -227,14 +223,14 @@ export function ProductEditor({
       >
         <header className="flex items-center justify-between gap-3 border-b border-line bg-ink px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-2">
-            <button type="button" className={iconButton} onClick={requestClose} aria-label="Back to the list">
+            <button type="button" className={iconButton} onClick={requestClose} aria-label={t("ProductEditor.backToList")}>
               <ArrowLeft aria-hidden="true" className="size-5" />
             </button>
             <h2 id="product-editor-title" className="truncate font-display text-xl font-extrabold tracking-[-0.02em]">
               {title}
             </h2>
           </div>
-          <button type="button" className={iconButton} onClick={requestClose} aria-label="Close">
+          <button type="button" className={iconButton} onClick={requestClose} aria-label={t("Common.close")}>
             <X aria-hidden="true" className="size-5" />
           </button>
         </header>
@@ -247,20 +243,21 @@ export function ProductEditor({
               </p>
             )}
 
-            <Section title="Phone">
+            <Section title={t("ProductEditor.sectionPhone")}>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field
-                  label="Model"
-                  error={errors.modelId && "Pick a model"}
+                  label={t("ProductEditor.model")}
+                  error={errors.modelId && t("ProductEditor.pickModel")}
                   className="sm:col-span-2"
                   hint={
                     model?.status === "needs_check" ? (
                       <span className="font-semibold text-warning">
-                        Specs to check against the manufacturer&rsquo;s page before this phone goes live
-                        {model.missing_fields.length > 0 && ` (missing: ${model.missing_fields.join(", ")})`}.
+                        {model.missing_fields.length > 0
+                          ? t("ProductEditor.specsToCheckMissing", { fields: model.missing_fields.join(", ") })
+                          : t("ProductEditor.specsToCheckHint")}
                       </span>
                     ) : (
-                      "Specs, colours and storage options come from the model database (Admin › Models)."
+                      t("ProductEditor.modelHint")
                     )
                   }
                 >
@@ -272,7 +269,7 @@ export function ProductEditor({
                     autoFocus={isNew}
                   >
                     <option value="" disabled>
-                      Choose a model…
+                      {t("ProductEditor.chooseModel")}
                     </option>
                     {modelsByBrand.map(([brand, list]) => (
                       <optgroup key={brand} label={brand}>
@@ -280,14 +277,14 @@ export function ProductEditor({
                           <option key={m.id} value={m.id}>
                             {m.label}
                             {m.release_year ? ` (${m.release_year})` : ""}
-                            {m.status === "needs_check" ? " · specs to check" : ""}
+                            {m.status === "needs_check" ? ` · ${t("ProductEditor.specsToCheck")}` : ""}
                           </option>
                         ))}
                       </optgroup>
                     ))}
                   </select>
                 </Field>
-                <Fieldset legend="Condition">
+                <Fieldset legend={t("ProductEditor.condition")}>
                   <div className="flex gap-2">
                     {(["new", "refurbished"] as const).map((condition) => (
                       <label
@@ -305,12 +302,12 @@ export function ProductEditor({
                           onChange={() => changeCondition(condition)}
                           className="sr-only"
                         />
-                        {condition === "new" ? "New" : "Refurbished"}
+                        {t(`Labels.condition.${condition}`)}
                       </label>
                     ))}
                   </div>
                 </Fieldset>
-                <Field label="Storage" error={errors.storageGb}>
+                <Field label={t("ProductEditor.storage")} error={errors.storageGb}>
                   <select
                     value={draft.storageGb}
                     onChange={(e) => set("storageGb", e.target.value)}
@@ -319,15 +316,15 @@ export function ProductEditor({
                   >
                     {(model?.storage_gb ?? []).map((gb) => (
                       <option key={gb} value={gb}>
-                        {gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`}
+                        {storageText(t, gb)}
                       </option>
                     ))}
                   </select>
                 </Field>
                 <Field
-                  label="Colour"
+                  label={t("ProductEditor.colour")}
                   error={errors.colorName}
-                  hint={model && model.colors.length === 0 ? "This model's colours aren't in the database yet: type the official name." : undefined}
+                  hint={model && model.colors.length === 0 ? t("ProductEditor.colourUnknownHint") : undefined}
                 >
                   {model && model.colors.length === 0 ? (
                     <input value={draft.colorName} onChange={(e) => changeColor(e.target.value)} className={adminInput} />
@@ -335,26 +332,26 @@ export function ProductEditor({
                     <select value={draft.colorName} onChange={(e) => changeColor(e.target.value)} className={adminSelect} disabled={!model}>
                       {(model?.colors ?? []).map((c) => (
                         <option key={c.name_en} value={c.name_en}>
-                          {c.name_en}
+                          {modelColorName(c, locale) ?? c.name_en}
                         </option>
                       ))}
                     </select>
                   )}
                 </Field>
-                <Field label="Illustration colour" hint="Tint of the drawing shown when there's no photo. Set from the colour name.">
+                <Field label={t("ProductEditor.illustrationColour")} hint={t("ProductEditor.illustrationColourHint")}>
                   <select value={draft.color} onChange={(e) => set("color", e.target.value as ProductDraft["color"])} className={adminSelect}>
                     {colors.map((color) => (
                       <option key={color} value={color}>
-                        {en.colors[color]}
+                        {shopLabels.colors[color]}
                       </option>
                     ))}
                   </select>
                 </Field>
-                <Field label="Illustration" hint="Drawn when the product has no photo.">
+                <Field label={t("ProductEditor.illustration")} hint={t("ProductEditor.illustrationHint")}>
                   <select value={draft.visual} onChange={(e) => set("visual", e.target.value as ProductDraft["visual"])} className={adminSelect}>
                     {visuals.map((visual) => (
                       <option key={visual} value={visual}>
-                        {VISUAL_LABELS[visual]}
+                        {t(`Labels.visual.${visual}`)}
                       </option>
                     ))}
                   </select>
@@ -363,18 +360,18 @@ export function ProductEditor({
             </Section>
 
             {draft.condition === "refurbished" && (
-              <Section title="Refurbished details">
+              <Section title={t("ProductEditor.sectionRefurbished")}>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Condition grade" error={errors.grade}>
+                  <Field label={t("ProductEditor.grade")} error={errors.grade}>
                     <select value={draft.grade} onChange={(e) => set("grade", e.target.value as ProductDraft["grade"])} className={adminSelect}>
                       {grades.map((grade) => (
                         <option key={grade} value={grade}>
-                          {GRADE_LABELS[grade]}
+                          {t(`Labels.grade.${grade}`)}
                         </option>
                       ))}
                     </select>
                   </Field>
-                  <Field label="Battery" error={errors.battery}>
+                  <Field label={t("ProductEditor.battery")} error={errors.battery}>
                     <select
                       value={draft.battery}
                       onChange={(e) => {
@@ -385,18 +382,18 @@ export function ProductEditor({
                     >
                       {batteryOptions.map((option) => (
                         <option key={option} value={option}>
-                          {BATTERY_LABELS[option]}
+                          {t(`Labels.battery.${option}`)}
                         </option>
                       ))}
                     </select>
                   </Field>
-                  <Field label="Battery health (%)" error={errors.batteryHealth}>
+                  <Field label={t("ProductEditor.batteryHealth")} error={errors.batteryHealth}>
                     <input
                       inputMode="numeric"
                       value={draft.batteryHealth}
                       onChange={(e) => set("batteryHealth", e.target.value)}
                       aria-invalid={Boolean(errors.batteryHealth)}
-                      placeholder="e.g. 92"
+                      placeholder={t("ProductEditor.batteryHealthPlaceholder")}
                       className={adminInput}
                     />
                   </Field>
@@ -404,9 +401,9 @@ export function ProductEditor({
               </Section>
             )}
 
-            <Section title="Price and stock">
+            <Section title={t("ProductEditor.sectionPrice")}>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <Field label="Price (€, VAT incl.)" error={errors.price}>
+                <Field label={t("ProductEditor.price")} error={errors.price}>
                   <input
                     inputMode="decimal"
                     value={draft.price}
@@ -415,7 +412,7 @@ export function ProductEditor({
                     className={adminInput}
                   />
                 </Field>
-                <Field label="Previous price (€)" error={errors.compareAtPrice} hint="Optional. Shown crossed out.">
+                <Field label={t("ProductEditor.previousPrice")} error={errors.compareAtPrice} hint={t("ProductEditor.previousPriceHint")}>
                   <input
                     inputMode="decimal"
                     value={draft.compareAtPrice}
@@ -424,7 +421,7 @@ export function ProductEditor({
                     className={adminInput}
                   />
                 </Field>
-                <Field label="Stock in the shop" error={errors.stock} hint={`≤ ${lowStockThreshold} shows “Only X left”. At 0, see below.`}>
+                <Field label={t("ProductEditor.stock")} error={errors.stock} hint={t("ProductEditor.stockHint", { threshold: lowStockThreshold })}>
                   <input
                     inputMode="numeric"
                     value={draft.stock}
@@ -433,7 +430,7 @@ export function ProductEditor({
                     className={adminInput}
                   />
                 </Field>
-                <Field label="Warranty (months)" error={errors.warrantyMonths}>
+                <Field label={t("ProductEditor.warranty")} error={errors.warrantyMonths}>
                   <input
                     inputMode="numeric"
                     value={draft.warrantyMonths}
@@ -443,10 +440,10 @@ export function ProductEditor({
                   />
                 </Field>
                 <Field
-                  label="When the shop’s stock runs out"
+                  label={t("ProductEditor.whenOut")}
                   error={errors.supplierAvailability}
                   className="sm:col-span-2 lg:col-span-4"
-                  hint="“Supplier, 24–48h”: customers can still order; their card is authorised and only charged once you confirm availability in Orders. “On request”: they send a request, nothing is paid online."
+                  hint={t("ProductEditor.whenOutHint")}
                 >
                   <select
                     value={draft.supplierAvailability}
@@ -455,7 +452,7 @@ export function ProductEditor({
                   >
                     {supplierAvailabilities.map((value) => (
                       <option key={value} value={value}>
-                        {SUPPLIER_AVAILABILITY[value]}
+                        {t(`Labels.supplierAvailability.${value}`)}
                       </option>
                     ))}
                   </select>
@@ -463,9 +460,9 @@ export function ProductEditor({
               </div>
             </Section>
 
-            <Section title="Badges and highlights">
+            <Section title={t("ProductEditor.sectionBadges")}>
               <div className="grid gap-5 lg:grid-cols-2">
-                <Fieldset legend="Badges">
+                <Fieldset legend={t("ProductEditor.badges")}>
                   {manualBadges.map((badge) => (
                     <label key={badge} className="flex min-h-9 items-center gap-2.5">
                       <input
@@ -474,15 +471,15 @@ export function ProductEditor({
                         onChange={() => set("badges", toggle(draft.badges, badge))}
                         className={adminCheckbox}
                       />
-                      {en.badges[badge]}
+                      {shopLabels.badges[badge]}
                     </label>
                   ))}
                   <p className="text-[0.8125rem] text-fg-subtle">
-                    “Last one available” and “Only X left” are added automatically from the stock.
-                    {inGreatDeals && " This phone is in Great Deals: set its deal badge in Great Deals."}
+                    {t("ProductEditor.badgesHint")}
+                    {inGreatDeals && ` ${t("ProductEditor.badgesInDeals")}`}
                   </p>
                 </Fieldset>
-                <Fieldset legend="Good for (most relevant first)" error={errors.goodFor}>
+                <Fieldset legend={t("ProductEditor.goodFor")} error={errors.goodFor}>
                   <div className="flex flex-wrap gap-2">
                     {goodForTags.map((tag) => {
                       const rank = draft.goodFor.indexOf(tag);
@@ -505,26 +502,26 @@ export function ProductEditor({
                               {rank + 1}
                             </span>
                           )}
-                          {en.goodFor[tag]}
+                          {shopLabels.goodFor[tag]}
                         </label>
                       );
                     })}
                   </div>
-                  <p className="text-[0.8125rem] text-fg-subtle">Tick in order of importance. Used by the shopping advisor too.</p>
+                  <p className="text-[0.8125rem] text-fg-subtle">{t("ProductEditor.goodForHint")}</p>
                 </Fieldset>
               </div>
             </Section>
 
-            <Section title="Photos">
+            <Section title={t("ProductEditor.sectionPhotos")}>
               <div className="grid gap-3">
                 {draft.photos.length > 0 ? (
                   <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                     {draft.photos.map((photo, index) => (
                       <li key={photo} className="grid gap-1.5">
                         <span className="relative block aspect-[3/4] overflow-hidden rounded-xl border border-line bg-surface-2">
-                          <Image src={photo} alt={`Photo ${index + 1}`} fill sizes="10rem" className="object-contain p-1" />
+                          <Image src={photo} alt={t("ProductEditor.photoAlt", { number: index + 1 })} fill sizes="10rem" className="object-contain p-1" />
                           {index === 0 && (
-                            <span className="absolute left-1.5 top-1.5 rounded-md bg-fg px-1.5 py-0.5 text-[0.75rem] font-bold text-ink">Main</span>
+                            <span className="absolute left-1.5 top-1.5 rounded-md bg-fg px-1.5 py-0.5 text-[0.75rem] font-bold text-ink">{t("ProductEditor.mainPhoto")}</span>
                           )}
                         </span>
                         <span className="flex justify-center gap-1">
@@ -533,8 +530,8 @@ export function ProductEditor({
                             className={iconButton}
                             disabled={index === 0}
                             onClick={() => set("photos", [photo, ...draft.photos.filter((p) => p !== photo)])}
-                            aria-label={`Make photo ${index + 1} the main photo`}
-                            title="Make main photo"
+                            aria-label={t("ProductEditor.makeMainLabel", { number: index + 1 })}
+                            title={t("ProductEditor.makeMain")}
                           >
                             <Star aria-hidden="true" className="size-4" />
                           </button>
@@ -542,8 +539,8 @@ export function ProductEditor({
                             type="button"
                             className={iconButton}
                             onClick={() => set("photos", draft.photos.filter((p) => p !== photo))}
-                            aria-label={`Remove photo ${index + 1}`}
-                            title="Remove photo"
+                            aria-label={t("ProductEditor.removePhotoLabel", { number: index + 1 })}
+                            title={t("ProductEditor.removePhoto")}
                           >
                             <Trash2 aria-hidden="true" className="size-4" />
                           </button>
@@ -552,7 +549,7 @@ export function ProductEditor({
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-fg-muted">No photo yet: the shop shows the neutral illustration.</p>
+                  <p className="text-fg-muted">{t("ProductEditor.noPhoto")}</p>
                 )}
                 <label
                   className={cn(
@@ -561,7 +558,7 @@ export function ProductEditor({
                   )}
                 >
                   {uploading ? <Loader2 aria-hidden="true" className="size-5 animate-spin" /> : <ImagePlus aria-hidden="true" className="size-5" />}
-                  {uploading ? "Uploading…" : "Add photos"}
+                  {uploading ? t("ProductEditor.uploading") : t("ProductEditor.addPhotos")}
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/avif"
@@ -575,20 +572,20 @@ export function ProductEditor({
                   />
                 </label>
                 <p className="text-[0.8125rem] text-fg-subtle">
-                  JPEG, PNG, WebP or AVIF, 5 MB max, up to {MAX_PHOTOS}. A plain light background looks best. The first photo is the main one.
+                  {t("ProductEditor.photosHint", { max: MAX_PHOTOS })}
                 </p>
               </div>
             </Section>
           </div>
 
           <aside className="grid content-start gap-4 xl:sticky xl:top-0">
-            <PreviewFrame title="Live preview · Great Deals card" locale={locale} onLocaleChange={setLocale}>
+            <PreviewFrame title={t("ProductEditor.previewDeal")} locale={previewLocale} onLocaleChange={setPreviewLocale}>
               <div className="mx-auto max-w-[22rem]">
-                <DealCard product={card} labels={{ view: t("Product.view"), previousPrice: t("Product.previousPrice") }} />
+                <DealCard product={card} labels={{ view: previewT("Product.view"), previousPrice: previewT("Product.previousPrice") }} />
               </div>
             </PreviewFrame>
             {draft.condition === "refurbished" && (
-              <PreviewFrame title="Live preview · Refurbished picks card" locale={locale} onLocaleChange={setLocale}>
+              <PreviewFrame title={t("ProductEditor.previewRefurb")} locale={previewLocale} onLocaleChange={setPreviewLocale}>
                 <div className="mx-auto max-w-[22rem]">
                   <RefurbCard product={card} />
                 </div>
@@ -596,7 +593,7 @@ export function ProductEditor({
             )}
             {!isNew && orderCount > 0 && (
               <Banner>
-                In {orderCount} order{orderCount > 1 ? "s" : ""}. Orders keep their own copy of the name and price, so editing is safe.
+                {t("ProductEditor.inOrders", { count: orderCount })}
               </Banner>
             )}
           </aside>
@@ -607,28 +604,28 @@ export function ProductEditor({
             {!isNew &&
               (confirmDelete ? (
                 <span className="flex flex-wrap items-center gap-2">
-                  <span className="font-semibold">Delete this product for good?</span>
+                  <span className="font-semibold">{t("ProductEditor.deleteConfirm")}</span>
                   <button type="button" className={adminButton("dangerSolid")} onClick={remove} disabled={pending}>
-                    Yes, delete
+                    {t("ProductEditor.deleteYes")}
                   </button>
                   <button type="button" className={adminButton("ghost")} onClick={() => setConfirmDelete(false)}>
-                    Keep it
+                    {t("ProductEditor.keep")}
                   </button>
                 </span>
               ) : (
                 <button type="button" className={adminButton("danger")} onClick={() => setConfirmDelete(true)} disabled={pending}>
                   <Trash2 aria-hidden="true" className="size-4" />
-                  Delete
+                  {t("Common.delete")}
                 </button>
               ))}
           </div>
           <div className="flex gap-2">
             <button type="button" className={adminButton("secondary")} onClick={requestClose} disabled={pending}>
-              Cancel
+              {t("Common.cancel")}
             </button>
             <button type="submit" className={adminButton("primary", "min-w-32")} disabled={pending || uploading}>
               {pending && <Loader2 aria-hidden="true" className="size-4 animate-spin" />}
-              {isNew ? "Add product" : "Save changes"}
+              {isNew ? t("ProductEditor.addSubmit") : t("Common.save")}
             </button>
           </div>
         </footer>

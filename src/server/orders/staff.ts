@@ -12,18 +12,16 @@ import { shopStockChanges } from "./payment-sync";
  * - "on request" order (nothing paid): confirm tells the customer to come and pay, decline closes it.
  */
 
-const NOT_WAITING = "This order is no longer waiting for an availability check. Reload the page.";
-
 async function waitingOrder(orderId: string): Promise<Order> {
   const order = await getOrder(orderId);
-  if (!order) throw new AdminDataError("This order no longer exists.");
-  if (order.status !== "awaiting_availability" && order.status !== "quote_requested") throw new AdminDataError(NOT_WAITING);
+  if (!order) throw new AdminDataError("orderGone");
+  if (order.status !== "awaiting_availability" && order.status !== "quote_requested") throw new AdminDataError("orderNotWaiting");
   return order;
 }
 
 function authorisedPaymentId(order: Order): string {
   const id = order.payment?.status === "authorized" ? order.payment.paymentId : null;
-  if (!id) throw new AdminDataError("This order has no card authorisation to act on.");
+  if (!id) throw new AdminDataError("noAuthorisation");
   return id;
 }
 
@@ -31,7 +29,7 @@ async function callProvider(action: () => Promise<void>): Promise<void> {
   try {
     await action();
   } catch (error) {
-    if (error instanceof PaymentError) throw new AdminDataError(error.message);
+    if (error instanceof PaymentError) throw new AdminDataError("paymentRefused", { detail: error.message });
     throw error;
   }
 }
@@ -50,7 +48,7 @@ export async function confirmAvailability(orderId: string, staffEmail: string): 
   }
 
   const { order: updated } = await updateOrder(orderId, (current) => {
-    if (current.status !== order.status) throw new AdminDataError(NOT_WAITING);
+    if (current.status !== order.status) throw new AdminDataError("orderNotWaiting");
     const availabilityCheck = check("confirmed", staffEmail, null);
     if (current.status === "quote_requested") return { ...current, status: "pending_payment", availabilityCheck };
     return { ...current, status: "paid", availabilityCheck, payment: { ...current.payment!, status: "captured", capturedAt: now } };
@@ -70,7 +68,7 @@ export async function declineAvailability(orderId: string, staffEmail: string, a
   }
 
   const { order: updated } = await updateOrder(orderId, (current) => {
-    if (current.status !== order.status) throw new AdminDataError(NOT_WAITING);
+    if (current.status !== order.status) throw new AdminDataError("orderNotWaiting");
     const availabilityCheck = check("unavailable", staffEmail, suggestion);
     const payment = current.payment ? { ...current.payment, status: "released" as const, releasedAt: now } : null;
     return { ...current, status: "cancelled", availabilityCheck, payment };

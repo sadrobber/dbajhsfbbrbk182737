@@ -12,6 +12,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Homepage sections: `src/components/home/`; pages and placeholder routes: `src/app/[locale]/`.
 - Every UI text lives in `messages/{fr,en,it}.json` (same keys in all three; `npm test` checks it).
+- Admin text lives in `messages/admin/{fr,en}.json` (French by default; the sidebar switch sets the `novacell_admin_locale` cookie). Server: `getAdminI18n()` in `src/server/admin/i18n.ts`; client: `useAdminI18n()`. Server errors are codes (`AdminDataError`, schema messages) translated under `Errors.*` / `Validation.*`.
 - Data access: UI and advisor only call `src/lib/data/queries.ts`. Swap the source in `src/lib/data/index.ts`.
 - Brand name and fixed settings: `src/config/site.config.ts`. Products, Great Deals, packages, Gauge: edited in `/admin`, stored in `data/*.json` (one file per future DB table; schemas in `src/lib/data/schema.ts` + `records.ts` + `pricing.ts`, FK check in `integrity.ts`).
 - Catalogue model: `data/models.json` is the phone spec database (252 models, imported from the spec file: never retype spec values; `data_quality` says what's checked). `data/products.json` rows are variants (a stock unit: model + storage + colour + condition/grade + battery, own price, stock, SKU). Grades and battery options: `data/grades.json`, `data/battery-options.json`. Promo codes and the trade-in grid: `data/promo-codes.json`, `data/tradein-prices.json`, `data/tradein-config.json` (rules in `src/lib/data/pricing.ts`). `CatalogItem` = variant + resolved model/brand/colour names.

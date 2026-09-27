@@ -7,8 +7,8 @@ import type { SupplierAvailability } from "@/lib/data/schema";
  * orders and admin screens stay as they are.
  */
 export interface SupplierConnector {
-  /** Shown to staff, e.g. "Manual check" or a supplier's name. */
-  readonly label: string;
+  /** Shown to staff in the admin's language, e.g. "Manual check" or a supplier's name. */
+  readonly label: { fr: string; en: string };
   /**
    * Asked when a "24-48h" or "on request" order arrives, and shown on the
    * order in the admin. "unknown" means staff must check themselves.

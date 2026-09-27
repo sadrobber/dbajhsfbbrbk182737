@@ -1,6 +1,6 @@
 "use server";
 
-import { type ActionResult, failure, refreshEverywhere } from "@/server/admin/action-result";
+import { type ActionResult, failure, failWith, refreshEverywhere } from "@/server/admin/action-result";
 import { requireAdmin } from "@/server/admin/auth";
 import { syncOrderPayment } from "@/server/orders/payment-sync";
 import { confirmAvailability, declineAvailability } from "@/server/orders/staff";
@@ -21,7 +21,7 @@ export async function confirmAvailabilityAction(orderId: string): Promise<Action
 export async function declineAvailabilityAction(orderId: string, alternative: string): Promise<ActionResult> {
   const session = await requireAdmin();
   const text = String(alternative ?? "").trim();
-  if (text.length > 500) return { ok: false, error: "The suggestion is too long (500 characters at most)." };
+  if (text.length > 500) return failWith("suggestionTooLong");
   try {
     await declineAvailability(String(orderId), session.email, text);
     refreshEverywhere();

@@ -1,5 +1,6 @@
 import { AlertTriangle, Info } from "lucide-react";
 import type { ReactNode } from "react";
+import type { AdminTranslator } from "@/i18n/admin";
 import { cn } from "@/lib/cn";
 
 export function PageHeader({ title, description, actions }: { title: string; description?: ReactNode; actions?: ReactNode }) {
@@ -30,11 +31,10 @@ export function Banner({ tone = "info", children }: { tone?: "info" | "warning";
 }
 
 /** Shown on every screen that lists placeholder records. */
-export function PlaceholderDataBanner() {
+export function PlaceholderDataBanner({ t }: { t: AdminTranslator }) {
   return (
     <Banner tone="warning">
-      <strong>Placeholder data.</strong> The records shipped in <code>data/*.json</code> are examples. Customers who order through the
-      shop&rsquo;s checkout are real and appear next to them; trade-ins, tickets and invoices have no customer flow yet.
+      <strong>{t("Common.placeholderTitle")}</strong> {t("Common.placeholderText")}
     </Banner>
   );
 }

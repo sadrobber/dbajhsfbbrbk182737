@@ -22,7 +22,7 @@ export const promoCodeSchema = z
     expiresAt: z.iso.datetime().nullable(),
     active: z.boolean(),
   })
-  .refine((c) => c.kind !== "percent" || c.value <= 100, { path: ["value"], message: "A percentage can't exceed 100" });
+  .refine((c) => c.kind !== "percent" || c.value <= 100, { path: ["value"], message: "percentMax" });
 
 export type PromoCode = z.infer<typeof promoCodeSchema>;
 
