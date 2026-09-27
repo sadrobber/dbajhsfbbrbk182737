@@ -1,4 +1,4 @@
-import { ArrowRight, Smartphone } from "lucide-react";
+import { ArrowRightIcon as ArrowRight, DeviceMobileIcon as Smartphone } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";

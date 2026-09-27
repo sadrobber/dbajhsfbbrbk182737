@@ -1,4 +1,4 @@
-import { ArrowLeftRight, Clock, CreditCard, MessageSquareText, ShoppingBag, Store } from "lucide-react";
+import { ArrowsLeftRightIcon as ArrowLeftRight, ClockIcon as Clock, CreditCardIcon as CreditCard, ChatTextIcon as MessageSquareText, ShoppingBagIcon as ShoppingBag, StorefrontIcon as Store } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";

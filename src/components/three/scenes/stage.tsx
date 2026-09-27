@@ -26,8 +26,8 @@ function Lights() {
       <directionalLight position={[3, 4, 6]} intensity={1.5} />
       {/* Electric-blue rim lights, from behind the models */}
       <directionalLight position={[-4, 2.5, -4]} intensity={7} color="#1f6fff" />
-      <directionalLight position={[4, -1.5, -3.5]} intensity={5.5} color="#3d8bff" />
-      <directionalLight position={[0, 5, -3]} intensity={3} color="#5aa9ff" />
+      <directionalLight position={[4, -1.5, -3.5]} intensity={5.5} color="#4a86e0" />
+      <directionalLight position={[0, 5, -3]} intensity={3} color="#6ea8ec" />
     </>
   );
 }

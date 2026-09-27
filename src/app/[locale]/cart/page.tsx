@@ -1,4 +1,4 @@
-import { Clock, MessageSquareText, Minus, Package, Plus, Store, Trash2 } from "lucide-react";
+import { ClockIcon as Clock, ChatTextIcon as MessageSquareText, MinusIcon as Minus, PackageIcon as Package, PlusIcon as Plus, StorefrontIcon as Store, TrashIcon as Trash2 } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";

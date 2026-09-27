@@ -10,7 +10,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Project map
 
-- Homepage sections: `src/components/home/`; pages and placeholder routes: `src/app/[locale]/`.
+- Homepage sections: `src/components/home/` (page in `src/app/[locale]/(home)/` with its `loading.tsx` skeleton); pages and placeholder routes: `src/app/[locale]/`.
+- Shop-side design: Geist + Outfit fonts, Phosphor icons imported from `@phosphor-icons/react/dist/ssr` (works in server and client components; the admin still uses lucide), Motion from `motion/react`. Looping animations live in their own memoised client components (`src/components/home/bento/`), pause off screen (`useInView`) and stop with `useReducedMotion`.
 - Every UI text lives in `messages/{fr,en,it}.json` (same keys in all three; `npm test` checks it).
 - Admin text lives in `messages/admin/{fr,en}.json` (French by default; the sidebar switch sets the `novacell_admin_locale` cookie). Server: `getAdminI18n()` in `src/server/admin/i18n.ts`; client: `useAdminI18n()`. Server errors are codes (`AdminDataError`, schema messages) translated under `Errors.*` / `Validation.*`.
 - Data access: UI and advisor only call `src/lib/data/queries.ts`. Swap the source in `src/lib/data/index.ts`.

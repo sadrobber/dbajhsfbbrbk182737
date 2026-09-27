@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRightIcon as ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import type { ProductCardView } from "@/lib/product-view";
 import { Availability, ProductBadge, visualBackdrop } from "./product-bits";
@@ -15,7 +15,7 @@ export function DealCard({
   const showsLastOneBadge = product.badges.some((badge) => badge.key === "last_one");
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-surface-1 shadow-card transition duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-glow has-[a:focus-visible]:outline-3 has-[a:focus-visible]:outline-offset-3 has-[a:focus-visible]:outline-accent-strong">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-line bg-ink shadow-diffusion transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_28px_50px_-22px_rgb(15_20_35/0.2)] has-[a:focus-visible]:outline-3 has-[a:focus-visible]:outline-offset-3 has-[a:focus-visible]:outline-accent-strong">
       <div className="relative aspect-[5/4] overflow-hidden" style={{ backgroundImage: visualBackdrop(product.color) }}>
         {product.badges.length > 0 && (
           <ul className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">

@@ -8,7 +8,13 @@
     "backHome": "Torna alla home",
     "todo": "TODO",
     "todoHint": "Da confermare",
-    "prototypeNotice": "Prototipo: prezzi e disponibilità sono di esempio."
+    "prototypeNotice": "Prototipo: prezzi e disponibilità sono di esempio.",
+    "scrollPrevious": "Mostra i precedenti",
+    "scrollNext": "Mostra i successivi",
+    "errorTitle": "Non è stato possibile caricare la pagina",
+    "errorText": "Si è verificato un problema da parte nostra. Riprova tra un attimo.",
+    "retry": "Riprova",
+    "loading": "Caricamento…"
   },
   "Header": {
     "home": "{brand}, pagina iniziale",
@@ -35,6 +41,39 @@
       "new": "Nuovi",
       "refurbished": "Ricondizionati",
       "deals": "Offerte"
+    },
+    "subtitle": "Nuovi o ricondizionati, testati e garantiti. Consigli, ritiro in negozio e permuta del tuo vecchio telefono, da Cap-d’Ail a Sospel.",
+    "facts": {
+      "label": "Novacell in breve",
+      "phones": "{count, plural, one {# telefono} other {# telefoni}} disponibili",
+      "refurbishedFrom": "Ricondizionati da {price}",
+      "warranty": "Fino a {months} mesi di garanzia"
+    }
+  },
+  "Services": {
+    "title": "Scegli, confronta, ritira.",
+    "subtitle": "Un consulente online, un vero negozio e un team vicino a te.",
+    "advisor": {
+      "title": "Il consulente",
+      "text": "Descrivi ciò che ti serve: propone solo telefoni disponibili.",
+      "cta": "Prova questa domanda",
+      "thinking": "Ricerca nel magazzino…",
+      "inputLabel": "Domanda di esempio"
+    },
+    "compare": {
+      "title": "Confronta e dai in permuta",
+      "text": "Il tuo telefono accanto a quello che vorresti: caratteristiche, valore di permuta e prezzo dopo la permuta.",
+      "toolbar": "Confronta",
+      "better": "migliore"
+    },
+    "pickup": {
+      "title": "Ritiro in negozio",
+      "text": "Ordina online, ti avvisiamo quando è pronto.",
+      "notice": "Il tuo ordine è pronto",
+      "detail": "Da ritirare al negozio {brand}"
+    },
+    "services": {
+      "text": "Di persona, con un vero team."
     }
   },
   "Deals": {

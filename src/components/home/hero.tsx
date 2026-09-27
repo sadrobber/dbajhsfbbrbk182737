@@ -1,57 +1,70 @@
-import { MapPin } from "lucide-react";
+import { CalendarCheckIcon, MapPinIcon, RecycleIcon, StackIcon } from "@phosphor-icons/react/dist/ssr";
 import { getTranslations } from "next-intl/server";
 import { PhoneVisual } from "@/components/product/phone-visual";
 import { HeroThree } from "@/components/three/lazy-scenes";
 import { container, eyebrow } from "@/components/ui/styles";
 import { HeroActions } from "./hero-actions";
 
+/** Figures from the live catalogue, already formatted. */
+export type HeroFacts = { phones: number; refurbishedFrom: string | null; warrantyMonths: number | null };
+
 /** Static illustration: shown first, and kept for reduced motion, no WebGL or low-end devices. */
 function HeroVisual() {
   return (
-    <div aria-hidden="true" className="relative mx-auto h-[21rem] w-full max-w-[26rem] sm:h-[27rem] lg:h-[36rem] lg:max-w-[32rem]">
-      <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(closest-side,rgba(0,102,255,0.22),rgba(0,102,255,0.06)_60%,transparent)] blur-2xl" />
-      <PhoneVisual
-        color="purple"
-        visual="trio"
-        className="absolute left-[2%] top-[16%] h-[70%] -rotate-[14deg] opacity-90 motion-safe:animate-float-slow"
-      />
+    <div aria-hidden="true" className="relative mx-auto h-[21rem] w-full max-w-[26rem] sm:h-[27rem] lg:h-[34rem] lg:max-w-[30rem]">
+      <div className="absolute inset-x-[8%] bottom-[4%] h-[18%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(15,20,35,0.14),transparent)]" />
       <PhoneVisual
         color="silver"
+        visual="trio"
+        className="absolute left-[2%] top-[16%] h-[70%] -rotate-[14deg] motion-safe:animate-float-slow"
+      />
+      <PhoneVisual
+        color="blue"
         visual="column"
-        className="absolute right-[2%] top-[14%] h-[70%] rotate-[12deg] opacity-90 motion-safe:animate-float-slow motion-safe:[animation-delay:-4.5s]"
+        className="absolute right-[2%] top-[14%] h-[70%] rotate-[12deg] motion-safe:animate-float-slow motion-safe:[animation-delay:-4.5s]"
       />
       <PhoneVisual
         view="front"
         color="black"
-        className="absolute left-1/2 top-[2%] h-[94%] -translate-x-1/2 drop-shadow-[0_36px_40px_rgba(15,20,35,0.28)] motion-safe:animate-float"
+        className="absolute left-1/2 top-[2%] h-[94%] -translate-x-1/2 drop-shadow-[0_36px_40px_rgba(15,20,35,0.24)] motion-safe:animate-float"
       />
     </div>
   );
 }
 
-export async function Hero() {
+/** Split hero: the promise and the two ways in on the left, the phones on the right. */
+export async function Hero({ facts }: { facts: HeroFacts }) {
   const t = await getTranslations("Hero");
+  const figures = [
+    { icon: StackIcon, text: t("facts.phones", { count: facts.phones }) },
+    facts.refurbishedFrom ? { icon: RecycleIcon, text: t("facts.refurbishedFrom", { price: facts.refurbishedFrom }) } : null,
+    facts.warrantyMonths ? { icon: CalendarCheckIcon, text: t("facts.warranty", { months: facts.warrantyMonths }) } : null,
+  ].filter((figure) => figure !== null);
+
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[46rem] bg-[radial-gradient(60%_50%_at_70%_20%,rgba(0,102,255,0.10),transparent_70%),radial-gradient(40%_40%_at_10%_10%,rgba(11,12,16,0.04),transparent_70%)]"
-      />
-      <div className={`${container} grid items-center gap-8 pb-12 pt-8 sm:pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-4 lg:pb-20 lg:pt-16`}>
-        <div>
+    <section aria-labelledby="hero-title" className="relative overflow-hidden bg-[linear-gradient(180deg,var(--color-canvas),var(--color-ink)_70%)]">
+      <div className={`${container} grid grid-cols-[minmax(0,1fr)] items-center gap-10 pb-16 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-6 lg:pb-24 lg:pt-20`}>
+        <div className="max-w-2xl">
           <p className={eyebrow}>
-            <MapPin aria-hidden="true" className="size-4 text-accent-text" />
+            <MapPinIcon aria-hidden="true" className="size-4 text-accent-text" />
             {t("eyebrow")}
           </p>
-          <h1
-            id="hero-title"
-            className="mt-5 text-balance font-display text-[2.625rem] font-extrabold leading-[1.04] tracking-[-0.035em] sm:text-6xl lg:text-[4.75rem]"
-          >
+          <h1 id="hero-title" className="mt-6 max-w-[15ch] text-balance font-display text-4xl font-bold leading-none tracking-tighter md:text-6xl">
             {t("title")}
           </h1>
+          <p className="mt-5 max-w-[52ch] text-base leading-relaxed text-fg-muted md:text-lg">{t("subtitle")}</p>
           <HeroActions />
+
+          <ul aria-label={t("facts.label")} className="mt-10 grid gap-4 border-t border-line pt-6 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-line">
+            {figures.map(({ icon: Icon, text }) => (
+              <li key={text} className="flex items-center gap-3 sm:px-5 sm:first:pl-0">
+                <Icon aria-hidden="true" className="size-6 shrink-0 text-accent-text" />
+                <span className="text-[0.9375rem] font-semibold leading-snug tabular-nums">{text}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <HeroThree className="mx-auto w-full max-w-[34rem]" fallback={<HeroVisual />} />
+        <HeroThree className="mx-auto w-full max-w-[32rem] lg:translate-x-6" fallback={<HeroVisual />} />
       </div>
     </section>
   );

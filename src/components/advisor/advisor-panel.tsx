@@ -1,6 +1,6 @@
 "use client";
 
-import { RotateCcw, SendHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowCounterClockwiseIcon as RotateCcw, PaperPlaneRightIcon as SendHorizontal, SparkleIcon as Sparkles, XIcon as X } from "@phosphor-icons/react/dist/ssr";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { MAX_MESSAGE_LENGTH } from "@/lib/advisor/constants";

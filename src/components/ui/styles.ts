@@ -3,7 +3,7 @@
 export const container = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2.5 rounded-full font-semibold tracking-[-0.01em] transition duration-200 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-accent-strong";
+  "inline-flex items-center justify-center gap-2.5 rounded-full font-semibold tracking-[-0.01em] transition duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-accent-strong";
 
 export const buttonSize = {
   lg: "min-h-16 px-7 text-lg",
@@ -13,7 +13,7 @@ export const buttonSize = {
 
 export const buttonVariant = {
   primary:
-    "bg-accent text-white shadow-glow hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgb(0_102_255/0.6),0_24px_60px_-18px_rgb(0_102_255/0.95)] active:translate-y-0",
+    "bg-accent text-white shadow-glow hover:-translate-y-0.5 hover:bg-[#1a5fcb] hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_18px_34px_-16px_rgb(27_103_218/0.7)] active:translate-y-0",
   secondary:
     "border border-line-strong bg-ink text-fg hover:-translate-y-0.5 hover:border-fg hover:bg-surface-1 active:translate-y-0",
   dark: "bg-fg text-ink hover:-translate-y-0.5 hover:bg-[#262833] active:translate-y-0",

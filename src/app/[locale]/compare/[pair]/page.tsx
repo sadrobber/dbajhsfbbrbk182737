@@ -1,4 +1,4 @@
-import { ArrowLeftRight, ArrowRight, Check, Pencil, Recycle, Store } from "lucide-react";
+import { ArrowsLeftRightIcon as ArrowLeftRight, ArrowRightIcon as ArrowRight, CheckIcon as Check, PencilSimpleIcon as Pencil, RecycleIcon as Recycle, StorefrontIcon as Store } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";

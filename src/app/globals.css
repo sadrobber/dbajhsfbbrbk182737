@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Light theme: white page, black and electric blue as identity accents.
- * "ink" is the page background, "fg" the text colour.
+ * Design tokens. Light theme: white page, off-black and one electric blue accent
+ * (kept below 80% saturation). "ink" is the page background, "fg" the text colour.
  * All text/background pairs meet WCAG AA (4.5:1 for text, 3:1 for control borders):
- * bright #0066ff is only used behind white text, for icons and for the Gauge;
- * blue text uses the darker accent-text (#0052cc, 5.4:1 or more on every surface).
+ * #1b67da carries white text at 5.2:1; blue text uses the darker accent-text
+ * (#1656b6, 6:1 or more on every surface).
  */
 @theme {
   --color-ink: #ffffff;
+  /* Page bands behind white cards (the Bento section). */
+  --color-canvas: #f9fafb;
   --color-surface-1: #f6f7f9;
   --color-surface-2: #eef0f4;
   --color-surface-3: #e3e6ec;
@@ -20,16 +22,16 @@
   --color-fg-subtle: #5d6270;
 
   /* Electric blue: buttons, badges, icons, the Gauge (white text on it: 4.8:1) */
-  --color-accent: #0066ff;
+  --color-accent: #1b67da;
   /* Electric blue for links and blue text on white or light grey */
-  --color-accent-text: #0052cc;
-  --color-accent-strong: #0066ff;
+  --color-accent-text: #1656b6;
+  --color-accent-strong: #1b67da;
   --color-accent-soft: #e8f0ff;
 
   /* Black identity areas (footer) */
   --color-night: #0b0c10;
   --color-night-muted: #c9ccd6;
-  --color-night-accent: #5aa9ff;
+  --color-night-accent: #6ea8ec;
 
   --color-success: #13773a;
   --color-success-soft: #e6f5ec;
@@ -40,12 +42,33 @@
   --color-danger: #b0183c;
   --color-danger-soft: #fdecef;
 
-  --shadow-glow: 0 0 0 1px rgb(0 102 255 / 0.35), 0 16px 40px -16px rgb(0 102 255 / 0.55);
+  /* No neon: a shadow tinted with the accent, plus a 1px top highlight. */
+  --shadow-glow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 14px 30px -16px rgb(27 103 218 / 0.55);
+  /* Wide, very light shadow for white cards on the canvas. */
+  --shadow-diffusion: 0 20px 40px -15px rgb(15 20 35 / 0.06);
   --shadow-card: 0 1px 2px rgb(15 20 35 / 0.05), 0 16px 36px -20px rgb(15 20 35 / 0.22);
 
   --animate-float: float 7s ease-in-out infinite;
   --animate-float-slow: float 9s ease-in-out infinite;
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-blink: blink 1.05s steps(2, start) infinite;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
 
   @keyframes float {
     0%,
@@ -54,6 +77,12 @@
     }
     50% {
       transform: translateY(-12px);
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
     }
   }
 
@@ -69,8 +98,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-outfit), var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -146,7 +175,24 @@
   transform: none;
   transition:
     opacity 0.7s ease-out,
-    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Items inside a revealed section arrive one after the other: set --index on each. */
+.reveal[data-reveal="pending"] .stagger-item {
+  opacity: 0;
+}
+
+.reveal[data-reveal="shown"] .stagger-item {
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--index, 0) * 90ms);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
 }
 
 /* ---------------------------------------------------------------------------

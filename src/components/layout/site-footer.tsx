@@ -1,4 +1,4 @@
-import { LockKeyhole } from "lucide-react";
+import { LockKeyIcon as LockKeyhole } from "@phosphor-icons/react/dist/ssr";
 import { getTranslations } from "next-intl/server";
 import NextLink from "next/link";
 import { BRAND_NAME } from "@/config/site.config";

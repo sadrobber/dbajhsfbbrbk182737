@@ -44,9 +44,9 @@ export function Availability({ tone, label, className }: { tone: AvailabilityTon
 /** Soft glow behind the phone illustration, tinted per colour family. */
 export function visualBackdrop(color: string): string {
   const tints: Record<string, string> = {
-    black: "rgba(0,102,255,0.14)",
+    black: "rgba(27,103,218,0.14)",
     white: "rgba(148,163,184,0.26)",
-    blue: "rgba(0,102,255,0.18)",
+    blue: "rgba(27,103,218,0.18)",
     green: "rgba(34,197,94,0.16)",
     purple: "rgba(139,92,246,0.16)",
     grey: "rgba(100,116,139,0.18)",

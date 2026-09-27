@@ -6,12 +6,12 @@ export const adminInput = `min-h-11 w-full rounded-xl border border-line-strong/
 
 export const adminSelect = `${adminInput} pr-8`;
 
-export const adminCheckbox = "size-5 shrink-0 rounded accent-[#0066ff]";
+export const adminCheckbox = "size-5 shrink-0 rounded accent-[#1b67da]";
 
 const buttonBase = `inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-[0.9375rem] font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${focus}`;
 
 const variants = {
-  primary: "bg-accent text-white hover:bg-[#0052cc]",
+  primary: "bg-accent text-white hover:bg-[#1656b6]",
   secondary: "border border-line-strong/60 bg-ink text-fg hover:bg-surface-2",
   ghost: "text-fg-muted hover:bg-surface-2 hover:text-fg",
   danger: "border border-danger/40 bg-ink text-danger hover:bg-danger-soft",

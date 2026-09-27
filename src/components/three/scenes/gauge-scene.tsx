@@ -73,7 +73,7 @@ function GaugeContent({ value }: { value: number }) {
             </mesh>
             <mesh ref={fill} geometry={start.fill} scale={1.01}>
               <meshPhysicalMaterial
-                color="#0a5cff"
+                color="#2a6ad0"
                 emissive="#0047ff"
                 emissiveIntensity={0.55}
                 roughness={0.3}
@@ -84,11 +84,11 @@ function GaugeContent({ value }: { value: number }) {
               />
             </mesh>
             <mesh ref={halo} geometry={start.halo}>
-              <meshBasicMaterial color="#3d8bff" transparent opacity={0.1} depthWrite={false} toneMapped={false} />
+              <meshBasicMaterial color="#4a86e0" transparent opacity={0.1} depthWrite={false} toneMapped={false} />
             </mesh>
             <mesh ref={cap} position={[RADIUS, 0, 0]}>
               <sphereGeometry args={[TUBE * 1.35, 24, 16]} />
-              <meshPhysicalMaterial color="#5aa9ff" emissive="#3d8bff" emissiveIntensity={1.4} roughness={0.2} />
+              <meshPhysicalMaterial color="#6ea8ec" emissive="#4a86e0" emissiveIntensity={1.4} roughness={0.2} />
             </mesh>
           </group>
         </group>

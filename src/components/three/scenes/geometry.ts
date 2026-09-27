@@ -60,8 +60,8 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 export function createScreenTexture() {
   return canvasTexture(256, 512, (ctx) => {
     const bg = ctx.createRadialGradient(80, 110, 10, 128, 256, 420);
-    bg.addColorStop(0, "#5aa9ff");
-    bg.addColorStop(0.35, "#0a5cff");
+    bg.addColorStop(0, "#6ea8ec");
+    bg.addColorStop(0.35, "#2a6ad0");
     bg.addColorStop(0.75, "#0b1a4a");
     bg.addColorStop(1, "#050814");
     ctx.fillStyle = bg;
@@ -93,9 +93,9 @@ export function createShadowTexture() {
 export function createGlowTexture() {
   return canvasTexture(128, 128, (ctx) => {
     const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    g.addColorStop(0, "rgba(0,102,255,0.55)");
-    g.addColorStop(0.5, "rgba(0,102,255,0.18)");
-    g.addColorStop(1, "rgba(0,102,255,0)");
+    g.addColorStop(0, "rgba(27,103,218,0.55)");
+    g.addColorStop(0.5, "rgba(27,103,218,0.18)");
+    g.addColorStop(1, "rgba(27,103,218,0)");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, 128, 128);
   });

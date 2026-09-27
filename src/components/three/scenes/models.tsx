@@ -136,10 +136,10 @@ export function PhoneCase(props: GroupProps & { materialRef?: Ref<MeshPhysicalMa
   return (
     <group {...group}>
       <mesh geometry={back} position-z={-0.14}>
-        <meshPhysicalMaterial ref={materialRef} color="#0066ff" roughness={0.35} transparent opacity={0.55} clearcoat={0.6} />
+        <meshPhysicalMaterial ref={materialRef} color="#1b67da" roughness={0.35} transparent opacity={0.55} clearcoat={0.6} />
       </mesh>
       <mesh geometry={rim} position-z={-0.12}>
-        <meshPhysicalMaterial color="#0066ff" roughness={0.35} transparent opacity={0.55} clearcoat={0.6} />
+        <meshPhysicalMaterial color="#1b67da" roughness={0.35} transparent opacity={0.55} clearcoat={0.6} />
       </mesh>
     </group>
   );
@@ -176,7 +176,7 @@ export function WallCharger(props: GroupProps) {
       </mesh>
       <mesh position={[0, 0.13, 0.212]}>
         <circleGeometry args={[0.02, 12]} />
-        <meshBasicMaterial color="#0066ff" />
+        <meshBasicMaterial color="#1b67da" />
       </mesh>
     </group>
   );
@@ -249,7 +249,7 @@ export function Battery(props: GroupProps) {
       </mesh>
       <mesh position={[0, 0.12, 0.052]}>
         <planeGeometry args={[0.36, 0.1]} />
-        <meshBasicMaterial color="#0066ff" />
+        <meshBasicMaterial color="#1b67da" />
       </mesh>
     </group>
   );

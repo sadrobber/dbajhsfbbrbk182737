@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeftIcon as ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { useTranslations } from "next-intl";
 import { OpenAdvisorButton } from "@/components/advisor/advisor-buttons";
 import { buttonClass, container } from "@/components/ui/styles";

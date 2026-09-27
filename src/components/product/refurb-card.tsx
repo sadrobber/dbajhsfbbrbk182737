@@ -1,4 +1,4 @@
-import { BatteryMedium, ShieldCheck, Sparkles } from "lucide-react";
+import { BatteryMediumIcon as BatteryMedium, ShieldCheckIcon as ShieldCheck, SparkleIcon as Sparkles } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import type { ProductCardView } from "@/lib/product-view";
 import { ProductPicture } from "./product-picture";
@@ -17,7 +17,7 @@ export function RefurbCard({ product }: { product: ProductCardView }) {
   ].filter((fact): fact is { icon: typeof Sparkles; label: string } => Boolean(fact.label));
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-surface-1 shadow-card transition duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-glow has-[a:focus-visible]:outline-3 has-[a:focus-visible]:outline-offset-3 has-[a:focus-visible]:outline-accent-strong">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-line bg-ink shadow-diffusion transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_28px_50px_-22px_rgb(15_20_35/0.2)] has-[a:focus-visible]:outline-3 has-[a:focus-visible]:outline-offset-3 has-[a:focus-visible]:outline-accent-strong">
       <div className="flex items-center gap-4 p-5 pb-0 sm:p-6 sm:pb-0">
         <div
           className="relative h-32 w-24 shrink-0 overflow-hidden rounded-2xl bg-surface-2"

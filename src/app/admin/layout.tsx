@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Outfit } from "next/font/google";
 import { AdminI18nProvider } from "@/components/admin/i18n";
 import { BRAND_NAME } from "@/config/site.config";
 import { getAdminLocale, getAdminMessages } from "@/server/admin/i18n";
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", weight: ["700", "800"], display: "swap" });
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", weight: ["500", "600", "700", "800"], display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: `${BRAND_NAME} Admin`, template: `%s · ${BRAND_NAME} Admin` },
@@ -23,7 +23,7 @@ export const viewport: Viewport = { themeColor: "#0b0c10", colorScheme: "light" 
 export default async function AdminRootLayout({ children }: LayoutProps<"/admin">) {
   const locale = await getAdminLocale();
   return (
-    <html lang={locale} data-scroll-behavior="smooth" className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang={locale} data-scroll-behavior="smooth" className={`${geist.variable} ${outfit.variable}`}>
       <body className="min-h-dvh bg-surface-1 font-sans text-fg antialiased">
         <AdminI18nProvider locale={locale} messages={getAdminMessages(locale)}>
           {children}

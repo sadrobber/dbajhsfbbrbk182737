@@ -1,4 +1,4 @@
-import { ArrowLeft, Hammer } from "lucide-react";
+import { ArrowLeftIcon as ArrowLeft, HammerIcon as Hammer } from "@phosphor-icons/react/dist/ssr";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { OpenAdvisorButton } from "@/components/advisor/advisor-buttons";

@@ -94,9 +94,9 @@ export function GaugeRing({ value }: { value: number }) {
     <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="size-full -rotate-[225deg]" aria-hidden="true">
       <defs>
         <linearGradient id="gauge-gradient" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#0047ff" />
-          <stop offset="0.55" stopColor="#0a84ff" />
-          <stop offset="1" stopColor="#8ec5ff" />
+          <stop offset="0" stopColor="#1b52b8" />
+          <stop offset="0.55" stopColor="#2f78e0" />
+          <stop offset="1" stopColor="#9dbfe9" />
         </linearGradient>
       </defs>
       <circle

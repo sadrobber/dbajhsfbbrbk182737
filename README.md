@@ -35,7 +35,7 @@ Other commands:
 | Packages (price, contents, "to be confirmed" markers) | **Admin → Packages** (`data/packages.json`) |
 | Gauge (%, target, prizes, on/off) | **Admin → Gauge** (`data/gauge-config.json`) |
 | Package names and taglines | `Packages` in `messages/fr.json`, `en.json`, `it.json` |
-| Towns and services in "Close to you" | `storefrontSettings.serviceArea` in `src/config/site.config.ts` + `Local` in the message files |
+| Towns and services (homepage "Choose, compare, pick up" tiles) | `storefrontSettings.serviceArea` in `src/config/site.config.ts` + `Local` in the message files |
 | "Only N left" threshold, number of Great Deals / refurbished picks shown | `storefrontSettings` in `src/config/site.config.ts` |
 | Any text on the site | `messages/{fr,en,it}.json` (French is the default language) |
 | AI provider | `.env.local` (see below); the only vendor-specific code is `src/server/advisor/ai-adapter.ts` |
@@ -264,14 +264,15 @@ src/
     api/media/            serves product photos uploaded in the admin
     manifest.ts, icon.tsx PWA manifest and generated app icons
   components/
-    home/                 homepage sections (hero, deals, refurbished, packages, Gauge, trade-in, close to you)
+    home/                 homepage sections (hero, deals, services Bento, refurbished, packages, Gauge); bento/ holds the animated tiles
+    motion/               shared motion pieces (magnetic buttons)
     product/              product cards and the neutral phone illustration
     three/                3D scenes, their lazy loader and static fallbacks
     advisor/              chat panel, its state, cards and "Help me choose" buttons
     support/              support chat bubble and panel
     admin/                admin screens, tables, previews and form pieces
     layout/               header, language switcher, footer
-    ui/                   shared styles, carousel, placeholder page
+    ui/                   shared styles, section heading, placeholder page
   config/site.config.ts   brand name, stock threshold, service area
   config/support.config.ts  support chat: contact details and extra knowledge (TODOs to fill in)
   i18n/                   language routing and message loading
@@ -292,4 +293,5 @@ src/
 - Tap targets are at least 44 px, main buttons 64 px; body text is 17 px.
 - Keyboard and screen-reader support: skip link, visible focus, labelled controls, native modal dialog for the advisor, announced replies.
 - Animations are subtle and switch off with the system's "reduce motion" setting, which also replaces 3D with static images.
-- Swipeable carousels on phones (no JavaScript needed), grids on large screens.
+- Product rows scroll sideways on every screen (swipe, or the previous/next buttons and the keyboard on computers).
+- Homepage design rules (from the design brief): Geist for text and Outfit for headings, Phosphor icons on the shop side (the admin still uses lucide), one electric-blue accent kept below 80% saturation, no glow shadows, Motion (`motion/react`) for micro-interactions, each looping animation isolated in its own memoised client component that pauses off screen and stops with reduced motion.

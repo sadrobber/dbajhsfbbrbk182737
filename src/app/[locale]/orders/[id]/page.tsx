@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, CreditCard, Lightbulb, MessageSquareText, RefreshCw, XCircle } from "lucide-react";
+import { CheckCircleIcon as CheckCircle2, ClockIcon as Clock, CreditCardIcon as CreditCard, LightbulbIcon as Lightbulb, ChatTextIcon as MessageSquareText, ArrowsClockwiseIcon as RefreshCw, XCircleIcon as XCircle } from "@phosphor-icons/react/dist/ssr";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";

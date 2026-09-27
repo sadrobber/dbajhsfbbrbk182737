@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, RotateCcw, SendHorizontal, Sparkles, X } from "lucide-react";
+import { ChatCircleIcon as MessageCircle, ArrowCounterClockwiseIcon as RotateCcw, PaperPlaneRightIcon as SendHorizontal, SparkleIcon as Sparkles, XIcon as X } from "@phosphor-icons/react/dist/ssr";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { useAdvisor } from "@/components/advisor/advisor-provider";

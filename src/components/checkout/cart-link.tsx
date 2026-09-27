@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBagIcon as ShoppingBag } from "@phosphor-icons/react/dist/ssr";
 import { useSyncExternalStore } from "react";
 import { Link } from "@/i18n/navigation";
 import { readCartCount, subscribeToCart } from "./cart-cookie";

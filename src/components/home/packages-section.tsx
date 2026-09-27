@@ -21,7 +21,7 @@ function PackagesStill() {
   ];
   return (
     <div aria-hidden="true" className="relative mx-auto h-[19rem] w-full max-w-3xl sm:h-[24rem]">
-      <div className="absolute inset-x-[20%] inset-y-[10%] rounded-full bg-[radial-gradient(closest-side,rgba(0,102,255,0.16),transparent)] blur-2xl" />
+      <div className="absolute inset-x-[20%] inset-y-[10%] rounded-full bg-[radial-gradient(closest-side,rgba(15,20,35,0.08),transparent)] blur-2xl" />
       <PhoneVisual
         view="front"
         color="black"
@@ -30,7 +30,7 @@ function PackagesStill() {
       {bubbles.map(({ icon, className }) => (
         <span
           key={icon}
-          className={`absolute grid size-16 place-items-center rounded-2xl border border-line bg-ink text-accent shadow-card sm:size-20 ${className}`}
+          className={`absolute grid size-16 place-items-center rounded-2xl border border-line bg-ink text-accent-text shadow-diffusion sm:size-20 ${className}`}
         >
           <ConfigIcon name={icon} className="size-8 sm:size-9" />
         </span>
@@ -46,7 +46,7 @@ export async function PackagesSection({ packages, locale }: { packages: PackageD
   const translator = getTranslator(locale);
 
   return (
-    <section aria-labelledby="packages-title" className={`${container} reveal py-14 sm:py-20`}>
+    <section aria-labelledby="packages-title" className={`${container} reveal py-16 sm:py-24`}>
       <SectionHeading id="packages-title" title={t("title")} subtitle={t("subtitle")} />
       <PackagesStage
         labels={{

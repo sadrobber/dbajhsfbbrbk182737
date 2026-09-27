@@ -1,22 +1,9 @@
-import {
-  ArrowLeftRight,
-  Cable,
-  CircleCheck,
-  Headset,
-  type LucideIcon,
-  PlugZap,
-  Settings2,
-  ShieldCheck,
-  Smartphone,
-  Sparkles,
-  Store,
-  UserCheck,
-  Wrench,
-} from "lucide-react";
+import { ArrowsLeftRightIcon as ArrowLeftRight, PlugsIcon as Cable, CheckCircleIcon as CircleCheck, HeadsetIcon as Headset, PlugChargingIcon as PlugZap, SlidersIcon as Settings2, ShieldCheckIcon as ShieldCheck, DeviceMobileIcon as Smartphone, SparkleIcon as Sparkles, StorefrontIcon as Store, UserCheckIcon as UserCheck, WrenchIcon as Wrench } from "@phosphor-icons/react/dist/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import type { IconKey } from "@/lib/data/schema";
 
 /** Maps the icon names used in site.config.ts to actual icons. */
-const ICONS: Record<IconKey, LucideIcon> = {
+const ICONS: Record<IconKey, PhosphorIcon> = {
   plug: PlugZap,
   cable: Cable,
   screen: Smartphone,

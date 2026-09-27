@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Lock } from "lucide-react";
+import { CircleNotchIcon as Loader2, LockIcon as Lock } from "@phosphor-icons/react/dist/ssr";
 import { useActionState } from "react";
 import type { CheckoutState } from "@/app/[locale]/cart/actions";
 import { buttonClass } from "@/components/ui/styles";
@@ -111,7 +111,7 @@ export function CheckoutForm({
           type="checkbox"
           name="marketingOptIn"
           defaultChecked={state.values.marketingOptIn === "on"}
-          className="mt-1 size-5 shrink-0 accent-[#0066ff]"
+          className="mt-1 size-5 shrink-0 accent-[#1b67da]"
         />
         <span>{labels.fields.marketing}</span>
       </label>

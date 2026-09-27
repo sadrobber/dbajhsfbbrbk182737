@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRightIcon as ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { ConfigIcon } from "@/components/ui/config-icon";
 import { buttonClass } from "@/components/ui/styles";
@@ -21,19 +21,17 @@ export function PackageCard({ pkg, highlighted }: { pkg: PackageCardView; highli
   return (
     <article
       className={cn(
-        "relative flex h-full flex-col overflow-hidden rounded-[2rem] border p-6 sm:p-8",
-        highlighted
-          ? "border-accent/30 bg-[linear-gradient(160deg,rgba(0,102,255,0.09),#ffffff_55%)] shadow-card"
-          : "border-line bg-[linear-gradient(160deg,rgba(11,12,16,0.05),#ffffff_55%)] shadow-card",
+        "relative flex h-full flex-col overflow-hidden rounded-[2.5rem] border bg-ink p-7 shadow-diffusion sm:p-9",
+        highlighted ? "border-accent/30" : "border-line",
       )}
     >
       <div className="flex items-start justify-between gap-4">
-        <span className="grid size-14 place-items-center rounded-2xl bg-accent text-white shadow-glow">
+        <span className="grid size-14 place-items-center rounded-2xl bg-accent text-white">
           <ConfigIcon name={pkg.icon} className="size-7" />
         </span>
         <p className="font-display text-[2.5rem] font-extrabold leading-none tracking-[-0.03em]">{pkg.price}</p>
       </div>
-      <h3 className="mt-6 font-display text-[1.75rem] font-extrabold leading-tight tracking-[-0.02em]">{pkg.name}</h3>
+      <h3 className="mt-6 font-display text-[1.75rem] font-bold leading-tight tracking-tight">{pkg.name}</h3>
       <p className="mt-2 text-lg text-fg-muted">{pkg.tagline}</p>
 
       <h4 className="mt-7 text-[0.9375rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">{pkg.labels.includes}</h4>

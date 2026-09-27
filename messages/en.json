@@ -8,7 +8,13 @@
     "backHome": "Back to home",
     "todo": "TODO",
     "todoHint": "To be confirmed",
-    "prototypeNotice": "Prototype: prices and stock are examples."
+    "prototypeNotice": "Prototype: prices and stock are examples.",
+    "scrollPrevious": "Show previous",
+    "scrollNext": "Show next",
+    "errorTitle": "This page couldn’t load",
+    "errorText": "Something went wrong on our side. Please try again in a moment.",
+    "retry": "Try again",
+    "loading": "Loading…"
   },
   "Header": {
     "home": "{brand}, home page",
@@ -35,6 +41,39 @@
       "new": "New",
       "refurbished": "Refurbished",
       "deals": "Great Deals"
+    },
+    "subtitle": "New or refurbished, tested and under warranty. Advice, pickup in the shop and a trade-in for your old phone, from Cap-d’Ail to Sospel.",
+    "facts": {
+      "label": "Novacell at a glance",
+      "phones": "{count, plural, one {# phone} other {# phones}} in stock",
+      "refurbishedFrom": "Refurbished from {price}",
+      "warranty": "Up to {months} months’ warranty"
+    }
+  },
+  "Services": {
+    "title": "Choose, compare, pick up.",
+    "subtitle": "An advisor online, a real shop and a team close to you.",
+    "advisor": {
+      "title": "The advisor",
+      "text": "Describe what you need: it only suggests phones that are in stock.",
+      "cta": "Try this question",
+      "thinking": "Searching the stock…",
+      "inputLabel": "Example question"
+    },
+    "compare": {
+      "title": "Compare and trade in",
+      "text": "Your phone next to the one you want: specs, trade-in value and the price after trade-in.",
+      "toolbar": "Compare",
+      "better": "better"
+    },
+    "pickup": {
+      "title": "Pickup in the shop",
+      "text": "Order online, and we let you know when it’s ready.",
+      "notice": "Your order is ready",
+      "detail": "Pick it up at the {brand} shop"
+    },
+    "services": {
+      "text": "In person, with a real team."
     }
   },
   "Deals": {

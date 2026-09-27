@@ -116,7 +116,7 @@ export function GaugeManager({
                 value={previewPercent}
                 onChange={(e) => set({ percent: e.target.value })}
                 aria-label={t("Gauge.fillSlider")}
-                className="h-2 flex-1 cursor-pointer accent-[#0066ff]"
+                className="h-2 flex-1 cursor-pointer accent-[#1b67da]"
               />
               <input
                 id="gauge-percent"

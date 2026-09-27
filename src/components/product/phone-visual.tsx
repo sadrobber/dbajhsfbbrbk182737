@@ -91,7 +91,7 @@ export function PhoneVisual({
       <svg viewBox="0 0 200 400" className={className} aria-hidden="true" focusable="false">
         <defs>
           <radialGradient id={`${id}-screen`} cx="0.3" cy="0.2" r="1">
-            <stop offset="0" stopColor="#3d8bff" />
+            <stop offset="0" stopColor="#4a86e0" />
             <stop offset="0.35" stopColor="#0a4fd6" />
             <stop offset="0.7" stopColor="#0b1638" />
             <stop offset="1" stopColor="#05070f" />
@@ -104,11 +104,11 @@ export function PhoneVisual({
         <rect x="14" y="4" width="172" height="392" rx="38" fill="#2b2d35" />
         <rect x="17" y="7" width="166" height="386" rx="35" fill="#101116" />
         <rect x="24" y="14" width="152" height="372" rx="29" fill={`url(#${id}-screen)`} />
-        <circle cx="136" cy="118" r="54" fill="#5aa9ff" opacity="0.22" />
+        <circle cx="136" cy="118" r="54" fill="#6ea8ec" opacity="0.22" />
         <circle cx="62" cy="250" r="70" fill="#8a5cff" opacity="0.14" />
         <rect x="40" y="206" width="120" height="34" rx="17" fill="#ffffff" opacity="0.12" />
         <rect x="40" y="250" width="92" height="34" rx="17" fill="#ffffff" opacity="0.09" />
-        <rect x="40" y="306" width="120" height="48" rx="24" fill="#0066ff" opacity="0.85" />
+        <rect x="40" y="306" width="120" height="48" rx="24" fill="#1b67da" opacity="0.85" />
         <rect x="24" y="14" width="152" height="372" rx="29" fill={`url(#${id}-glass)`} />
         <circle cx="100" cy="32" r="5.5" fill="#000000" />
       </svg>

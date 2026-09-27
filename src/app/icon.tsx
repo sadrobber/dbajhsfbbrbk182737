@@ -15,7 +15,7 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(145deg, #0066ff 0%, #0a2a6b 60%, #050507 100%)",
+          background: "linear-gradient(145deg, #1b67da 0%, #0a2a6b 60%, #050507 100%)",
           borderRadius: 112,
           color: "#ffffff",
           fontSize: 300,

@@ -1,4 +1,4 @@
-import { ArrowLeftRight, ArrowRight, Recycle } from "lucide-react";
+import { ArrowsLeftRightIcon as ArrowLeftRight, ArrowRightIcon as ArrowRight, RecycleIcon as Recycle } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { ConfigIcon } from "@/components/ui/config-icon";
 import { ProductPicture } from "@/components/product/product-picture";

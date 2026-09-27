@@ -8,7 +8,13 @@
     "backHome": "Retour à l’accueil",
     "todo": "TODO",
     "todoHint": "À confirmer",
-    "prototypeNotice": "Prototype : prix et stocks donnés à titre d’exemple."
+    "prototypeNotice": "Prototype : prix et stocks donnés à titre d’exemple.",
+    "scrollPrevious": "Voir les précédents",
+    "scrollNext": "Voir les suivants",
+    "errorTitle": "Cette page n’a pas pu s’afficher",
+    "errorText": "Un problème est survenu de notre côté. Réessayez dans un instant.",
+    "retry": "Réessayer",
+    "loading": "Chargement…"
   },
   "Header": {
     "home": "{brand}, page d’accueil",
@@ -35,6 +41,39 @@
       "new": "Neuf",
       "refurbished": "Reconditionné",
       "deals": "Bons plans"
+    },
+    "subtitle": "Neufs ou reconditionnés, testés et garantis. Conseils, retrait en boutique et reprise de votre ancien téléphone, de Cap-d’Ail à Sospel.",
+    "facts": {
+      "label": "Novacell en bref",
+      "phones": "{count, plural, one {# téléphone} other {# téléphones}} en stock",
+      "refurbishedFrom": "Reconditionnés dès {price}",
+      "warranty": "Jusqu’à {months} mois de garantie"
+    }
+  },
+  "Services": {
+    "title": "Choisir, comparer, retirer.",
+    "subtitle": "Un conseiller en ligne, une vraie boutique et une équipe près de chez vous.",
+    "advisor": {
+      "title": "Le conseiller",
+      "text": "Décrivez ce qu’il vous faut : il ne propose que des téléphones en stock.",
+      "cta": "Essayer cette question",
+      "thinking": "Recherche dans le stock…",
+      "inputLabel": "Exemple de question"
+    },
+    "compare": {
+      "title": "Comparer et faire reprendre",
+      "text": "Votre téléphone à côté de celui qui vous fait envie : caractéristiques, valeur de reprise et prix après reprise.",
+      "toolbar": "Comparer",
+      "better": "meilleur"
+    },
+    "pickup": {
+      "title": "Retrait en boutique",
+      "text": "Commandez en ligne, nous vous prévenons quand c’est prêt.",
+      "notice": "Votre commande est prête",
+      "detail": "À retirer à la boutique {brand}"
+    },
+    "services": {
+      "text": "Sur place, avec une vraie équipe."
     }
   },
   "Deals": {

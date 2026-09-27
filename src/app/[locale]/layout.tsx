@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Outfit } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -16,13 +16,8 @@ import { routing } from "@/i18n/routing";
 import { pick } from "@/lib/pick";
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-jakarta",
-  weight: ["600", "700", "800"],
-  display: "swap",
-});
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", weight: ["500", "600", "700", "800"], display: "swap" });
 
 /** Only these message namespaces are sent to the browser (for client components). */
 const CLIENT_NAMESPACES = ["Common", "Header", "Hero", "Advisor", "Support"] as const;
@@ -59,7 +54,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const messages = await getMessages();
 
   return (
-    <html lang={locale} data-scroll-behavior="smooth" className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang={locale} data-scroll-behavior="smooth" className={`${geist.variable} ${outfit.variable}`}>
       <body className="min-h-dvh bg-ink font-sans text-fg antialiased">
         <NextIntlClientProvider messages={pick(messages, CLIENT_NAMESPACES)}>
           <AdvisorProvider>
