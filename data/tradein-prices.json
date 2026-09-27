@@ -1,0 +1,269 @@
+{
+  "$comment": "Table: tradein_prices. EXAMPLE buy-back prices in euros for a phone in perfect working order; the client sets the real grid. tradein_prices.modelId -> models.id.",
+  "rows": [
+    {
+      "id": "iphone-11-64",
+      "modelId": "apple-iphone-11",
+      "storageGb": 64,
+      "basePrice": 120
+    },
+    {
+      "id": "iphone-11-128",
+      "modelId": "apple-iphone-11",
+      "storageGb": 128,
+      "basePrice": 145
+    },
+    {
+      "id": "iphone-11-256",
+      "modelId": "apple-iphone-11",
+      "storageGb": 256,
+      "basePrice": 170
+    },
+    {
+      "id": "iphone-12-64",
+      "modelId": "apple-iphone-12",
+      "storageGb": 64,
+      "basePrice": 170
+    },
+    {
+      "id": "iphone-12-128",
+      "modelId": "apple-iphone-12",
+      "storageGb": 128,
+      "basePrice": 195
+    },
+    {
+      "id": "iphone-12-256",
+      "modelId": "apple-iphone-12",
+      "storageGb": 256,
+      "basePrice": 220
+    },
+    {
+      "id": "iphone-13-128",
+      "modelId": "apple-iphone-13",
+      "storageGb": 128,
+      "basePrice": 240
+    },
+    {
+      "id": "iphone-13-256",
+      "modelId": "apple-iphone-13",
+      "storageGb": 256,
+      "basePrice": 265
+    },
+    {
+      "id": "iphone-13-512",
+      "modelId": "apple-iphone-13",
+      "storageGb": 512,
+      "basePrice": 290
+    },
+    {
+      "id": "iphone-14-128",
+      "modelId": "apple-iphone-14",
+      "storageGb": 128,
+      "basePrice": 300
+    },
+    {
+      "id": "iphone-14-256",
+      "modelId": "apple-iphone-14",
+      "storageGb": 256,
+      "basePrice": 325
+    },
+    {
+      "id": "iphone-14-512",
+      "modelId": "apple-iphone-14",
+      "storageGb": 512,
+      "basePrice": 350
+    },
+    {
+      "id": "iphone-15-128",
+      "modelId": "apple-iphone-15",
+      "storageGb": 128,
+      "basePrice": 380
+    },
+    {
+      "id": "iphone-15-256",
+      "modelId": "apple-iphone-15",
+      "storageGb": 256,
+      "basePrice": 405
+    },
+    {
+      "id": "iphone-15-512",
+      "modelId": "apple-iphone-15",
+      "storageGb": 512,
+      "basePrice": 430
+    },
+    {
+      "id": "iphone-15-pro-128",
+      "modelId": "apple-iphone-15-pro",
+      "storageGb": 128,
+      "basePrice": 480
+    },
+    {
+      "id": "iphone-15-pro-256",
+      "modelId": "apple-iphone-15-pro",
+      "storageGb": 256,
+      "basePrice": 505
+    },
+    {
+      "id": "iphone-15-pro-512",
+      "modelId": "apple-iphone-15-pro",
+      "storageGb": 512,
+      "basePrice": 530
+    },
+    {
+      "id": "iphone-16-128",
+      "modelId": "apple-iphone-16",
+      "storageGb": 128,
+      "basePrice": 470
+    },
+    {
+      "id": "iphone-16-256",
+      "modelId": "apple-iphone-16",
+      "storageGb": 256,
+      "basePrice": 495
+    },
+    {
+      "id": "iphone-16-512",
+      "modelId": "apple-iphone-16",
+      "storageGb": 512,
+      "basePrice": 520
+    },
+    {
+      "id": "iphone-16e-128",
+      "modelId": "apple-iphone-16e",
+      "storageGb": 128,
+      "basePrice": 330
+    },
+    {
+      "id": "iphone-16e-256",
+      "modelId": "apple-iphone-16e",
+      "storageGb": 256,
+      "basePrice": 355
+    },
+    {
+      "id": "iphone-16e-512",
+      "modelId": "apple-iphone-16e",
+      "storageGb": 512,
+      "basePrice": 380
+    },
+    {
+      "id": "iphone-16-pro-128",
+      "modelId": "apple-iphone-16-pro",
+      "storageGb": 128,
+      "basePrice": 600
+    },
+    {
+      "id": "iphone-16-pro-256",
+      "modelId": "apple-iphone-16-pro",
+      "storageGb": 256,
+      "basePrice": 625
+    },
+    {
+      "id": "iphone-16-pro-512",
+      "modelId": "apple-iphone-16-pro",
+      "storageGb": 512,
+      "basePrice": 650
+    },
+    {
+      "id": "iphone-17-256",
+      "modelId": "apple-iphone-17",
+      "storageGb": 256,
+      "basePrice": 560
+    },
+    {
+      "id": "iphone-17-512",
+      "modelId": "apple-iphone-17",
+      "storageGb": 512,
+      "basePrice": 585
+    },
+    {
+      "id": "galaxy-s23-128",
+      "modelId": "samsung-galaxy-s23",
+      "storageGb": 128,
+      "basePrice": 220
+    },
+    {
+      "id": "galaxy-s23-256",
+      "modelId": "samsung-galaxy-s23",
+      "storageGb": 256,
+      "basePrice": 245
+    },
+    {
+      "id": "galaxy-s23-512",
+      "modelId": "samsung-galaxy-s23",
+      "storageGb": 512,
+      "basePrice": 270
+    },
+    {
+      "id": "galaxy-s24-128",
+      "modelId": "samsung-galaxy-s24",
+      "storageGb": 128,
+      "basePrice": 300
+    },
+    {
+      "id": "galaxy-s24-256",
+      "modelId": "samsung-galaxy-s24",
+      "storageGb": 256,
+      "basePrice": 325
+    },
+    {
+      "id": "galaxy-s24-512",
+      "modelId": "samsung-galaxy-s24",
+      "storageGb": 512,
+      "basePrice": 350
+    },
+    {
+      "id": "galaxy-s25-128",
+      "modelId": "samsung-galaxy-s25",
+      "storageGb": 128,
+      "basePrice": 380
+    },
+    {
+      "id": "galaxy-s25-256",
+      "modelId": "samsung-galaxy-s25",
+      "storageGb": 256,
+      "basePrice": 405
+    },
+    {
+      "id": "galaxy-s25-512",
+      "modelId": "samsung-galaxy-s25",
+      "storageGb": 512,
+      "basePrice": 430
+    },
+    {
+      "id": "pixel-8-128",
+      "modelId": "google-pixel-8",
+      "storageGb": 128,
+      "basePrice": 170
+    },
+    {
+      "id": "pixel-8-256",
+      "modelId": "google-pixel-8",
+      "storageGb": 256,
+      "basePrice": 195
+    },
+    {
+      "id": "pixel-9-128",
+      "modelId": "google-pixel-9",
+      "storageGb": 128,
+      "basePrice": 250
+    },
+    {
+      "id": "pixel-9-256",
+      "modelId": "google-pixel-9",
+      "storageGb": 256,
+      "basePrice": 275
+    },
+    {
+      "id": "pixel-9a-128",
+      "modelId": "google-pixel-9a",
+      "storageGb": 128,
+      "basePrice": 190
+    },
+    {
+      "id": "pixel-9a-256",
+      "modelId": "google-pixel-9a",
+      "storageGb": 256,
+      "basePrice": 215
+    }
+  ]
+}

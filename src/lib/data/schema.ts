@@ -7,7 +7,10 @@ import { z } from "zod";
  */
 
 export const conditions = ["new", "refurbished"] as const;
-export const grades = ["A+", "A", "B"] as const;
+/** Refurbished grades, best first. Descriptions and example surcharges in data/grades.json; labels in messages Product.grade.<grade>. */
+export const grades = ["premium", "excellent", "very_good", "correct"] as const;
+/** Refurbished only: the original battery (tested), or a new one fitted by the workshop. data/battery-options.json */
+export const batteryOptions = ["standard", "new"] as const;
 export const colors = ["black", "white", "blue", "green", "purple", "grey", "silver", "pink", "gold"] as const;
 export const badges = ["new_arrival", "special_price", "last_one", "deal_of_the_week"] as const;
 /** Badges staff can set by hand. "last_one" always follows the real stock. */
@@ -48,6 +51,7 @@ export const supplies = ["in_store", "within_48h", "on_request"] as const;
 
 export type Condition = (typeof conditions)[number];
 export type Grade = (typeof grades)[number];
+export type BatteryOption = (typeof batteryOptions)[number];
 export type ColorKey = (typeof colors)[number];
 export type Badge = (typeof badges)[number];
 export type GoodFor = (typeof goodForTags)[number];
@@ -72,6 +76,14 @@ export function localize(text: LocalizedText, locale: "fr" | "en" | "it"): strin
   return text[locale] || text.fr;
 }
 
+/** Longer text in the three languages, all required (descriptions, explanations). */
+export const localizedLongTextSchema = z.object({
+  fr: z.string().trim().min(1).max(400),
+  en: z.string().trim().min(1).max(400),
+  it: z.string().trim().min(1).max(400),
+});
+export type LocalizedLongText = z.infer<typeof localizedLongTextSchema>;
+
 /** Photos uploaded in the admin, served by /api/media. */
 export const photoPathSchema = z.string().regex(/^\/api\/media\/[a-z0-9-]+\.(jpg|png|webp|avif)$/, "unknown photo");
 
@@ -80,17 +92,161 @@ export const brandSchema = z.object({
   name: z.string().min(1),
 });
 
+// ---------------------------------------------------------------------------
+// Models: data/models.json, the phone spec database (one row per model)
+// ---------------------------------------------------------------------------
+
+export const cameraRoles = ["wide", "ultrawide", "telephoto", "periscope telephoto", "depth", "macro", "monochrome", "ToF / LiDAR"] as const;
+export const dataQualityStatuses = ["web_checked", "needs_check"] as const;
+
+const dimensionsSchema = z.object({ height: z.number().positive(), width: z.number().positive(), thickness: z.number().positive() });
+const text = z.string().trim().min(1);
+
+/** A colour as the manufacturer names it. French / Italian names and the swatch are shop fields, null until filled in. */
+export const modelColorSchema = z.object({
+  name_en: text,
+  name_fr: text.nullable(),
+  name_it: text.nullable(),
+  hex: z.string().regex(/^#[0-9a-fA-F]{6}$/).nullable(),
+  /** Optional extra price for this colour, in euros. */
+  surcharge: z.number().positive().optional(),
+});
+
+/**
+ * Spec values are facts from the manufacturer: they are imported, never retyped.
+ * null (or an empty list) means unknown: listed in data_quality.missing_fields and hidden on the site.
+ */
+export const phoneModelSchema = z.object({
+  id: slug,
+  /** brands.name */
+  brand: text,
+  series: text,
+  name: text,
+  full_name: text,
+  form_factor: z.enum(["bar", "foldable"]),
+  release: z.object({ year: z.number().int().min(2000).nullable(), month: z.string().regex(/^\d{4}-\d{2}$/).nullable() }),
+  specs: z.object({
+    display: z.object({
+      size_in: z.number().positive().nullable(),
+      panel: text.nullable(),
+      refresh_hz: z.number().int().positive().nullable(),
+      resolution: text.nullable(),
+    }),
+    cover_display: z.object({ size_in: z.number().positive(), panel: text, refresh_hz: z.number().int().positive() }).nullable(),
+    chip: text.nullable(),
+    ram_gb: z.array(z.number().positive()),
+    storage_gb: z.array(z.number().int().positive()).min(1),
+    rear_cameras: z.array(
+      z.object({
+        mp: z.number().positive().nullable(),
+        role: z.enum(cameraRoles),
+        optical_zoom: z.string().regex(/^\d+(\.\d+)?x$/).optional(),
+      }),
+    ),
+    front_camera_mp: z.number().positive().nullable(),
+    battery_mah: z.number().int().positive().nullable(),
+    charging: z.object({ wired_w: z.number().positive().nullable(), wireless_w: z.number().positive().nullable() }),
+    connector: text.nullable(),
+    biometrics: text.nullable(),
+    network: text.nullable(),
+    wifi: text.nullable(),
+    bluetooth: text.nullable(),
+    sim: text.nullable(),
+    /** Foldables: folded and unfolded. */
+    dimensions_mm: z.union([dimensionsSchema, z.object({ folded: dimensionsSchema, unfolded: dimensionsSchema })]).nullable(),
+    weight_g: z.number().positive().nullable(),
+    water_resistance: text.nullable(),
+    os_at_launch: text.nullable(),
+    // Extras, only where relevant.
+    magsafe: z.boolean().optional(),
+    qi2_magnets: z.boolean().optional(),
+    dynamic_island: z.boolean().optional(),
+    action_button: z.boolean().optional(),
+    camera_control: z.boolean().optional(),
+    headphone_jack: z.boolean().optional(),
+    micro_sd: z.boolean().optional(),
+    glyph_lights: z.boolean().optional(),
+    s_pen: z.union([z.boolean(), text]).optional(),
+    frame: text.optional(),
+    form_style: z.enum(["flip"]).optional(),
+  }),
+  colors: z.array(modelColorSchema),
+  /** Region differences and caveats, in English, for staff. */
+  notes: text.nullable(),
+  data_quality: z.object({
+    status: z.enum(dataQualityStatuses),
+    source: text.nullable(),
+    missing_fields: z.array(z.string()),
+  }),
+  /** Short intro generated from the specs. */
+  description: localizedLongTextSchema,
+  // Shop fields.
+  /** What comes in the box the shop hands over; null until confirmed. */
+  in_the_box: localizedLongTextSchema.nullable(),
+  /** EXAMPLE starting price of a refurbished unit (smallest storage, "correct", standard battery), to suggest variant prices. */
+  base_price: z.number().positive().nullable(),
+  /** The shop sells this model new (sealed) too. */
+  is_new_available: z.boolean(),
+});
+
+export type PhoneModel = z.infer<typeof phoneModelSchema>;
+export type ModelColor = z.infer<typeof modelColorSchema>;
+/** The few model fields every product view needs. */
+export type ModelRef = Pick<PhoneModel, "id" | "brand" | "name" | "colors">;
+
+/** A model's colour name in a language; French / Italian fall back to null when the official name isn't filled in yet. */
+export function modelColorName(color: Pick<ModelColor, "name_en" | "name_fr" | "name_it">, locale: "fr" | "en" | "it"): string | null {
+  return locale === "fr" ? color.name_fr : locale === "it" ? color.name_it : color.name_en;
+}
+
+export const gradeInfoSchema = z.object({
+  id: z.enum(["new", ...grades]),
+  position: z.number().int().min(0),
+  /** Only "new" applies to sealed phones. */
+  forNewPhones: z.boolean(),
+  /** EXAMPLE euros over the "correct" price, to suggest prices. null for new. */
+  surcharge: z.number().min(0).nullable(),
+  summary: localizedLongTextSchema,
+  screen: localizedLongTextSchema,
+  body: localizedLongTextSchema,
+});
+
+export const batteryOptionInfoSchema = z.object({
+  id: z.enum(batteryOptions),
+  position: z.number().int().min(0),
+  minHealthPercent: z.number().int().min(1).max(100),
+  /** Extra price in euros. */
+  surcharge: z.number().min(0),
+  /** "{min}" is replaced with minHealthPercent. */
+  explanation: localizedLongTextSchema,
+});
+
+export type GradeInfo = z.infer<typeof gradeInfoSchema>;
+export type BatteryOptionInfo = z.infer<typeof batteryOptionInfoSchema>;
+
+// ---------------------------------------------------------------------------
+// Products: data/products.json, one row per variant (a stock unit of a model)
+// ---------------------------------------------------------------------------
+
 export const productSchema = z
   .object({
     id: slug,
-    brand: slug,
-    model: z.string().trim().min(1, "Model is required").max(60),
+    /** models.id */
+    modelId: slug,
+    /** Shown at the bottom of the product page. */
+    sku: z.string().regex(/^[A-Z0-9-]{3,80}$/, "Capital letters, digits and dashes"),
     condition: z.enum(conditions),
+    /** One of the model's storage options. */
     storageGb: z.number().int().positive(),
+    /** The model's official colour (colors[].name_en). */
+    colorName: z.string().trim().min(1, "Pick a colour").max(40),
+    /** Colour family, for the neutral illustration and filters. */
     color: z.enum(colors),
-    /** Refurbished only: A+ like new, A very good, B good. */
+    /** Refurbished only. */
     grade: z.enum(grades).nullable(),
-    /** Refurbished only: battery health in %. */
+    /** Refurbished only. */
+    battery: z.enum(batteryOptions).nullable(),
+    /** Refurbished only: measured battery health in %. */
     batteryHealth: z.number().int().min(1).max(100).nullable(),
     warrantyMonths: z.number().int().positive().max(60),
     /** Selling price in euros, VAT included. */
@@ -111,12 +267,16 @@ export const productSchema = z
   .superRefine((p, ctx) => {
     if (p.condition === "refurbished") {
       if (p.grade === null) ctx.addIssue({ code: "custom", path: ["grade"], message: "A refurbished phone needs a grade" });
+      if (p.battery === null) ctx.addIssue({ code: "custom", path: ["battery"], message: "Pick the battery option" });
       if (p.batteryHealth === null) {
         ctx.addIssue({ code: "custom", path: ["batteryHealth"], message: "A refurbished phone needs a battery health" });
       }
+      if (p.battery === "new" && p.batteryHealth !== null && p.batteryHealth < 100) {
+        ctx.addIssue({ code: "custom", path: ["batteryHealth"], message: "A new battery is at 100%" });
+      }
     }
-    if (p.condition === "new" && (p.grade !== null || p.batteryHealth !== null)) {
-      ctx.addIssue({ code: "custom", path: ["grade"], message: "A new phone has no grade or battery health" });
+    if (p.condition === "new" && (p.grade !== null || p.battery !== null || p.batteryHealth !== null)) {
+      ctx.addIssue({ code: "custom", path: ["grade"], message: "A new phone has no grade or battery details" });
     }
     if (p.compareAtPrice !== null && p.compareAtPrice <= p.price) {
       ctx.addIssue({ code: "custom", path: ["compareAtPrice"], message: "Must be higher than the price" });
@@ -125,11 +285,23 @@ export const productSchema = z
 
 export type Brand = z.infer<typeof brandSchema>;
 export type Product = z.infer<typeof productSchema>;
-export type Catalog = { currency: "EUR"; brands: Brand[]; products: Product[] };
+/** Full model rows on the server; the admin's browser works with ModelRef only. */
+export type Catalog<M extends ModelRef = ModelRef> = {
+  currency: "EUR";
+  brands: Brand[];
+  models: M[];
+  products: Product[];
+};
 
-/** A product as the storefront shows it: brand name resolved, derived badges and price comparison. */
+/** A product (variant) as the storefront shows it: model and brand resolved, derived badges and price comparison. */
 export type CatalogItem = Product & {
+  /** brands.id */
+  brand: string;
   brandName: string;
+  /** Model name without the brand, e.g. "iPhone 16". */
+  model: string;
+  /** The colour's official name per language (null: not filled in yet). */
+  colorNames: { en: string; fr: string | null; it: string | null };
   /** Price of the same model and storage bought new, when the shop sells it. Refurbished only. */
   newVersionPrice: number | null;
   /** newVersionPrice - price, when positive. */

@@ -14,8 +14,10 @@ import { DealCard } from "@/components/product/deal-card";
 import { RefurbCard } from "@/components/product/refurb-card";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
-import { enrichCatalog } from "@/lib/data/catalog-logic";
+import type { AdminModel } from "@/lib/data/admin-repository";
+import { colorFamilyOf, enrichCatalog } from "@/lib/data/catalog-logic";
 import {
+  batteryOptions,
   type Brand,
   colors,
   type Condition,
@@ -28,9 +30,8 @@ import {
   visuals,
 } from "@/lib/data/schema";
 import { buildProductCardView } from "@/lib/product-view";
-import { draftOf, newDraft, type ProductDraft, previewProductOf, productOf } from "./product-draft";
+import { BATTERY_LABELS, draftOf, GRADE_LABELS, newDraft, type ProductDraft, previewProductOf, productOf } from "./product-draft";
 
-const STORAGE_OPTIONS = [32, 64, 128, 256, 512, 1024, 2048];
 const MAX_PHOTOS = 6;
 
 const VISUAL_LABELS: Record<(typeof visuals)[number], string> = {
@@ -41,16 +42,11 @@ const VISUAL_LABELS: Record<(typeof visuals)[number], string> = {
   single: "Single lens",
 };
 
-const GRADE_LABELS: Record<(typeof grades)[number], string> = {
-  "A+": "A+ · like new",
-  A: "A · very good",
-  B: "B · good",
-};
-
 export function ProductEditor({
   product,
   products,
   brands,
+  models,
   inGreatDeals,
   orderCount,
   lowStockThreshold,
@@ -63,6 +59,7 @@ export function ProductEditor({
   product: Product | null;
   products: Product[];
   brands: Brand[];
+  models: AdminModel[];
   inGreatDeals: boolean;
   orderCount: number;
   lowStockThreshold: number;
@@ -72,7 +69,7 @@ export function ProductEditor({
   onDeleted: (label: string) => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [initial] = useState<ProductDraft>(() => (product ? draftOf(product) : newDraft(brands)));
+  const [initial] = useState<ProductDraft>(() => (product ? draftOf(product) : newDraft()));
   const [draft, setDraft] = useState(initial);
   const [submitted, setSubmitted] = useState(false);
   const [serverFieldErrors, setServerFieldErrors] = useState<Record<string, string>>({});
@@ -106,10 +103,34 @@ export function ProductEditor({
     setDraft((d) => ({
       ...d,
       condition,
-      grade: condition === "refurbished" ? d.grade || "A" : "",
+      grade: condition === "refurbished" ? d.grade || "excellent" : "",
+      battery: condition === "refurbished" ? d.battery || "standard" : "",
       batteryHealth: condition === "refurbished" ? d.batteryHealth : "",
       warrantyMonths: d.warrantyMonths || (condition === "refurbished" ? "12" : "24"),
     }));
+  }
+
+  const model = models.find((m) => m.id === draft.modelId) ?? null;
+  const modelsByBrand = useMemo(() => {
+    const groups = new Map<string, AdminModel[]>();
+    for (const m of [...models].sort((a, b) => (b.release_year ?? 0) - (a.release_year ?? 0) || a.name.localeCompare(b.name))) {
+      groups.set(m.brand, [...(groups.get(m.brand) ?? []), m]);
+    }
+    return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
+  }, [models]);
+
+  /** A new model keeps the storage and colour only when it offers them. */
+  function changeModel(modelId: string) {
+    const next = models.find((m) => m.id === modelId);
+    setDraft((d) => {
+      const storageGb = next?.storage_gb.includes(Number(d.storageGb)) ? d.storageGb : String(next?.storage_gb[0] ?? "");
+      const colorName = next?.colors.some((c) => c.name_en === d.colorName) ? d.colorName : (next?.colors[0]?.name_en ?? "");
+      return { ...d, modelId, storageGb, colorName, color: colorName ? colorFamilyOf(colorName) : d.color };
+    });
+  }
+
+  function changeColor(colorName: string) {
+    setDraft((d) => ({ ...d, colorName, color: colorFamilyOf(colorName) }));
   }
 
   function toggle<T extends string>(list: T[], value: T): T[] {
@@ -140,7 +161,7 @@ export function ProductEditor({
     if (!product) return;
     startTransition(async () => {
       const result = await deleteProductAction(product.id);
-      if (result.ok) onDeleted(`${brands.find((b) => b.id === product.brand)?.name ?? ""} ${product.model}`);
+      if (result.ok) onDeleted(`${models.find((m) => m.id === product.modelId)?.label ?? product.modelId} (${product.sku})`);
       else {
         setError(result.error);
         setConfirmDelete(false);
@@ -172,11 +193,19 @@ export function ProductEditor({
   const previewItem = useMemo(() => {
     const candidate = previewProductOf(draft);
     const others = products.filter((p) => p.id !== candidate.id);
-    return enrichCatalog({ currency: "EUR", brands, products: [...others, candidate] }).find((item) => item.id === candidate.id)!;
-  }, [draft, products, brands]);
+    // Before a model is picked, the card shows a placeholder name.
+    const previewModels = candidate.modelId
+      ? models
+      : [...models, { id: "", brand: "", name: "New phone", colors: [] }];
+    return enrichCatalog({ currency: "EUR", brands, models: previewModels, products: [...others, candidate] }).find(
+      (item) => item.id === candidate.id,
+    )!;
+  }, [draft, products, brands, models]);
   const card = buildProductCardView(previewItem, { t, locale, lowStockThreshold });
 
-  const title = isNew ? "Add a product" : `Edit ${brands.find((b) => b.id === product.brand)?.name ?? ""} ${product.model}`;
+  const title = isNew
+    ? "Add a product"
+    : `Edit ${models.find((m) => m.id === product.modelId)?.label ?? product.modelId}`;
 
   return (
     <dialog
@@ -220,23 +249,43 @@ export function ProductEditor({
 
             <Section title="Phone">
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Brand" error={errors.brand}>
-                  <select value={draft.brand} onChange={(e) => set("brand", e.target.value)} className={adminSelect}>
-                    {brands.map((b) => (
-                      <option key={b.id} value={b.id}>
-                        {b.name}
-                      </option>
+                <Field
+                  label="Model"
+                  error={errors.modelId && "Pick a model"}
+                  className="sm:col-span-2"
+                  hint={
+                    model?.status === "needs_check" ? (
+                      <span className="font-semibold text-warning">
+                        Specs to check against the manufacturer&rsquo;s page before this phone goes live
+                        {model.missing_fields.length > 0 && ` (missing: ${model.missing_fields.join(", ")})`}.
+                      </span>
+                    ) : (
+                      "Specs, colours and storage options come from the model database (Admin › Models)."
+                    )
+                  }
+                >
+                  <select
+                    value={draft.modelId}
+                    onChange={(e) => changeModel(e.target.value)}
+                    aria-invalid={Boolean(errors.modelId)}
+                    className={adminSelect}
+                    autoFocus={isNew}
+                  >
+                    <option value="" disabled>
+                      Choose a model…
+                    </option>
+                    {modelsByBrand.map(([brand, list]) => (
+                      <optgroup key={brand} label={brand}>
+                        {list.map((m) => (
+                          <option key={m.id} value={m.id}>
+                            {m.label}
+                            {m.release_year ? ` (${m.release_year})` : ""}
+                            {m.status === "needs_check" ? " · specs to check" : ""}
+                          </option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
-                </Field>
-                <Field label="Model" error={errors.model} hint="Without the brand, e.g. “Galaxy S25”.">
-                  <input
-                    value={draft.model}
-                    onChange={(e) => set("model", e.target.value)}
-                    aria-invalid={Boolean(errors.model)}
-                    className={adminInput}
-                    autoFocus={isNew}
-                  />
                 </Field>
                 <Fieldset legend="Condition">
                   <div className="flex gap-2">
@@ -262,17 +311,37 @@ export function ProductEditor({
                   </div>
                 </Fieldset>
                 <Field label="Storage" error={errors.storageGb}>
-                  <select value={draft.storageGb} onChange={(e) => set("storageGb", e.target.value)} className={adminSelect}>
-                    {[...new Set([...STORAGE_OPTIONS, Number(draft.storageGb)].filter(Number.isFinite))]
-                      .sort((a, b) => a - b)
-                      .map((gb) => (
-                        <option key={gb} value={gb}>
-                          {gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`}
-                        </option>
-                      ))}
+                  <select
+                    value={draft.storageGb}
+                    onChange={(e) => set("storageGb", e.target.value)}
+                    className={adminSelect}
+                    disabled={!model}
+                  >
+                    {(model?.storage_gb ?? []).map((gb) => (
+                      <option key={gb} value={gb}>
+                        {gb >= 1024 ? `${gb / 1024} TB` : `${gb} GB`}
+                      </option>
+                    ))}
                   </select>
                 </Field>
-                <Field label="Colour" error={errors.color}>
+                <Field
+                  label="Colour"
+                  error={errors.colorName}
+                  hint={model && model.colors.length === 0 ? "This model's colours aren't in the database yet: type the official name." : undefined}
+                >
+                  {model && model.colors.length === 0 ? (
+                    <input value={draft.colorName} onChange={(e) => changeColor(e.target.value)} className={adminInput} />
+                  ) : (
+                    <select value={draft.colorName} onChange={(e) => changeColor(e.target.value)} className={adminSelect} disabled={!model}>
+                      {(model?.colors ?? []).map((c) => (
+                        <option key={c.name_en} value={c.name_en}>
+                          {c.name_en}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </Field>
+                <Field label="Illustration colour" hint="Tint of the drawing shown when there's no photo. Set from the colour name.">
                   <select value={draft.color} onChange={(e) => set("color", e.target.value as ProductDraft["color"])} className={adminSelect}>
                     {colors.map((color) => (
                       <option key={color} value={color}>
@@ -301,6 +370,22 @@ export function ProductEditor({
                       {grades.map((grade) => (
                         <option key={grade} value={grade}>
                           {GRADE_LABELS[grade]}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label="Battery" error={errors.battery}>
+                    <select
+                      value={draft.battery}
+                      onChange={(e) => {
+                        const battery = e.target.value as ProductDraft["battery"];
+                        setDraft((d) => ({ ...d, battery, batteryHealth: battery === "new" ? "100" : d.batteryHealth }));
+                      }}
+                      className={adminSelect}
+                    >
+                      {batteryOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {BATTERY_LABELS[option]}
                         </option>
                       ))}
                     </select>

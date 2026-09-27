@@ -6,6 +6,7 @@ import { type DealInput, saveDealsAction } from "@/app/admin/(panel)/deals/actio
 import { fieldErrorsOf } from "@/components/admin/form-errors";
 import { LocalizedTextInput } from "@/components/admin/localized-text-input";
 import { PreviewFrame, type PreviewMessages, usePreviewTranslator } from "@/components/admin/preview";
+import { GRADE_LABELS } from "@/components/admin/products/product-draft";
 import { ProductThumb } from "@/components/admin/products/product-thumb";
 import { stockTone } from "@/components/admin/stock";
 import { SaveBar, useUnsavedChangesWarning } from "@/components/admin/save-bar";
@@ -15,7 +16,7 @@ import { DealCard } from "@/components/product/deal-card";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
 import { enrichCatalog, selectGreatDeals } from "@/lib/data/catalog-logic";
-import { type Brand, type Deal, dealSchema, type Product, promoBadges, type PromoBadge } from "@/lib/data/schema";
+import { type Brand, type Deal, dealSchema, type ModelRef, type Product, promoBadges, type PromoBadge } from "@/lib/data/schema";
 import { buildProductCardView } from "@/lib/product-view";
 
 const euro = new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR" });
@@ -28,6 +29,7 @@ export function DealsManager({
   deals,
   products,
   brands,
+  models,
   maxItems,
   lowStockThreshold,
   messages,
@@ -35,6 +37,7 @@ export function DealsManager({
   deals: Deal[];
   products: Product[];
   brands: Brand[];
+  models: ModelRef[];
   maxItems: number;
   lowStockThreshold: number;
   messages: PreviewMessages;
@@ -51,7 +54,7 @@ export function DealsManager({
   const dirty = JSON.stringify(entries) !== JSON.stringify(baseline);
   useUnsavedChangesWarning(dirty);
 
-  const items = useMemo(() => enrichCatalog({ currency: "EUR", brands, products }), [brands, products]);
+  const items = useMemo(() => enrichCatalog({ currency: "EUR", brands, models, products }), [brands, models, products]);
   const byId = useMemo(() => new Map(items.map((item) => [item.id, item])), [items]);
   const badgeLabels = messages.en.Product.badges;
 
@@ -161,7 +164,7 @@ export function DealsManager({
                         {item.brandName} {item.model}{" "}
                         <span className="font-normal text-fg-muted">
                           · {item.storageGb >= 1024 ? `${item.storageGb / 1024} TB` : `${item.storageGb} GB`}
-                          {item.condition === "refurbished" && ` · refurbished ${item.grade}`}
+                          {item.condition === "refurbished" && item.grade && ` · refurbished, ${GRADE_LABELS[item.grade]}`}
                         </span>
                       </p>
                       <p className="mt-0.5 flex flex-wrap items-center gap-2 text-[0.875rem]">
@@ -249,7 +252,7 @@ export function DealsManager({
                     {item.brandName} {item.model}
                   </p>
                   <p className="text-[0.8125rem] text-fg-subtle">
-                    {euro.format(item.price)} · {item.condition === "new" ? "new" : `refurb ${item.grade}`}
+                    {euro.format(item.price)} · {item.condition === "new" || !item.grade ? "new" : `refurb, ${GRADE_LABELS[item.grade]}`}
                     {item.stock <= 0 && " · sold out"}
                   </p>
                 </div>

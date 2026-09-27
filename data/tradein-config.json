@@ -1,0 +1,29 @@
+{
+  "$comment": "Single-row table: tradein_config. EXAMPLE values. Deductions are % of the base price. Policies for phones that don't turn on or are account-locked: refuse, or a flat recycling offer in euros.",
+  "storeCreditBonusPercent": 10,
+  "minimumOffer": 10,
+  "deductionsPercent": {
+    "screen": {
+      "perfect": 0,
+      "light_scratches": 10,
+      "deep_scratches": 25,
+      "cracked": 50
+    },
+    "body": {
+      "perfect": 0,
+      "light_wear": 5,
+      "heavy_wear": 15,
+      "damaged": 35
+    },
+    "batteryBelow80": 10,
+    "biometricsBroken": 30
+  },
+  "notWorking": {
+    "policy": "recycle",
+    "recycleOffer": 5
+  },
+  "locked": {
+    "policy": "refuse",
+    "recycleOffer": 0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$comment": "Table: promo_codes. EXAMPLE codes. kind percent: value in %; fixed: value in euros. minOrder in euros (VAT incl.).",
+  "rows": [
+    {
+      "id": "bienvenue10",
+      "code": "BIENVENUE10",
+      "kind": "percent",
+      "value": 10,
+      "minOrder": 200,
+      "expiresAt": "2026-12-31T22:59:59.000Z",
+      "active": true
+    },
+    {
+      "id": "novacell30",
+      "code": "NOVACELL30",
+      "kind": "fixed",
+      "value": 30,
+      "minOrder": 300,
+      "expiresAt": "2027-06-30T21:59:59.000Z",
+      "active": true
+    },
+    {
+      "id": "ete2026",
+      "code": "ETE2026",
+      "kind": "percent",
+      "value": 15,
+      "minOrder": null,
+      "expiresAt": "2026-08-31T21:59:59.000Z",
+      "active": true
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Database,
   FileText,
   Flame,
   Gauge,
@@ -18,6 +19,7 @@ import { cn } from "@/lib/cn";
 
 export const ADMIN_SECTIONS: { href: string; label: string; icon: LucideIcon; group: "shop" | "records" }[] = [
   { href: "/admin/products", label: "Products", icon: Smartphone, group: "shop" },
+  { href: "/admin/models", label: "Models", icon: Database, group: "shop" },
   { href: "/admin/deals", label: "Great Deals", icon: Flame, group: "shop" },
   { href: "/admin/packages", label: "Packages", icon: Package, group: "shop" },
   { href: "/admin/gauge", label: "Gauge", icon: Gauge, group: "shop" },

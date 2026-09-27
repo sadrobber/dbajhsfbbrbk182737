@@ -47,7 +47,7 @@ export default async function OrderPage({ params, searchParams }: PageProps<"/[l
   const describe = (line: (typeof order.lines)[number]) => {
     const item = line.productId ? items.find((i) => i.id === line.productId) : undefined;
     const pkg = line.packageId ? packages.find((p) => p.id === line.packageId) : undefined;
-    return item ? describeProduct(t, item) : pkg ? describePackage(t, pkg) : line.description;
+    return item ? describeProduct(t, locale, item) : pkg ? describePackage(t, pkg) : line.description;
   };
   const stage = stageOf(order);
   const StageIcon = STAGE_ICONS[stage];

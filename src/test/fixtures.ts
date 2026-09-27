@@ -1,15 +1,27 @@
 import { storefrontSettings } from "@/config/site.config";
 import { enrichCatalog, inStock } from "@/lib/data/catalog-logic";
-import { brandSchema, dealSchema, gaugeSchema, type Merchandising, packageSchema, productSchema } from "@/lib/data/schema";
+import {
+  brandSchema,
+  type Catalog,
+  dealSchema,
+  gaugeSchema,
+  type Merchandising,
+  packageSchema,
+  type PhoneModel,
+  phoneModelSchema,
+  productSchema,
+} from "@/lib/data/schema";
 import brands from "../../data/brands.json";
 import deals from "../../data/deals.json";
 import gauge from "../../data/gauge-config.json";
+import models from "../../data/models.json";
 import packages from "../../data/packages.json";
 import products from "../../data/products.json";
 
-export const catalog = {
+export const catalog: Catalog<PhoneModel> = {
   currency: "EUR" as const,
   brands: brandSchema.array().parse(brands.rows),
+  models: phoneModelSchema.array().parse(models.rows),
   products: productSchema.array().parse(products.rows),
 };
 export const catalogItems = enrichCatalog(catalog);

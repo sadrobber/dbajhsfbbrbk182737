@@ -1,4 +1,5 @@
-import type { Catalog, Merchandising } from "./schema";
+import type { PromoCode, TradeInConfig, TradeInPrice } from "./pricing";
+import type { BatteryOptionInfo, Catalog, GradeInfo, Merchandising, PhoneModel } from "./schema";
 
 /**
  * Where the storefront gets its data.
@@ -9,6 +10,10 @@ import type { Catalog, Merchandising } from "./schema";
  * admin's writes). Nothing in the UI needs to change.
  */
 export interface DataSource {
-  getCatalog(): Promise<Catalog>;
+  getCatalog(): Promise<Catalog<PhoneModel>>;
   getMerchandising(): Promise<Merchandising>;
+  /** Condition grades and battery options, in display order. */
+  getOptions(): Promise<{ grades: GradeInfo[]; batteryOptions: BatteryOptionInfo[] }>;
+  getPromoCodes(): Promise<PromoCode[]>;
+  getTradeInGrid(): Promise<{ prices: TradeInPrice[]; config: TradeInConfig }>;
 }

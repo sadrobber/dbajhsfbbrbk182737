@@ -8,7 +8,7 @@ import { OrderDecision, RefreshPaymentButton } from "@/components/admin/orders/o
 import { adminCard } from "@/components/admin/styles";
 import { Banner, PageHeader, Pill } from "@/components/admin/ui";
 import { getTranslator } from "@/i18n/messages";
-import { getCustomer, getOrder, listBrands, listProducts } from "@/lib/data/admin-repository";
+import { getCustomer, getOrder, listBrands, listModels, listProducts } from "@/lib/data/admin-repository";
 import { enrichCatalog, supplyOf } from "@/lib/data/catalog-logic";
 import type { Payment } from "@/lib/data/records";
 import { formatPrice } from "@/lib/format";
@@ -40,8 +40,8 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
   await requireAdmin();
   const order = await getOrder((await params).id);
   if (!order) notFound();
-  const [customer, products, brands] = await Promise.all([getCustomer(order.customerId), listProducts(), listBrands()]);
-  const items = enrichCatalog({ currency: "EUR", brands, products });
+  const [customer, products, brands, models] = await Promise.all([getCustomer(order.customerId), listProducts(), listBrands(), listModels()]);
+  const items = enrichCatalog({ currency: "EUR", brands, models, products });
 
   const status = ORDER_STATUS[order.status];
   const waiting = order.status === "awaiting_availability" || order.status === "quote_requested";
@@ -57,7 +57,7 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
         .filter((item) => item.id !== wanted.id && supplyOf(item) === "in_store")
         .sort((a, b) => Math.abs(a.price - wanted.price) - Math.abs(b.price - wanted.price))
         .slice(0, 3)
-        .map((item) => `${describeProduct(t, item)}: ${formatPrice(order.locale, item.price)}`)
+        .map((item) => `${describeProduct(t, order.locale, item)}: ${formatPrice(order.locale, item.price)}`)
     : [];
 
   const { authorisedAt, expiresAt, expiresSoon } = authorisationWindow(order.payment);

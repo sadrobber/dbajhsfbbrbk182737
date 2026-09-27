@@ -7,7 +7,9 @@ import { stockTone } from "@/components/admin/stock";
 import { PageHeader, Pill } from "@/components/admin/ui";
 import type { PreviewMessages } from "@/components/admin/preview";
 import { cn } from "@/lib/cn";
+import type { AdminModel } from "@/lib/data/admin-repository";
 import type { Brand, Product } from "@/lib/data/schema";
+import { GRADE_LABELS } from "./product-draft";
 import { ProductEditor } from "./product-editor";
 import { ProductThumb } from "./product-thumb";
 
@@ -18,6 +20,7 @@ const euro = new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR"
 export function ProductsManager({
   products,
   brands,
+  models,
   dealProductIds,
   orderCounts,
   lowStockThreshold,
@@ -26,6 +29,7 @@ export function ProductsManager({
 }: {
   products: Product[];
   brands: Brand[];
+  models: AdminModel[];
   dealProductIds: string[];
   orderCounts: Record<string, number>;
   lowStockThreshold: number;
@@ -45,22 +49,25 @@ export function ProductsManager({
     return () => clearTimeout(timer);
   }, [notice]);
 
-  const brandNames = useMemo(() => new Map(brands.map((b) => [b.id, b.name])), [brands]);
+  const modelById = useMemo(() => new Map(models.map((m) => [m.id, m])), [models]);
+  const brandNameById = useMemo(() => new Map(brands.map((b) => [b.id, b.name])), [brands]);
   const deals = useMemo(() => new Set(dealProductIds), [dealProductIds]);
-  const colorLabels = messages.en.Product.colors;
+  const nameOf = (p: Pick<Product, "modelId">) => modelById.get(p.modelId)?.label ?? p.modelId;
 
   const visible = useMemo(() => {
     const words = query.toLowerCase().split(/\s+/).filter(Boolean);
     return products.filter((p) => {
+      const model = modelById.get(p.modelId);
       if (condition !== "all" && p.condition !== condition) return false;
-      if (brand !== "all" && p.brand !== brand) return false;
+      if (brand !== "all" && model?.brand !== brandNameById.get(brand)) return false;
       if (stock === "in" && p.stock <= 0) return false;
       if (stock === "low" && (p.stock <= 0 || p.stock > lowStockThreshold)) return false;
       if (stock === "out" && p.stock > 0) return false;
-      const haystack = `${brandNames.get(p.brand)} ${p.model} ${p.id} ${p.storageGb}gb ${p.color} ${p.grade ?? ""}`.toLowerCase();
+      const haystack =
+        `${model?.label ?? ""} ${p.modelId} ${p.id} ${p.sku} ${p.storageGb}gb ${p.colorName} ${p.grade ? GRADE_LABELS[p.grade] : ""}`.toLowerCase();
       return words.every((word) => haystack.includes(word));
     });
-  }, [products, query, condition, brand, stock, lowStockThreshold, brandNames]);
+  }, [products, query, condition, brand, stock, lowStockThreshold, modelById, brandNameById]);
 
   const editedProduct = editing?.id ? (products.find((p) => p.id === editing.id) ?? null) : null;
 
@@ -168,25 +175,25 @@ export function ProductsManager({
                     <div className="flex items-center gap-3">
                       <ProductThumb product={p} />
                       <div className="min-w-0">
-                        <p className="font-semibold">
-                          {brandNames.get(p.brand)} {p.model}
-                        </p>
-                        <p className="text-[0.8125rem] text-fg-subtle">{p.id}</p>
+                        <p className="font-semibold">{nameOf(p)}</p>
+                        <p className="text-[0.8125rem] text-fg-subtle">{p.sku}</p>
                       </div>
                     </div>
                   </td>
                   <td className={tableCell}>
-                    {p.condition === "new" ? (
+                    {p.condition === "new" || !p.grade ? (
                       <Pill tone="info">New</Pill>
                     ) : (
                       <span className="grid gap-0.5">
-                        <Pill>Refurbished {p.grade}</Pill>
-                        <span className="text-[0.8125rem] text-fg-subtle">Battery {p.batteryHealth}%</span>
+                        <Pill>Refurbished · {GRADE_LABELS[p.grade]}</Pill>
+                        <span className="text-[0.8125rem] text-fg-subtle">
+                          {p.battery === "new" ? "New battery" : `Battery ${p.batteryHealth}%`}
+                        </span>
                       </span>
                     )}
                   </td>
                   <td className={tableCell}>
-                    {p.storageGb >= 1024 ? `${p.storageGb / 1024} TB` : `${p.storageGb} GB`} · {colorLabels[p.color]}
+                    {p.storageGb >= 1024 ? `${p.storageGb / 1024} TB` : `${p.storageGb} GB`} · {p.colorName}
                   </td>
                   <td className={cn(tableCell, "text-right tabular-nums")}>
                     <span className="font-semibold">{euro.format(p.price)}</span>
@@ -210,7 +217,7 @@ export function ProductsManager({
                       type="button"
                       className={adminButton("secondary", "min-h-9")}
                       onClick={() => setEditing({ id: p.id })}
-                      aria-label={`Edit ${brandNames.get(p.brand)} ${p.model} (${p.id})`}
+                      aria-label={`Edit ${nameOf(p)} (${p.sku})`}
                     >
                       <Pencil aria-hidden="true" className="size-4" />
                       Edit
@@ -233,6 +240,7 @@ export function ProductsManager({
           product={editedProduct}
           products={products}
           brands={brands}
+          models={models}
           inGreatDeals={editing.id ? deals.has(editing.id) : false}
           orderCount={editing.id ? (orderCounts[editing.id] ?? 0) : 0}
           lowStockThreshold={lowStockThreshold}
@@ -240,7 +248,7 @@ export function ProductsManager({
           onClose={() => setEditing(null)}
           onSaved={(saved, created) => {
             setEditing(null);
-            setNotice({ text: `${created ? "Added" : "Saved"} ${brandNames.get(saved.brand) ?? ""} ${saved.model}.`, id: saved.id });
+            setNotice({ text: `${created ? "Added" : "Saved"} ${nameOf(saved)} (${saved.sku}).`, id: saved.id });
           }}
           onDeleted={(label) => {
             setEditing(null);

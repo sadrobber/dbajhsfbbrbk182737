@@ -1,4 +1,14 @@
-import { type Badge, type Catalog, type CatalogItem, type DealPromo, type Merchandising, type Product, type Supply, supplies } from "./schema";
+import {
+  type Badge,
+  type Catalog,
+  type CatalogItem,
+  type ColorKey,
+  type DealPromo,
+  type Merchandising,
+  type Product,
+  type Supply,
+  supplies,
+} from "./schema";
 
 /** A Great Deals product, with the extra badge set for it in the admin. */
 export type DealItem = CatalogItem & { promo: DealPromo | null };
@@ -13,31 +23,61 @@ function deriveBadges(badges: Badge[], stock: number): Badge[] {
   return [...new Set(result)].sort((a, b) => BADGE_PRIORITY.indexOf(a) - BADGE_PRIORITY.indexOf(b));
 }
 
-/** Resolves brand names, derived badges and the "new version" price comparison. */
+/**
+ * Resolves each variant's model, brand and colour names, derived badges and
+ * the "new version" price comparison. Variants whose model is missing are
+ * left out (the integrity check reports them).
+ */
 export function enrichCatalog(catalog: Catalog): CatalogItem[] {
-  const brandNames = new Map(catalog.brands.map((b) => [b.id, b.name]));
+  const brandIds = new Map(catalog.brands.map((b) => [b.name, b.id]));
+  const models = new Map(catalog.models.map((m) => [m.id, m]));
 
-  return catalog.products.map((product) => {
+  return catalog.products.flatMap((product) => {
+    const model = models.get(product.modelId);
+    if (!model) return [];
     const newVersion =
       product.condition === "refurbished"
-        ? catalog.products.find(
-            (p) =>
-              p.condition === "new" &&
-              p.brand === product.brand &&
-              p.model === product.model &&
-              p.storageGb === product.storageGb,
-          )
+        ? catalog.products.find((p) => p.condition === "new" && p.modelId === product.modelId && p.storageGb === product.storageGb)
         : undefined;
     const saving = newVersion && newVersion.price > product.price ? newVersion.price - product.price : null;
+    const color = model.colors.find((c) => c.name_en === product.colorName);
 
-    return {
-      ...product,
-      badges: deriveBadges(product.badges, product.stock),
-      brandName: brandNames.get(product.brand) ?? product.brand,
-      newVersionPrice: saving !== null && newVersion ? newVersion.price : null,
-      saving,
-    };
+    return [
+      {
+        ...product,
+        brand: brandIds.get(model.brand) ?? model.brand.toLowerCase(),
+        brandName: model.brand,
+        model: model.name,
+        colorNames: { en: product.colorName, fr: color?.name_fr ?? null, it: color?.name_it ?? null },
+        badges: deriveBadges(product.badges, product.stock),
+        newVersionPrice: saving !== null && newVersion ? newVersion.price : null,
+        saving,
+      },
+    ];
   });
+}
+
+/** Models the shop can sell right now: at least one variant in stock or orderable from a supplier. */
+export function modelsInShop<M extends { id: string }>(models: M[], items: Pick<CatalogItem, "modelId" | "stock" | "supplierAvailability">[]): M[] {
+  const orderable = new Set(items.filter((item) => supplyOf(item) !== null).map((item) => item.modelId));
+  return models.filter((m) => orderable.has(m.id));
+}
+
+const COLOR_FAMILIES: [RegExp, ColorKey][] = [
+  [/black|obsidian|midnight|graphite|onyx|jet|charcoal|carbon|space gr/i, "black"],
+  [/white|starlight|porcelain|cream|snow|chalk|frost|pearl/i, "white"],
+  [/teal|blue|navy|icy|ultramarine|sky|aqua|bay|indigo|glacier/i, "blue"],
+  [/green|mint|sage|olive|jade|aloe|lime|pistachio/i, "green"],
+  [/purple|lavender|violet|iris|lilac/i, "purple"],
+  [/pink|rose|peony|coral|hibiscus|red/i, "pink"],
+  [/gold|yellow|amber|sand|desert|orange|lemon|mocha/i, "gold"],
+  [/silver|natural|titanium|moonstone/i, "silver"],
+  [/gray|grey/i, "grey"],
+];
+
+/** A sensible illustration colour for an official colour name ("Sierra Blue" -> blue). Staff can change it. */
+export function colorFamilyOf(colorName: string): ColorKey {
+  return COLOR_FAMILIES.find(([pattern]) => pattern.test(colorName))?.[1] ?? "grey";
 }
 
 /**

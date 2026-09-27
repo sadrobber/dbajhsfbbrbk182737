@@ -1,5 +1,5 @@
 import {
-  type Brand,
+  type BatteryOption,
   type ColorKey,
   type Condition,
   type GoodFor,
@@ -12,15 +12,30 @@ import {
 
 export type ManualBadge = (typeof manualBadges)[number];
 
+/** Admin labels (the shop's own labels are in messages/*.json). */
+export const GRADE_LABELS: Record<Grade, string> = {
+  premium: "Premium · no sign of use",
+  excellent: "Excellent · almost flawless",
+  very_good: "Very good · light marks",
+  correct: "Good · visible signs of use",
+};
+
+export const BATTERY_LABELS: Record<BatteryOption, string> = {
+  standard: "Standard (original, tested)",
+  new: "New battery (100%)",
+};
+
 /** What the product form edits. Numbers stay text while typing, so fields can be empty. */
 export type ProductDraft = {
   id: string | null;
-  brand: string;
-  model: string;
+  sku: string | null;
+  modelId: string;
   condition: Condition;
   storageGb: string;
+  colorName: string;
   color: ColorKey;
   grade: Grade | "";
+  battery: BatteryOption | "";
   batteryHealth: string;
   warrantyMonths: string;
   price: string;
@@ -33,15 +48,17 @@ export type ProductDraft = {
   photos: string[];
 };
 
-export function newDraft(brands: Brand[]): ProductDraft {
+export function newDraft(): ProductDraft {
   return {
     id: null,
-    brand: brands[0]?.id ?? "",
-    model: "",
+    sku: null,
+    modelId: "",
     condition: "new",
-    storageGb: "128",
+    storageGb: "",
+    colorName: "",
     color: "black",
     grade: "",
+    battery: "",
     batteryHealth: "",
     warrantyMonths: "24",
     price: "",
@@ -58,12 +75,14 @@ export function newDraft(brands: Brand[]): ProductDraft {
 export function draftOf(product: Product): ProductDraft {
   return {
     id: product.id,
-    brand: product.brand,
-    model: product.model,
+    sku: product.sku,
+    modelId: product.modelId,
     condition: product.condition,
     storageGb: String(product.storageGb),
+    colorName: product.colorName,
     color: product.color,
     grade: product.grade ?? "",
+    battery: product.battery ?? "",
     batteryHealth: product.batteryHealth === null ? "" : String(product.batteryHealth),
     warrantyMonths: String(product.warrantyMonths),
     price: String(product.price),
@@ -80,17 +99,19 @@ export function draftOf(product: Product): ProductDraft {
 const toNumber = (text: string) => (text.trim() === "" ? Number.NaN : Number(text.replace(",", ".")));
 const orNull = (text: string) => (text.trim() === "" ? null : toNumber(text));
 
-/** The product as it would be saved (may be invalid: the schema says why). */
+/** The product as it would be saved (may be invalid: the schema says why). New products get their id and SKU on save. */
 export function productOf(draft: ProductDraft): Product {
   const refurbished = draft.condition === "refurbished";
   return {
     id: draft.id ?? "new-product",
-    brand: draft.brand,
-    model: draft.model.trim(),
+    sku: draft.sku ?? "NC-NEW",
+    modelId: draft.modelId,
     condition: draft.condition,
     storageGb: toNumber(draft.storageGb),
+    colorName: draft.colorName,
     color: draft.color,
     grade: refurbished && draft.grade ? draft.grade : null,
+    battery: refurbished && draft.battery ? draft.battery : null,
     batteryHealth: refurbished ? orNull(draft.batteryHealth) : null,
     warrantyMonths: toNumber(draft.warrantyMonths),
     price: toNumber(draft.price),
@@ -110,16 +131,18 @@ export function previewProductOf(draft: ProductDraft): Product {
   const safe = (n: number | null, fallback: number) => (n === null ? null : Number.isFinite(n) && n > 0 ? n : fallback);
   const price = safe(product.price, 0) ?? 0;
   const compare = safe(product.compareAtPrice, 0);
+  const refurbished = product.condition === "refurbished";
   return {
     ...product,
-    model: product.model || "New phone",
     storageGb: safe(product.storageGb, 128) ?? 128,
+    colorName: product.colorName || "—",
     warrantyMonths: safe(product.warrantyMonths, 12) ?? 12,
     price,
     compareAtPrice: compare !== null && compare > price ? compare : null,
     stock: Number.isFinite(product.stock) ? Math.max(0, product.stock) : 0,
-    grade: product.condition === "refurbished" ? (product.grade ?? "A") : null,
-    batteryHealth: product.condition === "refurbished" ? Math.min(100, safe(product.batteryHealth, 90) ?? 90) : null,
+    grade: refurbished ? (product.grade ?? "excellent") : null,
+    battery: refurbished ? (product.battery ?? "standard") : null,
+    batteryHealth: refurbished ? Math.min(100, safe(product.batteryHealth, 90) ?? 90) : null,
     goodFor: product.goodFor.length > 0 ? product.goodFor : ["easy"],
   };
 }

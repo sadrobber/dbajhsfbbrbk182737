@@ -136,7 +136,16 @@ Saving updates the shop straight away: the homepage, product pages and the advis
 
 ### The data files: a stand-in for the database
 
-Each file in `data/` is one future database table: `{ "$comment": "...", "rows": [...] }` with a stable `id` per row and `<thing>Id` references between them (`order.customerId`, `order.lines[].productId`, `tradeIn.customerId`, `ticket.orderId`, `invoice.orderId`...). The schemas are in `src/lib/data/schema.ts` and `src/lib/data/records.ts`; `npm test` checks every file against them and checks that no reference points to a missing row (`src/lib/data/integrity.ts`).
+| File | What it holds |
+| --- | --- |
+| `models.json` | The phone spec database: 252 models (Apple, Samsung, Google, Xiaomi, OnePlus, Nothing since 2015, + Doro 8100). Specs are imported facts, never retyped; `data_quality.status` is `web_checked` or `needs_check`, `missing_fields` lists gaps. Shop fields to fill in: French / Italian colour names, colour swatches, what's in the box. Listed in **Admin › Models**. |
+| `products.json` | Variants: one row per stock unit of a model (storage, official colour, new or refurbished grade, battery option), with its own price, stock and SKU. Edited in **Admin › Products**. |
+| `grades.json`, `battery-options.json` | Refurbished grades (Premium, Excellent, Very good, Good) with screen / body descriptions in FR / EN / IT, and battery options (standard ≥ 85 %, new). Surcharges are example values. |
+| `promo-codes.json` | Promo codes (% or fixed, minimum order, expiry). Example codes. |
+| `tradein-prices.json`, `tradein-config.json` | Trade-in grid: buy-back price per model and storage, deductions per condition answer, store-credit bonus, what to do with locked or dead phones. Example values. |
+| the others | Brands, Great Deals, packages, Gauge, orders, customers, trade-ins, tickets, invoices. |
+
+Each file in `data/` is one future database table: `{ "$comment": "...", "rows": [...] }` with a stable `id` per row and `<thing>Id` references between them (`order.customerId`, `order.lines[].productId`, `tradeIn.customerId`, `ticket.orderId`, `invoice.orderId`...). The schemas are in `src/lib/data/schema.ts`, `src/lib/data/records.ts` and `src/lib/data/pricing.ts`; `npm test` checks every file against them and checks that no reference points to a missing row (`src/lib/data/integrity.ts`).
 
 The admin only goes through `src/lib/data/admin-repository.ts`, and the shop through `src/lib/data/queries.ts`. Writes are validated, one at a time per file, and atomic (temporary file then rename). `NOVACELL_DATA_DIR` points them to another folder (handy for tests).
 

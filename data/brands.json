@@ -1,5 +1,5 @@
 {
-  "$comment": "Table: brands. Referenced by products.brand.",
+  "$comment": "Table: brands. models.brand -> brands.name.",
   "rows": [
     {
       "id": "apple",
@@ -20,6 +20,14 @@
     {
       "id": "doro",
       "name": "Doro"
+    },
+    {
+      "id": "oneplus",
+      "name": "OnePlus"
+    },
+    {
+      "id": "nothing",
+      "name": "Nothing"
     }
   ]
 }

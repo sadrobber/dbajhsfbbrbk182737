@@ -1,11 +1,21 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 import type { Database } from "./integrity";
+import { promoCodeSchema, tradeInConfigSchema, tradeInPriceSchema } from "./pricing";
 import { customerSchema, invoiceSchema, orderSchema, ticketSchema, tradeInSchema } from "./records";
-import { brandSchema, dealSchema, gaugeSchema, packageSchema, productSchema } from "./schema";
+import {
+  batteryOptionInfoSchema,
+  brandSchema,
+  dealSchema,
+  gaugeSchema,
+  gradeInfoSchema,
+  packageSchema,
+  phoneModelSchema,
+  productSchema,
+} from "./schema";
 
 /**
  * The JSON files in /data act as the database until a real one exists.
@@ -23,7 +33,12 @@ import { brandSchema, dealSchema, gaugeSchema, packageSchema, productSchema } fr
 
 const tableSchemas = {
   brands: brandSchema,
+  models: phoneModelSchema,
+  grades: gradeInfoSchema,
+  "battery-options": batteryOptionInfoSchema,
   products: productSchema,
+  "promo-codes": promoCodeSchema,
+  "tradein-prices": tradeInPriceSchema,
   deals: dealSchema,
   packages: packageSchema,
   customers: customerSchema,
@@ -62,15 +77,31 @@ function parseOrThrow<T>(schema: z.ZodType<T>, value: unknown, where: string): T
   return result.data;
 }
 
+/** Parsed tables, kept until the file changes on disk (models.json alone is ~650 kB). */
+const readCache = new Map<string, { stamp: string; rows: unknown[] }>();
+
 export async function readRows<N extends TableName>(name: N): Promise<Database[N]> {
+  const target = fileFor(name);
+  const info = await stat(target);
+  const stamp = `${info.mtimeMs}:${info.size}`;
+  const cached = readCache.get(target);
+  if (cached?.stamp === stamp) return [...cached.rows] as Database[N];
   const file = await readJson(name);
-  return parseOrThrow(z.array(tableSchemas[name]), file.rows, name) as Database[N];
+  const rows = parseOrThrow(z.array(tableSchemas[name]), file.rows, name) as Database[N];
+  readCache.set(target, { stamp, rows });
+  return [...rows] as Database[N];
 }
 
 export async function readGaugeConfig() {
   const config = await readJson("gauge-config");
   delete config.$comment;
   return parseOrThrow(gaugeSchema, config, "gauge-config");
+}
+
+export async function readTradeInConfig() {
+  const config = await readJson("tradein-config");
+  delete config.$comment;
+  return parseOrThrow(tradeInConfigSchema, config, "tradein-config");
 }
 
 // --- writes ------------------------------------------------------------------

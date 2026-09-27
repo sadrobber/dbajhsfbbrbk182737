@@ -49,10 +49,17 @@ export type CardBadge = { key: Badge | "custom"; label: string };
 
 export type AvailabilityTone = "ok" | "low" | "last" | "supplier" | "request" | "out";
 
-const GRADE_KEYS = { "A+": "aPlus", A: "a", B: "b" } as const;
-
 export function gradeLabel(t: Translator, grade: Grade): string {
-  return t(`Product.grade.${GRADE_KEYS[grade]}`);
+  return t(`Product.grade.${grade}`);
+}
+
+/**
+ * The colour as the manufacturer names it in this language. Until the French /
+ * Italian official names are filled in (models.json), the colour family is
+ * shown instead ("Bleu") rather than the English name.
+ */
+export function colorLabel(t: Translator, locale: Locale, item: Pick<CatalogItem, "color" | "colorNames">): string {
+  return item.colorNames[locale] ?? (locale === "en" ? item.colorNames.en : t(`Product.colors.${item.color}`));
 }
 
 export function storageLabel(t: Translator, gb: number): string {
@@ -103,7 +110,7 @@ export function buildProductCardView(
     gradeLabel: item.grade ? gradeLabel(t, item.grade) : null,
     storageLabel: storageLabel(t, item.storageGb),
     color: item.color,
-    colorLabel: t(`Product.colors.${item.color}`),
+    colorLabel: colorLabel(t, locale, item),
     batteryLabel:
       item.batteryHealth !== null
         ? t("Product.battery", { value: formatPercent(locale, item.batteryHealth) })

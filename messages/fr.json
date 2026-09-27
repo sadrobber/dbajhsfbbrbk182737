@@ -51,9 +51,14 @@
       "refurbished": "Reconditionné"
     },
     "grade": {
-      "aPlus": "Comme neuf",
-      "a": "Très bon état",
-      "b": "Bon état"
+      "premium": "Premium",
+      "excellent": "Parfait état",
+      "very_good": "Très bon état",
+      "correct": "État correct"
+    },
+    "batteryOption": {
+      "standard": "Batterie standard",
+      "new": "Batterie neuve"
     },
     "colors": {
       "black": "Noir",

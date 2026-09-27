@@ -17,7 +17,8 @@ describe("demo advisor", () => {
     expect(ids(reply)).toEqual([
       "right_choice:iphone-14-128-refurb",
       "smart_deal:iphone-13-128-refurb",
-      "premium_option:iphone-15-128-refurb",
+      // The cheapest iPhone 15 (grade "Good"): closest above the budget.
+      "premium_option:iphone-15-128-black-correct",
     ]);
     expect(reply.packages).toEqual(["max-protection"]);
     expect(reply.message).toContain("Apple");
@@ -43,7 +44,7 @@ describe("demo advisor", () => {
 
   it("best camera under €700", () => {
     const reply = ask("The best camera under €700", "en");
-    expect(reply.recommendations[0].productId).toBe("iphone-16-128-refurb");
+    expect(reply.recommendations[0].productId).toBe("iphone-16-128-black-excellent-new-battery");
     for (const rec of reply.recommendations) {
       expect(catalogItems.find((item) => item.id === rec.productId)!.goodFor).toContain("photo");
     }

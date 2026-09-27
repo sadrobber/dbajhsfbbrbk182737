@@ -1,0 +1,110 @@
+{
+  "$comment": "Table: grades (conditions shown on product pages; labels in messages Product.grade.<id> / Product.condition.new). surcharge = EXAMPLE euros over the 'correct' price, used to suggest prices; the client sets the real ones.",
+  "rows": [
+    {
+      "id": "new",
+      "position": 0,
+      "forNewPhones": true,
+      "surcharge": null,
+      "summary": {
+        "fr": "Neuf, jamais utilisé, dans sa boîte scellée.",
+        "en": "Brand new, never used, in its sealed box.",
+        "it": "Nuovo, mai usato, nella confezione sigillata."
+      },
+      "screen": {
+        "fr": "Parfait, avec son film de protection d'origine.",
+        "en": "Flawless, with its original protective film.",
+        "it": "Perfetto, con la pellicola protettiva originale."
+      },
+      "body": {
+        "fr": "Parfait, jamais sorti de son emballage.",
+        "en": "Flawless, never taken out of its packaging.",
+        "it": "Perfetta, mai tolta dalla confezione."
+      }
+    },
+    {
+      "id": "premium",
+      "position": 1,
+      "forNewPhones": false,
+      "surcharge": 100,
+      "summary": {
+        "fr": "Aucune trace d'usage : l'expérience du neuf, à un prix de reconditionné.",
+        "en": "No sign of use: the feel of a new phone at a refurbished price.",
+        "it": "Nessun segno d'uso: la sensazione del nuovo a un prezzo da ricondizionato."
+      },
+      "screen": {
+        "fr": "Aucune rayure, même en plein soleil.",
+        "en": "No scratches, even in bright light.",
+        "it": "Nessun graffio, anche in piena luce."
+      },
+      "body": {
+        "fr": "Coque et cadre sans aucune marque.",
+        "en": "Back and frame without a single mark.",
+        "it": "Retro e cornice senza alcun segno."
+      }
+    },
+    {
+      "id": "excellent",
+      "position": 2,
+      "forNewPhones": false,
+      "surcharge": 70,
+      "summary": {
+        "fr": "Presque impeccable : le meilleur équilibre entre état et prix.",
+        "en": "Almost flawless: the best balance between condition and price.",
+        "it": "Quasi impeccabile: il miglior equilibrio tra condizioni e prezzo."
+      },
+      "screen": {
+        "fr": "Aucune rayure visible écran allumé ; micro-rayures possibles écran éteint.",
+        "en": "No visible scratches with the screen on; possible micro-scratches with it off.",
+        "it": "Nessun graffio visibile a schermo acceso; possibili micro-graffi a schermo spento."
+      },
+      "body": {
+        "fr": "Micro-traces visibles seulement de très près.",
+        "en": "Tiny marks, only visible up close.",
+        "it": "Micro-segni visibili solo da molto vicino."
+      }
+    },
+    {
+      "id": "very_good",
+      "position": 3,
+      "forNewPhones": false,
+      "surcharge": 40,
+      "summary": {
+        "fr": "Quelques marques légères : idéal si vous utilisez une coque.",
+        "en": "A few light marks: ideal if you use a case.",
+        "it": "Qualche segno leggero: ideale se usi una cover."
+      },
+      "screen": {
+        "fr": "Rayures légères, invisibles écran allumé.",
+        "en": "Light scratches, invisible with the screen on.",
+        "it": "Graffi leggeri, invisibili a schermo acceso."
+      },
+      "body": {
+        "fr": "Traces légères visibles sur la coque ou le cadre.",
+        "en": "Light marks visible on the back or frame.",
+        "it": "Segni leggeri visibili sul retro o sulla cornice."
+      }
+    },
+    {
+      "id": "correct",
+      "position": 4,
+      "forNewPhones": false,
+      "surcharge": 0,
+      "summary": {
+        "fr": "Des traces d'usage visibles et le prix le plus bas, pour un téléphone qui fonctionne parfaitement.",
+        "en": "Visible signs of use and the lowest price, for a phone that works perfectly.",
+        "it": "Segni d'uso visibili e il prezzo più basso, per un telefono che funziona perfettamente."
+      },
+      "screen": {
+        "fr": "Rayures visibles écran éteint, sans fissure ni pixel défectueux.",
+        "en": "Scratches visible with the screen off, no cracks or dead pixels.",
+        "it": "Graffi visibili a schermo spento, senza crepe né pixel difettosi."
+      },
+      "body": {
+        "fr": "Rayures et petits chocs visibles.",
+        "en": "Visible scratches and small dents.",
+        "it": "Graffi e piccole ammaccature visibili."
+      }
+    }
+  ]
+}

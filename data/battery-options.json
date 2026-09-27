@@ -1,0 +1,27 @@
+{
+  "$comment": "Table: battery_options (refurbished phones only; labels in messages Product.batteryOption.<id>). minHealthPercent and surcharge are EXAMPLE values for the client to confirm.",
+  "rows": [
+    {
+      "id": "standard",
+      "position": 0,
+      "minHealthPercent": 85,
+      "surcharge": 0,
+      "explanation": {
+        "fr": "Batterie d'origine contrôlée, avec au moins {min} % de sa capacité.",
+        "en": "Original battery, tested to hold at least {min}% of its capacity.",
+        "it": "Batteria originale, verificata con almeno il {min}% della capacità."
+      }
+    },
+    {
+      "id": "new",
+      "position": 1,
+      "minHealthPercent": 100,
+      "surcharge": 49,
+      "explanation": {
+        "fr": "Batterie neuve installée par notre atelier : 100 % de capacité.",
+        "en": "New battery fitted by our workshop: 100% capacity.",
+        "it": "Batteria nuova installata dal nostro laboratorio: 100% di capacità."
+      }
+    }
+  ]
+}

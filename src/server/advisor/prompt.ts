@@ -4,7 +4,12 @@ import { type CatalogItem, localize, type PackageDefinition } from "@/lib/data/s
 import { locales } from "@/i18n/routing";
 import { translateDynamic } from "@/lib/i18n-dynamic";
 
-const GRADE_TEXT = { "A+": "like new", A: "very good condition", B: "good condition" } as const;
+const GRADE_TEXT = {
+  premium: "premium (no sign of use)",
+  excellent: "excellent (almost flawless)",
+  very_good: "very good (light marks)",
+  correct: "good (visible signs of use)",
+} as const;
 
 const LANGUAGE_NAMES: Record<Locale, string> = { fr: "French", en: "English", it: "Italian" };
 
@@ -40,8 +45,9 @@ export function buildSystemPrompt(input: {
     model: item.model,
     condition: item.condition,
     storage: item.storageGb >= 1024 ? `${item.storageGb / 1024} TB` : `${item.storageGb} GB`,
-    colour: item.color,
+    colour: item.colorName,
     ...(item.grade ? { grade: GRADE_TEXT[item.grade] } : {}),
+    ...(item.battery === "new" ? { newBattery: true } : {}),
     ...(item.batteryHealth !== null ? { batteryHealthPercent: item.batteryHealth } : {}),
     warrantyMonths: item.warrantyMonths,
     priceEur: item.price,
@@ -70,7 +76,7 @@ Rules:
 8. Suggest a package in "packages" only when it is relevant.
 9. Only talk about phones, the packages and the shop's services. Gently bring other topics back to choosing a phone.
 
-"goodFor" tags: photo = camera, battery = battery life, gaming, work, social = social media, easy = easy to use. Refurbished grades: like new, very good condition, good condition. Prices are in euros, VAT included.
+"goodFor" tags: photo = camera, battery = battery life, gaming, work, social = social media, easy = easy to use. Refurbished grades, best first: premium, excellent, very good, good. Prices are in euros, VAT included.
 
 Packages:
 ${packageLines.join("\n")}

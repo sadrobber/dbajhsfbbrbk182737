@@ -1,7 +1,7 @@
 import "server-only";
 import { readGaugeConfig, readRows, updateRows, writeGaugeConfig } from "./json-store";
 import { orderStatusesToCheck } from "./records";
-import type { Deal, GaugeSettings, PackageDefinition, Product } from "./schema";
+import type { Deal, GaugeSettings, ModelRef, PackageDefinition, PhoneModel, Product } from "./schema";
 
 /**
  * Reads and writes for the admin. The admin UI calls only these functions,
@@ -15,6 +15,31 @@ export class AdminDataError extends Error {}
 
 export const listBrands = () => readRows("brands");
 export const listProducts = () => readRows("products");
+export const listModels = () => readRows("models");
+
+/** What the admin's forms and lists need from each model, without the full specs (~650 kB). */
+export type AdminModel = ModelRef & {
+  /** "Apple iPhone 16", "Samsung Galaxy S25" (full_name leaves the brand out for Apple). */
+  label: string;
+  storage_gb: number[];
+  release_year: number | null;
+  status: PhoneModel["data_quality"]["status"];
+  missing_fields: string[];
+};
+
+export async function listAdminModels(): Promise<AdminModel[]> {
+  return (await listModels()).map((m) => ({
+    id: m.id,
+    brand: m.brand,
+    name: m.name,
+    label: `${m.brand} ${m.name}`,
+    colors: m.colors,
+    storage_gb: m.specs.storage_gb,
+    release_year: m.release.year,
+    status: m.data_quality.status,
+    missing_fields: m.data_quality.missing_fields,
+  }));
+}
 
 function slugify(text: string): string {
   return text
@@ -25,30 +50,49 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-async function assertBrandExists(brand: string) {
-  if (!(await listBrands()).some((b) => b.id === brand)) throw new AdminDataError(`Unknown brand "${brand}".`);
+/** The product must match its model: the model exists, and offers this storage and colour. */
+async function assertFitsModel(product: Omit<Product, "id">) {
+  const model = (await listModels()).find((m) => m.id === product.modelId);
+  if (!model) throw new AdminDataError("Pick a model from the list.");
+  if (!model.specs.storage_gb.includes(product.storageGb)) {
+    throw new AdminDataError(`${model.full_name} doesn't come in ${product.storageGb} GB.`);
+  }
+  if (model.colors.length > 0 && !model.colors.some((c) => c.name_en === product.colorName)) {
+    throw new AdminDataError(`${model.full_name} doesn't come in “${product.colorName}”.`);
+  }
+  return model;
 }
 
-/** Creates a product. Its id (used in the product URL) is built from brand, model, storage and condition. */
-export async function createProduct(input: Omit<Product, "id">): Promise<Product> {
-  await assertBrandExists(input.brand);
-  const rows = await updateRows("products", (rows) => {
-    const base =
-      slugify(`${input.brand} ${input.model} ${input.storageGb} ${input.condition === "refurbished" ? "refurb" : ""}`) || "product";
+/**
+ * Creates a product (a variant). Its id, used in URLs, is built from the model,
+ * storage, colour and condition; the SKU from the id.
+ */
+export async function createProduct(input: Omit<Product, "id" | "sku">): Promise<Product> {
+  await assertFitsModel({ ...input, sku: "NC-NEW" });
+  let created: Product | undefined;
+  await updateRows("products", (rows) => {
+    const shortModel = input.modelId.replace(/^(apple|google|samsung|xiaomi|oneplus|nothing)-/, "");
+    const condition = input.condition === "new" ? "new" : `${input.grade ?? "refurb"}${input.battery === "new" ? "-new-battery" : ""}`;
+    const base = slugify(`${shortModel} ${input.storageGb} ${input.colorName} ${condition}`) || "product";
     let id = base;
     for (let n = 2; rows.some((row) => row.id === id); n++) id = `${base}-${n}`;
-    return [...rows, { ...input, id }];
+    created = { ...input, id, sku: `NC-${id.toUpperCase()}` };
+    return [...rows, created];
   });
-  return rows[rows.length - 1];
+  return created!;
 }
 
+/** Updates a product. Its id and SKU never change (orders and labels refer to them). */
 export async function updateProduct(product: Product): Promise<Product> {
-  await assertBrandExists(product.brand);
+  await assertFitsModel(product);
+  let saved: Product | undefined;
   await updateRows("products", (rows) => {
-    if (!rows.some((row) => row.id === product.id)) throw new AdminDataError("This product no longer exists.");
-    return rows.map((row) => (row.id === product.id ? product : row));
+    const current = rows.find((row) => row.id === product.id);
+    if (!current) throw new AdminDataError("This product no longer exists.");
+    saved = { ...product, sku: current.sku };
+    return rows.map((row) => (row.id === product.id ? saved! : row));
   });
-  return product;
+  return saved!;
 }
 
 /**

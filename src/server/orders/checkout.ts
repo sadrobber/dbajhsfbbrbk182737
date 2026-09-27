@@ -16,7 +16,10 @@ import { notifyOrderEvent } from "./notify";
 export async function priceCartFor(cart: CartEntry[], locale: Locale): Promise<PricedCart> {
   const t = getTranslator(locale);
   const [items, packages] = await Promise.all([getCatalogItems(), getPackages()]);
-  return priceCart(cart, items, packages, { product: (item) => describeProduct(t, item), package: (pkg) => describePackage(t, pkg) });
+  return priceCart(cart, items, packages, {
+    product: (item) => describeProduct(t, locale, item),
+    package: (pkg) => describePackage(t, pkg),
+  });
 }
 
 export type PlaceOrderResult =

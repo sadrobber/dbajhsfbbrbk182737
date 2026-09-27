@@ -11,13 +11,15 @@ export async function saveProductAction(input: Product, isNew: boolean): Promise
   await requireAdmin();
   try {
     // "Last one available" always follows the stock; staff can't set it by hand.
+    // New products get their id and SKU on creation.
     const product = productSchema.parse({
       ...input,
       id: isNew ? "new-product" : input.id,
+      sku: isNew ? "NC-NEW" : input.sku,
       badges: input.badges.filter((badge) => (manualBadges as readonly string[]).includes(badge)),
     });
-    const { id, ...fields } = product;
-    const saved = isNew ? await createProduct(fields) : await updateProduct({ ...fields, id });
+    const { id, sku, ...fields } = product;
+    const saved = isNew ? await createProduct(fields) : await updateProduct({ ...fields, id, sku });
     refreshEverywhere();
     return { ok: true, data: saved };
   } catch (error) {
