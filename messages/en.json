@@ -18,13 +18,15 @@
       "fr": "Français",
       "en": "English",
       "it": "Italiano"
-    }
+    },
+    "compare": "Compare"
   },
   "Hero": {
     "eyebrow": "New and refurbished smartphones · French Riviera",
     "title": "Find the smartphone that’s right for you.",
     "knowWhatIWant": "I know what I want",
     "helpMeChoose": "Help me choose",
+    "compareLink": "Compare my phone with another one",
     "shortcutsTitle": "Go straight to",
     "shortcuts": {
       "iphone": "iPhone",
@@ -119,6 +121,126 @@
         "title": "On request",
         "text": "Nothing to pay now. Send your request: we check with our suppliers and get back to you with availability and a date."
       }
+    },
+    "compare": "Compare with another phone"
+  },
+  "Compare": {
+    "title": "Compare phones",
+    "subtitle": "Put your phone next to the one you’d like: price, trade-in value and every spec, side by side.",
+    "mine": "Your phone",
+    "want": "The phone you want",
+    "choose": "Choose a phone…",
+    "submit": "Compare",
+    "samePhone": "Choose two different phones.",
+    "popular": "Popular comparisons",
+    "pageTitle": "{mine} vs {want}",
+    "pageDescription": "{mine} vs {want}: price, trade-in value and full specifications side by side.",
+    "swap": "Swap the phones",
+    "change": "Change phones",
+    "released": "Released in {date}",
+    "prices": {
+      "title": "Prices",
+      "tradeInTitle": "Trade it in",
+      "upTo": "Up to {amount}",
+      "asCredit": "or {amount} as shop credit (+{percent})",
+      "storage": "Storage of your phone",
+      "tradeInNote": "Estimate for a phone that works perfectly, with no marks and a battery above 80%. The final offer is confirmed in the shop.",
+      "notBought": "We don’t list a trade-in price for this phone yet. Ask us in the shop.",
+      "shopTitle": "In our shop",
+      "newFrom": "New from {price}",
+      "refurbishedFrom": "Refurbished from {price}",
+      "notSold": "Not sold in our shop right now.",
+      "see": "See this phone",
+      "askAdvisor": "Ask our advisor",
+      "upgradeTitle": "Your upgrade",
+      "upgradeText": "Trade in your {mine} as shop credit and the {want} costs you from {price}.",
+      "upgradeFree": "Trade in your {mine} as shop credit and it covers the whole price of the {want}."
+    },
+    "specs": {
+      "title": "Specifications",
+      "legendBetter": "Better on paper",
+      "legendDiffers": "Different",
+      "better": "better",
+      "yes": "Yes",
+      "no": "No",
+      "sections": {
+        "overview": "Overview",
+        "display": "Screen",
+        "performance": "Performance",
+        "cameras": "Cameras",
+        "battery": "Battery and charging",
+        "design": "Design",
+        "connectivity": "Connectivity",
+        "extras": "Extras"
+      },
+      "rows": {
+        "released": "Released",
+        "formFactor": "Format",
+        "os": "System at launch",
+        "size": "Screen size",
+        "panel": "Screen type",
+        "refresh": "Refresh rate",
+        "resolution": "Resolution",
+        "cover": "Cover screen",
+        "chip": "Processor",
+        "ram": "Memory (RAM)",
+        "storage": "Storage options",
+        "rearCameras": "Rear cameras",
+        "mainCamera": "Main camera",
+        "zoom": "Optical zoom",
+        "frontCamera": "Front camera",
+        "battery": "Battery capacity",
+        "wired": "Wired charging",
+        "wireless": "Wireless charging",
+        "dimensions": "Size",
+        "weight": "Weight",
+        "water": "Water resistance",
+        "frame": "Frame",
+        "biometrics": "Unlocking",
+        "network": "Mobile network",
+        "wifi": "Wi-Fi",
+        "bluetooth": "Bluetooth",
+        "sim": "SIM",
+        "connector": "Port",
+        "magsafe": "MagSafe",
+        "qi2": "Qi2 magnets",
+        "dynamicIsland": "Dynamic Island",
+        "actionButton": "Action button",
+        "cameraControl": "Camera Control",
+        "headphoneJack": "Headphone jack",
+        "microSd": "microSD card",
+        "sPen": "S Pen",
+        "glyph": "Glyph lights"
+      },
+      "formFactor": {
+        "bar": "Classic",
+        "foldable": "Foldable"
+      },
+      "roles": {
+        "wide": "main",
+        "ultrawide": "ultra wide",
+        "telephoto": "telephoto",
+        "periscope": "periscope telephoto",
+        "depth": "depth",
+        "macro": "macro",
+        "monochrome": "black and white",
+        "tof": "3D depth"
+      },
+      "cameraCount": "{count, plural, one {# camera} other {# cameras}}",
+      "folded": "Folded: {size}",
+      "unfolded": "Unfolded: {size}"
+    },
+    "units": {
+      "inch": "{value}″",
+      "hz": "{value} Hz",
+      "gb": "{value} GB",
+      "tb": "{value} TB",
+      "mp": "{value} MP",
+      "mah": "{value} mAh",
+      "watt": "{value} W",
+      "gram": "{value} g",
+      "mm": "{h} × {w} × {t} mm",
+      "zoom": "{value}×"
     }
   },
   "Cart": {
@@ -316,7 +438,8 @@
     "legal": "Legal notice",
     "store": "The shop",
     "copyright": "© {year} {brand}",
-    "staffLogin": "Staff login"
+    "staffLogin": "Staff login",
+    "compare": "Compare phones"
   },
   "Placeholder": {
     "badge": "Coming soon",
@@ -407,7 +530,18 @@
         "social": "Perfect for social media",
         "easy": "Very easy to use"
       }
-    }
+    },
+    "askCurrentPhone": "First, which phone do you have now? I’ll compare it with my suggestions and estimate what we’d give you for it.",
+    "currentPhoneReplies": {
+      "none": "I don’t have a smartphone",
+      "skip": "Skip this question"
+    },
+    "yourPhone": "Your phone",
+    "compareWith": "Compare with my {phone}",
+    "afterTradeIn": "≈ {price} after trade-in",
+    "tradeInUpTo": "Trade-in: up to {amount} as shop credit ({storage}, perfect condition).",
+    "tradeInNone": "No trade-in price listed for this phone yet.",
+    "tradeInNote": "Estimate only: the final offer is confirmed in the shop."
   },
   "Support": {
     "open": "Open the support chat",

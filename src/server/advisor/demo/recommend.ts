@@ -96,10 +96,13 @@ function valueScore(item: CatalogItem): number {
 export function recommend(
   intent: Intent,
   available: CatalogItem[],
-  options: { alreadyAsked: boolean; packageIds: string[] },
+  options: { alreadyAsked: boolean; packageIds: string[]; excludeModelIds?: string[] },
 ): Plan {
-  const items = available
-    .filter((item) => item.stock > 0)
+  const excluded = new Set(options.excludeModelIds ?? []);
+  const inStockItems = available.filter((item) => item.stock > 0);
+  // Not the phone they already have, unless nothing else is left.
+  const others = inStockItems.filter((item) => !excluded.has(item.modelId));
+  const items = (others.length > 0 ? others : inStockItems)
     .sort((a, b) => a.price - b.price || a.id.localeCompare(b.id));
   if (items.length === 0) return { kind: "nothing" };
 

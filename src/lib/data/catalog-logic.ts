@@ -119,3 +119,11 @@ export function selectRefurbishedPicks(items: CatalogItem[], settings: Merchandi
     .sort((a, b) => b.price - a.price || a.id.localeCompare(b.id))
     .slice(0, settings.refurbishedPicks.maxItems);
 }
+
+/** The cheapest variant of a model that can be ordered, new and refurbished (for "from €…"). */
+export function modelOffers(items: CatalogItem[], modelId: string): { new: CatalogItem | null; refurbished: CatalogItem | null } {
+  const orderable = items.filter((item) => item.modelId === modelId && supplyOf(item) !== null);
+  const cheapest = (condition: CatalogItem["condition"]) =>
+    orderable.filter((item) => item.condition === condition).sort((a, b) => a.price - b.price || a.id.localeCompare(b.id))[0] ?? null;
+  return { new: cheapest("new"), refurbished: cheapest("refurbished") };
+}

@@ -11,6 +11,7 @@ export async function SiteFooter() {
   const t = await getTranslations("Footer");
   const common = await getTranslations("Common");
   const links = [
+    { href: paths.compare(), label: t("compare") },
     { href: paths.store, label: t("store") },
     { href: paths.rules, label: t("rules") },
     { href: paths.legal, label: t("legal") },

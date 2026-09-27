@@ -1,7 +1,15 @@
 import "server-only";
 import { dataSource } from ".";
-import { type DealItem, enrichCatalog, inStock, modelsInShop, selectGreatDeals, selectRefurbishedPicks } from "./catalog-logic";
-import { applyPromoCode, type PromoResult, quoteTradeIn, type TradeInAnswers, type TradeInQuote } from "./pricing";
+import { type DealItem, enrichCatalog, inStock, modelOffers, modelsInShop, selectGreatDeals, selectRefurbishedPicks } from "./catalog-logic";
+import {
+  applyPromoCode,
+  bestCaseTradeIns,
+  type PromoResult,
+  quoteTradeIn,
+  type TradeInAnswers,
+  type TradeInEstimate,
+  type TradeInQuote,
+} from "./pricing";
 import type { CatalogItem, PhoneModel } from "./schema";
 
 /**
@@ -94,6 +102,30 @@ export async function getTradeInModels(): Promise<{ model: PhoneModel; storageGb
 export async function getTradeInQuote(answers: TradeInAnswers): Promise<TradeInQuote> {
   const { prices, config } = await dataSource.getTradeInGrid();
   return quoteTradeIn(prices, config, answers);
+}
+
+/** Best-case trade-in offer per storage size for a model (empty: the shop doesn't list it), and the shop-credit bonus. */
+export async function getTradeInEstimates(modelId: string): Promise<{ estimates: TradeInEstimate[]; storeCreditBonusPercent: number }> {
+  const { prices, config } = await dataSource.getTradeInGrid();
+  return { estimates: bestCaseTradeIns(prices, config, modelId), storeCreditBonusPercent: config.storeCreditBonusPercent };
+}
+
+// --- comparison ------------------------------------------------------------------------
+
+/** Two models side by side: specs, what the shop sells of each, and the first one's trade-in estimates. */
+export async function getComparison(mineId: string, wantId: string) {
+  const [mine, want, items, tradeIn] = await Promise.all([
+    getModel(mineId),
+    getModel(wantId),
+    getCatalogItems(),
+    getTradeInEstimates(mineId),
+  ]);
+  if (!mine || !want) return null;
+  return {
+    mine: { model: mine, offers: modelOffers(items, mine.id) },
+    want: { model: want, offers: modelOffers(items, want.id) },
+    tradeIn,
+  };
 }
 
 /** An order, for the customer's order page. The page must check the order's access token. */

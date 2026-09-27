@@ -18,13 +18,15 @@
       "fr": "Français",
       "en": "English",
       "it": "Italiano"
-    }
+    },
+    "compare": "Comparer"
   },
   "Hero": {
     "eyebrow": "Smartphones neufs et reconditionnés · Côte d’Azur",
     "title": "Trouvez le smartphone qui vous correspond.",
     "knowWhatIWant": "Je sais ce que je veux",
     "helpMeChoose": "Aidez-moi à choisir",
+    "compareLink": "Comparer mon téléphone avec un autre",
     "shortcutsTitle": "Accès direct",
     "shortcuts": {
       "iphone": "iPhone",
@@ -119,6 +121,126 @@
         "title": "Sur demande",
         "text": "Rien à payer maintenant. Envoyez votre demande : nous vérifions auprès de nos fournisseurs et revenons vers vous avec la disponibilité et un délai."
       }
+    },
+    "compare": "Comparer avec un autre téléphone"
+  },
+  "Compare": {
+    "title": "Comparer des téléphones",
+    "subtitle": "Mettez votre téléphone à côté de celui qui vous fait envie : prix, valeur de reprise et toutes les caractéristiques, côte à côte.",
+    "mine": "Votre téléphone",
+    "want": "Le téléphone qui vous fait envie",
+    "choose": "Choisir un téléphone…",
+    "submit": "Comparer",
+    "samePhone": "Choisissez deux téléphones différents.",
+    "popular": "Comparaisons populaires",
+    "pageTitle": "{mine} vs {want}",
+    "pageDescription": "{mine} vs {want} : prix, valeur de reprise et fiche technique complète côte à côte.",
+    "swap": "Inverser les téléphones",
+    "change": "Changer de téléphones",
+    "released": "Sorti en {date}",
+    "prices": {
+      "title": "Prix",
+      "tradeInTitle": "Faites-le reprendre",
+      "upTo": "Jusqu’à {amount}",
+      "asCredit": "ou {amount} en bon d’achat (+{percent})",
+      "storage": "Stockage de votre téléphone",
+      "tradeInNote": "Estimation pour un téléphone qui fonctionne parfaitement, sans marques, batterie au-dessus de 80 %. L’offre définitive est confirmée en boutique.",
+      "notBought": "Nous n’affichons pas encore de prix de reprise pour ce téléphone. Demandez-nous en boutique.",
+      "shopTitle": "Dans notre boutique",
+      "newFrom": "Neuf dès {price}",
+      "refurbishedFrom": "Reconditionné dès {price}",
+      "notSold": "Pas vendu dans notre boutique en ce moment.",
+      "see": "Voir ce téléphone",
+      "askAdvisor": "Demander à notre conseiller",
+      "upgradeTitle": "Votre changement",
+      "upgradeText": "Faites reprendre votre {mine} en bon d’achat : le {want} vous revient à partir de {price}.",
+      "upgradeFree": "Faites reprendre votre {mine} en bon d’achat : il couvre tout le prix du {want}."
+    },
+    "specs": {
+      "title": "Caractéristiques",
+      "legendBetter": "Meilleur sur le papier",
+      "legendDiffers": "Différent",
+      "better": "meilleur",
+      "yes": "Oui",
+      "no": "Non",
+      "sections": {
+        "overview": "En bref",
+        "display": "Écran",
+        "performance": "Performances",
+        "cameras": "Appareils photo",
+        "battery": "Batterie et charge",
+        "design": "Design",
+        "connectivity": "Connectivité",
+        "extras": "En plus"
+      },
+      "rows": {
+        "released": "Sortie",
+        "formFactor": "Format",
+        "os": "Système à la sortie",
+        "size": "Taille de l’écran",
+        "panel": "Type d’écran",
+        "refresh": "Fréquence de rafraîchissement",
+        "resolution": "Définition",
+        "cover": "Écran externe",
+        "chip": "Processeur",
+        "ram": "Mémoire vive (RAM)",
+        "storage": "Stockages disponibles",
+        "rearCameras": "Appareils photo arrière",
+        "mainCamera": "Appareil photo principal",
+        "zoom": "Zoom optique",
+        "frontCamera": "Caméra avant",
+        "battery": "Capacité de la batterie",
+        "wired": "Charge filaire",
+        "wireless": "Charge sans fil",
+        "dimensions": "Dimensions",
+        "weight": "Poids",
+        "water": "Résistance à l’eau",
+        "frame": "Contour",
+        "biometrics": "Déverrouillage",
+        "network": "Réseau mobile",
+        "wifi": "Wi-Fi",
+        "bluetooth": "Bluetooth",
+        "sim": "SIM",
+        "connector": "Prise",
+        "magsafe": "MagSafe",
+        "qi2": "Aimants Qi2",
+        "dynamicIsland": "Dynamic Island",
+        "actionButton": "Bouton Action",
+        "cameraControl": "Commande de l’appareil photo",
+        "headphoneJack": "Prise casque",
+        "microSd": "Carte microSD",
+        "sPen": "S Pen",
+        "glyph": "Lumières Glyph"
+      },
+      "formFactor": {
+        "bar": "Classique",
+        "foldable": "Pliable"
+      },
+      "roles": {
+        "wide": "principal",
+        "ultrawide": "ultra grand-angle",
+        "telephoto": "téléobjectif",
+        "periscope": "téléobjectif périscopique",
+        "depth": "profondeur",
+        "macro": "macro",
+        "monochrome": "noir et blanc",
+        "tof": "profondeur 3D"
+      },
+      "cameraCount": "{count, plural, one {# appareil} other {# appareils}}",
+      "folded": "Plié : {size}",
+      "unfolded": "Déplié : {size}"
+    },
+    "units": {
+      "inch": "{value}″",
+      "hz": "{value} Hz",
+      "gb": "{value} Go",
+      "tb": "{value} To",
+      "mp": "{value} Mpx",
+      "mah": "{value} mAh",
+      "watt": "{value} W",
+      "gram": "{value} g",
+      "mm": "{h} × {w} × {t} mm",
+      "zoom": "{value}×"
     }
   },
   "Cart": {
@@ -316,7 +438,8 @@
     "legal": "Mentions légales",
     "store": "La boutique",
     "copyright": "© {year} {brand}",
-    "staffLogin": "Espace pro"
+    "staffLogin": "Espace pro",
+    "compare": "Comparer des téléphones"
   },
   "Placeholder": {
     "badge": "Bientôt disponible",
@@ -407,7 +530,18 @@
         "social": "Parfait pour les réseaux sociaux",
         "easy": "Très simple à utiliser"
       }
-    }
+    },
+    "askCurrentPhone": "Pour commencer, quel téléphone avez-vous aujourd’hui ? Je le comparerai à mes suggestions et j’estimerai ce que nous pouvons vous en donner.",
+    "currentPhoneReplies": {
+      "none": "Je n’ai pas de smartphone",
+      "skip": "Passer cette question"
+    },
+    "yourPhone": "Votre téléphone",
+    "compareWith": "Comparer avec mon {phone}",
+    "afterTradeIn": "≈ {price} après reprise",
+    "tradeInUpTo": "Reprise : jusqu’à {amount} en bon d’achat ({storage}, parfait état).",
+    "tradeInNone": "Pas encore de prix de reprise pour ce téléphone.",
+    "tradeInNote": "Simple estimation : l’offre définitive est confirmée en boutique."
   },
   "Support": {
     "open": "Ouvrir le chat d’assistance",

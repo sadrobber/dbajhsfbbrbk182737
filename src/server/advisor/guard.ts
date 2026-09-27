@@ -53,6 +53,8 @@ export type GuardContext = {
   packagePrices: number[];
   /** Amounts the customer wrote themselves. */
   customerNumbers: number[];
+  /** Other real amounts the text may quote (trade-in estimate, price after trade-in). */
+  extraAmounts?: number[];
   siteLocale: Locale;
 };
 
@@ -93,7 +95,7 @@ export function guardModelOutput(output: ModelOutput, context: GuardContext): As
   // Amounts in the text must be real: prices of the recommended phones, gaps
   // between them or with the customer's budget, package prices, or numbers the
   // customer wrote. Anything else is treated as invented.
-  const allowed = new Set<number>([...context.customerNumbers, ...context.packagePrices]);
+  const allowed = new Set<number>([...context.customerNumbers, ...context.packagePrices, ...(context.extraAmounts ?? [])]);
   for (const { item } of picks) {
     allowed.add(item.price);
     if (item.compareAtPrice !== null) {
@@ -135,5 +137,7 @@ export function guardModelOutput(output: ModelOutput, context: GuardContext): As
             .filter(Boolean)
             .slice(0, 4)
         : [],
+    question: type === "question" ? "needs" : null,
+    currentPhone: null,
   };
 }

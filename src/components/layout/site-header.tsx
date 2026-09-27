@@ -1,8 +1,10 @@
+import { ArrowLeftRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { BRAND_NAME } from "@/config/site.config";
 import { Link } from "@/i18n/navigation";
 import { CartLink } from "@/components/checkout/cart-link";
 import { container } from "@/components/ui/styles";
+import { paths } from "@/lib/paths";
 import { LanguageSwitcher } from "./language-switcher";
 import { Wordmark } from "./wordmark";
 
@@ -17,6 +19,14 @@ export async function SiteHeader() {
           <Wordmark />
         </Link>
         <div className="flex items-center gap-2">
+          <Link
+            href={paths.compare()}
+            className="hidden min-h-12 min-w-12 items-center justify-center gap-2 rounded-full px-3 font-semibold sm:inline-flex text-fg transition hover:bg-surface-1 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent-strong"
+          >
+            <ArrowLeftRight aria-hidden="true" className="size-5" />
+            {/* Not on phones: the header is full there (the homepage hero links to it instead). */}
+            {t("compare")}
+          </Link>
           <CartLink label={t("cart")} />
           <LanguageSwitcher />
         </div>

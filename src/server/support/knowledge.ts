@@ -179,6 +179,11 @@ export function buildKnowledge(input: KnowledgeInput): string {
     `${t("TradeIn.title")} ${t("TradeIn.subtitle")} The online estimate is not available yet: for a trade-in offer, the customer contacts the shop.`,
   ]);
 
+  sections.push([
+    "Comparing phones",
+    `The "Compare" page (link at the top of every page) puts the customer's phone next to the one they want: the trade-in estimate for theirs, the shop's prices for the other, the price after trade-in and every specification side by side. The "Help me choose" advisor also asks which phone they have and links each suggestion to that comparison.`,
+  ]);
+
   if (settings.gauge.enabled) {
     sections.push([
       "The Gauge (prize draw)",

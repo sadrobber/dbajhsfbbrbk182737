@@ -14,12 +14,13 @@ export function composeReply(
   context: { t: Translator; locale: Locale; brandNames: Map<string, string> },
 ): AssistantMemory {
   const { t, locale } = context;
-  const base = { language: locale, recommendations: [], packages: [], quickReplies: [] };
+  const base = { language: locale, recommendations: [], packages: [], quickReplies: [], question: null, currentPhone: null };
 
   if (plan.kind === "question") {
     return {
       ...base,
       type: "question",
+      question: "needs",
       message: t("AdvisorReply.askBudget"),
       quickReplies: [
         t("AdvisorReply.quickReplies.low"),

@@ -1,6 +1,7 @@
 import type { Locale } from "@/i18n/routing";
 import { getTranslator } from "@/i18n/messages";
-import { type CatalogItem, localize, type PackageDefinition } from "@/lib/data/schema";
+import type { TradeInEstimate } from "@/lib/data/pricing";
+import { type CatalogItem, localize, type PackageDefinition, type PhoneModel } from "@/lib/data/schema";
 import { locales } from "@/i18n/routing";
 import { translateDynamic } from "@/lib/i18n-dynamic";
 
@@ -13,6 +14,36 @@ const GRADE_TEXT = {
 
 const LANGUAGE_NAMES: Record<Locale, string> = { fr: "French", en: "English", it: "Italian" };
 
+/** The facts about a phone that matter when choosing its successor. */
+function phoneSummary(model: PhoneModel): string {
+  const s = model.specs;
+  const main = s.rear_cameras.find((c) => c.role === "wide")?.mp;
+  return [
+    model.release.month ? `released ${model.release.month}` : model.release.year ? `released ${model.release.year}` : null,
+    s.display.size_in ? `${s.display.size_in}" screen` : null,
+    s.chip,
+    s.battery_mah ? `${s.battery_mah} mAh battery` : null,
+    s.rear_cameras.length > 0 ? `${s.rear_cameras.length} rear camera${s.rear_cameras.length > 1 ? "s" : ""}${main ? ` (main ${main} MP)` : ""}` : null,
+    s.network,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
+/** What the model is told about the customer's current phone. */
+function currentPhoneSection(current: { model: PhoneModel; estimate: TradeInEstimate | null }): string {
+  const name = `${current.model.brand} ${current.model.name}`;
+  const tradeIn = current.estimate
+    ? `Its trade-in estimate as shop credit: up to €${current.estimate.storeCreditAmount} (${current.estimate.storageGb} GB, perfect condition; the shop confirms the final offer).`
+    : "The shop lists no trade-in price for it.";
+  return `
+
+The customer's current phone: ${name} (${phoneSummary(current.model)}).
+${tradeIn}
+- Never recommend the same model. Prefer phones that are a clear upgrade on what matters to them (newer, better camera, longer battery life) unless the budget rules it out, and say in "reason" what improves compared with their ${current.model.name}.
+- You may quote that trade-in estimate, never another trade-in amount. The site already shows the price after trade-in and a "Compare with my phone" link on each card.`;
+}
+
 /** Stable instructions first (cache-friendly), then packages, then today's stock. */
 export function buildSystemPrompt(input: {
   brandName: string;
@@ -20,6 +51,8 @@ export function buildSystemPrompt(input: {
   towns: string[];
   items: CatalogItem[];
   packages: PackageDefinition[];
+  /** The phone the customer has now, when they said it. */
+  currentPhone?: { model: PhoneModel; estimate: TradeInEstimate | null } | null;
 }): string {
   const { brandName, siteLocale, items, packages } = input;
   const en = getTranslator("en");
@@ -68,7 +101,7 @@ Rules:
    - "smart_deal": a cheaper alternative that still fits well. It must cost less than the right_choice.
    - "premium_option": above the budget, only when the extra money is clearly worth it. It must cost more than the right_choice. Leave it out otherwise.
    Fewer than 3 is fine.
-3. If the request is too vague to recommend anything (no budget, brand, use or preference at all), set "type" to "question", ask ONE short follow-up question in "message" and give 2 to 4 short "quickReplies". Never ask two questions in a row: if your previous answer was a question, recommend popular choices instead.
+3. If the request is too vague to recommend anything (no budget, brand, use or preference at all), set "type" to "question", ask ONE short follow-up question in "message" and give 2 to 4 short "quickReplies". Never ask two questions in a row: if your previous answer was a question, recommend popular choices instead. The site itself asks which phone the customer has now (answers with "question": "current_phone"): that one doesn't count as your question, and never ask it yourself.
 4. If nothing fits (for example a brand we don't sell), set "type" to "no_match", say so kindly and recommend the closest alternatives if there are any.
 5. Reply in the language of the customer's last message: French, English or Italian. If it is unclear, use ${LANGUAGE_NAMES[siteLocale]}. Set "language" to match.
 6. Keep "message" to one or two short sentences, and each "reason" to a few words. Plain everyday words: no technical jargon, no markdown, no emojis.
@@ -82,5 +115,5 @@ Packages:
 ${packageLines.join("\n")}
 
 Catalogue (phones in stock today):
-${JSON.stringify(catalogue)}`;
+${JSON.stringify(catalogue)}${input.currentPhone ? currentPhoneSection(input.currentPhone) : ""}`;
 }

@@ -17,6 +17,8 @@ export const paths = {
     return `/phones?brand=${filter}`;
   },
   deals: "/deals",
+  /** The picker, or two phones side by side: "/compare/apple-iphone-12-vs-apple-iphone-16". */
+  compare: (mine?: string, want?: string) => (mine && want ? `/compare/${mine}-vs-${want}` : "/compare"),
   tradeIn: "/trade-in",
   rules: "/rules",
   store: "/store",

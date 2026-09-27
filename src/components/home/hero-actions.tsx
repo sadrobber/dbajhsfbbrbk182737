@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BadgePercent, ChevronDown, LayoutGrid, Recycle, Smartphone, Sparkles, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, BadgePercent, ChevronDown, LayoutGrid, Recycle, Smartphone, Sparkles, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useAdvisor } from "@/components/advisor/advisor-provider";
@@ -42,6 +42,13 @@ export function HeroActions() {
           {t("helpMeChoose")}
         </button>
       </div>
+      <Link
+        href={paths.compare()}
+        className="mt-4 inline-flex min-h-11 items-center gap-2 font-semibold text-accent-text underline-offset-4 hover:underline"
+      >
+        <ArrowLeftRight aria-hidden="true" className="size-5" />
+        {t("compareLink")}
+      </Link>
 
       <div
         id="hero-shortcuts"

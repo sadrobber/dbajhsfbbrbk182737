@@ -114,3 +114,36 @@ export function quoteTradeIn(prices: TradeInPrice[], config: TradeInConfig, answ
   const amount = Math.max(config.minimumOffer, Math.round((price.basePrice * Math.max(0, 100 - deduction)) / 100));
   return { kind: "offer", amount, storeCreditAmount: Math.round((amount * (100 + config.storeCreditBonusPercent)) / 100) };
 }
+
+export type TradeInEstimate = {
+  storageGb: number;
+  /** Cash offer for a phone in perfect condition. */
+  amount: number;
+  /** The same offer taken as shop credit (with the bonus). */
+  storeCreditAmount: number;
+};
+
+/** The best-case offer per storage size (phone works, no marks, battery above 80%), smallest storage first. */
+export function bestCaseTradeIns(prices: TradeInPrice[], config: TradeInConfig, modelId: string): TradeInEstimate[] {
+  return prices
+    .filter((p) => p.modelId === modelId)
+    .sort((a, b) => a.storageGb - b.storageGb)
+    .flatMap((p) => {
+      const quote = quoteTradeIn(prices, config, {
+        modelId,
+        storageGb: p.storageGb,
+        worksNormally: true,
+        screen: "perfect",
+        body: "perfect",
+        batteryAbove80: true,
+        biometricsWork: true,
+        unlocked: true,
+      });
+      return quote.kind === "offer" ? [{ storageGb: p.storageGb, amount: quote.amount, storeCreditAmount: quote.storeCreditAmount }] : [];
+    });
+}
+
+/** The estimate for a storage size, or for the smallest one when the size is unknown or not listed. */
+export function pickTradeIn(estimates: TradeInEstimate[], storageGb: number | null): TradeInEstimate | null {
+  return estimates.find((e) => e.storageGb === storageGb) ?? estimates[0] ?? null;
+}

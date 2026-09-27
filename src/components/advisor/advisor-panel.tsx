@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type R
 import { MAX_MESSAGE_LENGTH } from "@/lib/advisor/constants";
 import type { AdvisorReply } from "@/lib/advisor/contract";
 import { cn } from "@/lib/cn";
-import { AdvisorPackageCardView, AdvisorProductCard } from "./advisor-cards";
+import { AdvisorCurrentPhoneBox, AdvisorPackageCardView, AdvisorProductCard } from "./advisor-cards";
 import { useAdvisor } from "./advisor-provider";
 
 const EXAMPLES = ["daughter", "samsung", "senior", "photo"] as const;
@@ -46,6 +46,11 @@ function AssistantReply({
   return (
     <div lang={reply.language} className="flex flex-col gap-3">
       <AssistantBubble label={label}>{reply.message}</AssistantBubble>
+      {reply.currentPhone && reply.cards.length > 0 && (
+        <div className="sm:pl-12">
+          <AdvisorCurrentPhoneBox phone={reply.currentPhone} />
+        </div>
+      )}
       {reply.cards.length > 0 && (
         <ul className="flex flex-col gap-3 sm:pl-12">
           {reply.cards.map((card) => (

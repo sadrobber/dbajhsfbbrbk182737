@@ -1,4 +1,4 @@
-import { Clock, CreditCard, MessageSquareText, ShoppingBag, Store } from "lucide-react";
+import { ArrowLeftRight, Clock, CreditCard, MessageSquareText, ShoppingBag, Store } from "lucide-react";
 import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -9,10 +9,12 @@ import { Availability, ProductBadge, visualBackdrop } from "@/components/product
 import { ProductPicture } from "@/components/product/product-picture";
 import { buttonClass, container } from "@/components/ui/styles";
 import { getTranslator } from "@/i18n/messages";
+import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { supplyOf } from "@/lib/data/catalog-logic";
 import { getCatalogItems, getItem, getMerchandising } from "@/lib/data/queries";
 import type { Supply } from "@/lib/data/schema";
+import { paths } from "@/lib/paths";
 import { buildProductCardView } from "@/lib/product-view";
 
 export async function generateStaticParams() {
@@ -120,6 +122,14 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/phone
               <OpenAdvisorButton label={t("Advisor.launcher")} />
             </div>
           )}
+
+          <Link
+            href={`${paths.compare()}?want=${encodeURIComponent(item.modelId)}`}
+            className="inline-flex min-h-11 items-center gap-2 justify-self-start font-semibold text-accent-text underline-offset-4 hover:underline"
+          >
+            <ArrowLeftRight aria-hidden="true" className="size-5" />
+            {t("ProductPage.compare")}
+          </Link>
         </div>
       </div>
     </section>

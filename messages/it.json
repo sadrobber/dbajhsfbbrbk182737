@@ -18,13 +18,15 @@
       "fr": "Français",
       "en": "English",
       "it": "Italiano"
-    }
+    },
+    "compare": "Confronta"
   },
   "Hero": {
     "eyebrow": "Smartphone nuovi e ricondizionati · Costa Azzurra",
     "title": "Trova lo smartphone giusto per te.",
     "knowWhatIWant": "So cosa voglio",
     "helpMeChoose": "Aiutami a scegliere",
+    "compareLink": "Confronta il mio telefono con un altro",
     "shortcutsTitle": "Vai direttamente a",
     "shortcuts": {
       "iphone": "iPhone",
@@ -119,6 +121,126 @@
         "title": "Su richiesta",
         "text": "Niente da pagare ora. Invia la tua richiesta: verifichiamo con i nostri fornitori e ti ricontattiamo con disponibilità e tempi."
       }
+    },
+    "compare": "Confronta con un altro telefono"
+  },
+  "Compare": {
+    "title": "Confronta i telefoni",
+    "subtitle": "Metti il tuo telefono accanto a quello che vorresti: prezzo, valore di permuta e tutte le caratteristiche, fianco a fianco.",
+    "mine": "Il tuo telefono",
+    "want": "Il telefono che vorresti",
+    "choose": "Scegli un telefono…",
+    "submit": "Confronta",
+    "samePhone": "Scegli due telefoni diversi.",
+    "popular": "Confronti più popolari",
+    "pageTitle": "{mine} vs {want}",
+    "pageDescription": "{mine} vs {want}: prezzo, valore di permuta e scheda tecnica completa fianco a fianco.",
+    "swap": "Inverti i telefoni",
+    "change": "Cambia telefoni",
+    "released": "Uscito a {date}",
+    "prices": {
+      "title": "Prezzi",
+      "tradeInTitle": "Dallo in permuta",
+      "upTo": "Fino a {amount}",
+      "asCredit": "o {amount} in buono d’acquisto (+{percent})",
+      "storage": "Memoria del tuo telefono",
+      "tradeInNote": "Stima per un telefono perfettamente funzionante, senza segni e con batteria sopra l’80%. L’offerta definitiva è confermata in negozio.",
+      "notBought": "Non indichiamo ancora un prezzo di permuta per questo telefono. Chiedici in negozio.",
+      "shopTitle": "Nel nostro negozio",
+      "newFrom": "Nuovo da {price}",
+      "refurbishedFrom": "Ricondizionato da {price}",
+      "notSold": "Al momento non è in vendita nel nostro negozio.",
+      "see": "Vedi questo telefono",
+      "askAdvisor": "Chiedi al nostro consulente",
+      "upgradeTitle": "Il tuo cambio",
+      "upgradeText": "Dai in permuta il tuo {mine} come buono d’acquisto: il {want} ti costa da {price}.",
+      "upgradeFree": "Dai in permuta il tuo {mine} come buono d’acquisto: copre tutto il prezzo del {want}."
+    },
+    "specs": {
+      "title": "Caratteristiche",
+      "legendBetter": "Migliore sulla carta",
+      "legendDiffers": "Diverso",
+      "better": "migliore",
+      "yes": "Sì",
+      "no": "No",
+      "sections": {
+        "overview": "In breve",
+        "display": "Schermo",
+        "performance": "Prestazioni",
+        "cameras": "Fotocamere",
+        "battery": "Batteria e ricarica",
+        "design": "Design",
+        "connectivity": "Connettività",
+        "extras": "Extra"
+      },
+      "rows": {
+        "released": "Uscita",
+        "formFactor": "Formato",
+        "os": "Sistema all’uscita",
+        "size": "Dimensione dello schermo",
+        "panel": "Tipo di schermo",
+        "refresh": "Frequenza di aggiornamento",
+        "resolution": "Risoluzione",
+        "cover": "Schermo esterno",
+        "chip": "Processore",
+        "ram": "Memoria (RAM)",
+        "storage": "Memorie disponibili",
+        "rearCameras": "Fotocamere posteriori",
+        "mainCamera": "Fotocamera principale",
+        "zoom": "Zoom ottico",
+        "frontCamera": "Fotocamera frontale",
+        "battery": "Capacità della batteria",
+        "wired": "Ricarica via cavo",
+        "wireless": "Ricarica wireless",
+        "dimensions": "Dimensioni",
+        "weight": "Peso",
+        "water": "Resistenza all’acqua",
+        "frame": "Cornice",
+        "biometrics": "Sblocco",
+        "network": "Rete mobile",
+        "wifi": "Wi-Fi",
+        "bluetooth": "Bluetooth",
+        "sim": "SIM",
+        "connector": "Porta",
+        "magsafe": "MagSafe",
+        "qi2": "Magneti Qi2",
+        "dynamicIsland": "Dynamic Island",
+        "actionButton": "Tasto Azione",
+        "cameraControl": "Controllo fotocamera",
+        "headphoneJack": "Jack cuffie",
+        "microSd": "Scheda microSD",
+        "sPen": "S Pen",
+        "glyph": "Luci Glyph"
+      },
+      "formFactor": {
+        "bar": "Classico",
+        "foldable": "Pieghevole"
+      },
+      "roles": {
+        "wide": "principale",
+        "ultrawide": "ultra grandangolare",
+        "telephoto": "teleobiettivo",
+        "periscope": "teleobiettivo periscopico",
+        "depth": "profondità",
+        "macro": "macro",
+        "monochrome": "bianco e nero",
+        "tof": "profondità 3D"
+      },
+      "cameraCount": "{count, plural, one {# fotocamera} other {# fotocamere}}",
+      "folded": "Chiuso: {size}",
+      "unfolded": "Aperto: {size}"
+    },
+    "units": {
+      "inch": "{value}″",
+      "hz": "{value} Hz",
+      "gb": "{value} GB",
+      "tb": "{value} TB",
+      "mp": "{value} MP",
+      "mah": "{value} mAh",
+      "watt": "{value} W",
+      "gram": "{value} g",
+      "mm": "{h} × {w} × {t} mm",
+      "zoom": "{value}×"
     }
   },
   "Cart": {
@@ -316,7 +438,8 @@
     "legal": "Note legali",
     "store": "Il negozio",
     "copyright": "© {year} {brand}",
-    "staffLogin": "Area staff"
+    "staffLogin": "Area staff",
+    "compare": "Confronta i telefoni"
   },
   "Placeholder": {
     "badge": "In arrivo",
@@ -407,7 +530,18 @@
         "social": "Perfetto per i social",
         "easy": "Facilissimo da usare"
       }
-    }
+    },
+    "askCurrentPhone": "Per cominciare, che telefono hai adesso? Lo confronterò con i miei suggerimenti e stimerò quanto possiamo darti in permuta.",
+    "currentPhoneReplies": {
+      "none": "Non ho uno smartphone",
+      "skip": "Salta questa domanda"
+    },
+    "yourPhone": "Il tuo telefono",
+    "compareWith": "Confronta con il mio {phone}",
+    "afterTradeIn": "≈ {price} con la permuta",
+    "tradeInUpTo": "Permuta: fino a {amount} in buono d’acquisto ({storage}, condizioni perfette).",
+    "tradeInNone": "Nessun prezzo di permuta per questo telefono, per ora.",
+    "tradeInNote": "Solo una stima: l’offerta definitiva è confermata in negozio."
   },
   "Support": {
     "open": "Apri la chat di assistenza",

@@ -1,9 +1,9 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, Recycle } from "lucide-react";
 import Link from "next/link";
 import { ConfigIcon } from "@/components/ui/config-icon";
 import { ProductPicture } from "@/components/product/product-picture";
 import { Availability, visualBackdrop } from "@/components/product/product-bits";
-import type { AdvisorCard, AdvisorPackageCard } from "@/lib/advisor/contract";
+import type { AdvisorCard, AdvisorCurrentPhone, AdvisorPackageCard } from "@/lib/advisor/contract";
 import type { Slot } from "@/lib/advisor/constants";
 import { cn } from "@/lib/cn";
 
@@ -51,8 +51,36 @@ export function AdvisorProductCard({ card }: { card: AdvisorCard }) {
           <p className="font-display text-xl font-extrabold">{product.price}</p>
           <Availability tone={product.availability.tone} label={product.availability.label} />
         </div>
+        {card.afterTradeIn && <p className="text-[0.9375rem] font-semibold text-success">{card.afterTradeIn}</p>}
+        {card.compare && (
+          // Above the card's own link, which covers the whole card.
+          <Link
+            href={card.compare.href}
+            className="relative z-10 mt-2 inline-flex min-h-11 items-center gap-2 rounded-full border border-line-strong bg-ink px-3.5 text-[0.9375rem] font-semibold text-accent-text transition hover:border-accent-text"
+          >
+            <ArrowLeftRight aria-hidden="true" className="size-4" />
+            {card.compare.label}
+          </Link>
+        )}
       </div>
     </article>
+  );
+}
+
+/** The customer's phone, once known: its trade-in estimate. */
+export function AdvisorCurrentPhoneBox({ phone }: { phone: AdvisorCurrentPhone }) {
+  return (
+    <div className="flex gap-3 rounded-3xl border border-line bg-surface-1 p-3.5">
+      <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-accent-soft text-accent-text">
+        <Recycle aria-hidden="true" className="size-5" />
+      </span>
+      <div className="min-w-0">
+        <p className="text-[0.875rem] font-semibold text-fg-muted">{phone.title}</p>
+        <p className="font-semibold leading-snug">{phone.name}</p>
+        <p className="mt-0.5 text-[0.9375rem] text-fg">{phone.tradeIn}</p>
+        {phone.note && <p className="mt-0.5 text-[0.8125rem] text-fg-subtle">{phone.note}</p>}
+      </div>
+    </div>
   );
 }
 

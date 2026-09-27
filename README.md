@@ -71,6 +71,19 @@ Choosing a provider (in `.env.local`; keys stay on the server and never reach th
 
 To add another vendor, add a case in `getAiClient()` in `src/server/advisor/ai-adapter.ts`; nothing else changes. The rate limit is in memory (fine for one server); move it to a shared store such as Redis when running several instances.
 
+### Your current phone
+
+Before recommending, the advisor asks once which phone the customer has now (skipped if they already said it, e.g. "J'ai un iPhone 11"; they can also tap "I don't have a smartphone" / "Skip"). This step is decided by the server (`src/server/advisor/current-phone.ts`), not the AI, so it works the same in demo mode. It recognises any of the 252 models however they're written ("S21+", "galaxy note 10", "iPhone 12 128 Go"). Once known, the advisor never suggests that model, shows its trade-in estimate, and each card gets "≈ €X after trade-in" and a "Compare with my …" link.
+
+## Phone comparison
+
+`/compare` lets anyone pick their phone and the phone they want (any of the 252 models); `/compare/<model-id>-vs-<model-id>` shows them side by side (linked from the header on larger screens, the homepage hero, product pages, the footer and the advisor's cards):
+
+- **Prices:** best-case trade-in estimate for the first phone per storage size (cash and shop credit), the shop's "new / refurbished from" prices for the second, and the cost after trade-in.
+- **Specs:** every field of the spec database, grouped, with differences highlighted and a ✓ on the better side only where more is clearly better (battery, refresh rate, charging, zoom, Wi-Fi…), never on taste (size, weight). Rows unknown for both phones are hidden. Logic in `src/lib/compare/specs.ts`.
+
+> The trade-in grid (`data/tradein-prices.json`) still holds **example prices**. They are shown to customers here and in the advisor, so the shop must set the real ones before launch.
+
 ## Support chat
 
 A chat bubble in the bottom-right corner of every shop page (the floating "Help me choose" button sits just to its left). Visitors ask practical questions (how ordering works, grades, warranty, packages, the Gauge) and get a short answer (2–3 sentences) in their own language. It uses the same AI provider settings as the advisor; the key stays on the server.

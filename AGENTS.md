@@ -22,6 +22,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Payments: `src/server/payments/` (`PaymentGateway`; Stripe code only in `stripe-adapter.ts`, `demo-adapter.ts` for dev). Env `PAYMENT_PROVIDER`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`; webhook at `/api/payments/stripe`.
 - Suppliers: `src/server/suppliers/` (`SupplierConnector`; `manual.ts` today). A supplier API is one new adapter selected in `index.ts`.
 - AI advisor: `src/server/advisor/`. Vendor code lives only in `ai-adapter.ts`; `guard.ts` re-checks every AI answer against the catalogue; `demo/` is the rule-based fallback.
+- Advisor "current phone" step: `src/server/advisor/current-phone.ts` (model matcher over all models + "I have…" detection); asked once by the server before either engine answers, remembered in `AssistantMemory.currentPhone`.
+- Comparison: `/[locale]/compare` (picker) and `/[locale]/compare/[pair]` (`a-vs-b` model ids); spec rows in `src/lib/compare/specs.ts`, data via `getComparison()` / `getTradeInEstimates()` in queries.ts.
 - Support chat: bubble in `src/components/support/`, `POST /api/chat`, server code in `src/server/support/` (knowledge built from live data + `src/config/support.config.ts`, where the owner fills contact details and policies; `TODO` lines are skipped). Same `ai-adapter.ts` as the advisor (`generateText`); no AI → contact details.
 - 3D: `src/components/three/`. Scenes load lazily through `three-slot.tsx`; each has a static fallback. `?3d=off|on` switches for testing.
 - Before pushing: `npm run check` (typecheck, lint, unit tests) and `npm run build`.
