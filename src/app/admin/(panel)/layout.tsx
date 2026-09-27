@@ -6,13 +6,13 @@ import { Wordmark } from "@/components/layout/wordmark";
 import { countOrdersToCheck } from "@/lib/data/admin-repository";
 import { requireAdmin } from "@/server/admin/auth";
 import { getAdminI18n } from "@/server/admin/i18n";
-import { getAdminCredentials } from "@/server/admin/session";
+import { getAdminAccounts } from "@/server/admin/session";
 import { logout } from "../login/actions";
 
 export default async function AdminPanelLayout({ children }: LayoutProps<"/admin">) {
   const session = await requireAdmin();
   const [ordersToCheck, { t, locale }] = await Promise.all([countOrdersToCheck(), getAdminI18n()]);
-  const usingDevPassword = getAdminCredentials()?.source === "dev-default";
+  const usingDevPassword = getAdminAccounts()?.source === "dev-default";
   const readOnlyHost = Boolean(process.env.VERCEL);
 
   return (

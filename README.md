@@ -122,10 +122,11 @@ A separate, staff-only area at `/admin`, with its own layout and login. Every pa
 | --- | --- |
 | `npm run dev`, nothing configured | `admin@novacell.test` / `novacell-dev` (shown on the login page, with a warning banner in the admin) |
 | Anywhere else | `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env.local` or the host's environment variables. Without them, the admin stays locked in production. |
+| More people | One more pair per person, with a number or a name added to both: `ADMIN_EMAIL_2` / `ADMIN_PASSWORD_2`, `ADMIN_EMAIL_SARAH` / `ADMIN_PASSWORD_SARAH`… |
 
-Sessions last 8 hours (signed, `httpOnly` cookie limited to `/admin`); changing the password signs everyone out. Sign-in is limited to 5 attempts per minute per address.
+Sessions last 8 hours (signed, `httpOnly` cookie limited to `/admin`). Removing a person's pair or changing their password signs only that person out. Sign-in is limited to 5 attempts per minute per address.
 
-> **⚠️ This is NOT production-grade authentication.** It is one shared password in an environment variable: no individual accounts, no roles (e.g. staff vs manager), no hashed passwords, no two-factor, no audit log. Replace it with real authentication (e.g. Auth.js or the commerce backend's admin users, with roles and hashed passwords) before launch. The code is in `src/server/admin/session.ts`, clearly marked as temporary.
+> **⚠️ This is NOT production-grade authentication.** It is email/password pairs in environment variables: no roles (e.g. staff vs manager), no hashed passwords, no password reset, no two-factor, no audit log. Replace it with real authentication (e.g. Auth.js or the commerce backend's admin users, with roles and hashed passwords) before launch. The code is in `src/server/admin/session.ts`, clearly marked as temporary.
 
 ### What each screen does
 

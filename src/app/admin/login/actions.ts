@@ -19,13 +19,14 @@ export async function login(_previous: LoginState, formData: FormData): Promise<
     return { error: t("Login.tooMany"), email };
   }
 
-  if (!checkCredentials(email, password)) {
+  const account = checkCredentials(email, password);
+  if (!account) {
     // Small delay: makes guessing slower without bothering real users.
     await new Promise((resolve) => setTimeout(resolve, 400));
     return { error: t("Login.wrong"), email };
   }
 
-  const token = createSessionToken();
+  const token = createSessionToken(account);
   if (!token) return { error: t("Login.notConfigured"), email };
 
   (await cookies()).set(SESSION_COOKIE, token, {

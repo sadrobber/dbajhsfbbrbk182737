@@ -4,7 +4,7 @@ import { AdminLanguageSwitch } from "@/components/admin/admin-nav";
 import { Wordmark } from "@/components/layout/wordmark";
 import { getAdminSession } from "@/server/admin/auth";
 import { getAdminI18n } from "@/server/admin/i18n";
-import { DEV_CREDENTIALS, getAdminCredentials, safeAdminRedirect } from "@/server/admin/session";
+import { DEV_CREDENTIALS, getAdminAccounts, safeAdminRedirect } from "@/server/admin/session";
 import { LoginForm } from "./login-form";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,7 +16,7 @@ export default async function AdminLoginPage({ searchParams }: PageProps<"/admin
   const { next } = await searchParams;
   const target = safeAdminRedirect(next);
   if (await getAdminSession()) redirect(target);
-  const credentials = getAdminCredentials();
+  const credentials = getAdminAccounts();
   const { t } = await getAdminI18n();
 
   return (
