@@ -408,5 +408,42 @@
         "easy": "Facilissimo da usare"
       }
     }
+  },
+  "Support": {
+    "open": "Apri la chat di assistenza",
+    "closeChat": "Chiudi la chat di assistenza",
+    "title": "Assistenza clienti",
+    "subtitle": "Ordini, garanzia, il negozio… fai la tua domanda.",
+    "offlineBadge": "Solo contatti",
+    "welcome": "Ciao! Sono l’assistente {brand}. Come posso aiutarti?",
+    "examplesTitle": "Per esempio",
+    "examples": {
+      "order": "Come funziona l’ordine online?",
+      "grades": "Cosa significano i gradi dei ricondizionati?",
+      "warranty": "Che garanzia ho?",
+      "pickup": "Posso ritirare l’ordine in negozio?"
+    },
+    "choosePrompt": "Cerchi un telefono?",
+    "chooseCta": "Aiutami a scegliere",
+    "inputLabel": "La tua domanda",
+    "placeholder": "Scrivi la tua domanda…",
+    "send": "Invia",
+    "typing": "L’assistente sta scrivendo…",
+    "error": "Spiacenti, qualcosa è andato storto. Riprova.",
+    "rateLimited": "Tante domande tutte insieme! Aspetta un minuto e riprova.",
+    "retry": "Riprova",
+    "restart": "Ricomincia",
+    "you": "Tu",
+    "assistant": "Assistente",
+    "footnote": "Le risposte automatiche possono contenere errori. Per le cose importanti, contatta il negozio.",
+    "offline": "Il nostro assistente online non è disponibile al momento.",
+    "offlineContact": "Puoi contattare il negozio qui:",
+    "offlineNoContact": "Contatta direttamente il negozio: il nostro team sarà felice di aiutarti.",
+    "contact": {
+      "email": "Email: {value}",
+      "phone": "Telefono: {value}",
+      "address": "Indirizzo: {value}",
+      "hours": "Orari: {value}"
+    }
   }
 }

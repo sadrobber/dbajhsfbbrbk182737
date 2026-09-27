@@ -27,7 +27,10 @@ export function OpenAdvisorButton({
   );
 }
 
-/** Floating "Help me choose" button, shown once the page's own button has scrolled away. */
+/**
+ * Floating "Help me choose" button, shown once the page's own button has scrolled away.
+ * It sits left of the support chat bubble, which owns the corner.
+ */
 export function AdvisorLauncher() {
   const t = useTranslations("Advisor");
   const { isOpen, open } = useAdvisor();
@@ -59,7 +62,7 @@ export function AdvisorLauncher() {
     <div
       inert={hidden}
       className={cn(
-        "fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-30 transition duration-300 sm:right-6",
+        "fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-20 z-30 transition duration-300 sm:right-[5.75rem]",
         hidden ? "pointer-events-none translate-y-4 opacity-0" : "translate-y-0 opacity-100",
       )}
     >

@@ -408,5 +408,42 @@
         "easy": "Très simple à utiliser"
       }
     }
+  },
+  "Support": {
+    "open": "Ouvrir le chat d’assistance",
+    "closeChat": "Fermer le chat d’assistance",
+    "title": "Service client",
+    "subtitle": "Commandes, garantie, la boutique… posez votre question.",
+    "offlineBadge": "Coordonnées uniquement",
+    "welcome": "Bonjour ! Je suis l’assistant {brand}. Comment puis-je vous aider ?",
+    "examplesTitle": "Par exemple",
+    "examples": {
+      "order": "Comment fonctionne la commande en ligne ?",
+      "grades": "Que veulent dire les grades des reconditionnés ?",
+      "warranty": "Quelle garantie ai-je ?",
+      "pickup": "Puis-je retirer ma commande en boutique ?"
+    },
+    "choosePrompt": "Vous cherchez un téléphone ?",
+    "chooseCta": "Aidez-moi à choisir",
+    "inputLabel": "Votre question",
+    "placeholder": "Écrivez votre question…",
+    "send": "Envoyer",
+    "typing": "L’assistant écrit…",
+    "error": "Désolé, un problème est survenu. Veuillez réessayer.",
+    "rateLimited": "Beaucoup de questions d’un coup ! Patientez une minute puis réessayez.",
+    "retry": "Réessayer",
+    "restart": "Recommencer",
+    "you": "Vous",
+    "assistant": "Assistant",
+    "footnote": "Les réponses automatiques peuvent contenir des erreurs. Pour tout ce qui est important, contactez la boutique.",
+    "offline": "Notre assistant en ligne n’est pas disponible pour le moment.",
+    "offlineContact": "Vous pouvez joindre la boutique ici :",
+    "offlineNoContact": "Contactez directement la boutique : notre équipe se fera un plaisir de vous aider.",
+    "contact": {
+      "email": "E-mail : {value}",
+      "phone": "Téléphone : {value}",
+      "address": "Adresse : {value}",
+      "hours": "Horaires : {value}"
+    }
   }
 }

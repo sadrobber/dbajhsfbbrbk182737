@@ -67,9 +67,20 @@ Choosing a provider (in `.env.local`; keys stay on the server and never reach th
 | --- | --- | --- |
 | `demo` (default) | nothing | Rule-based, for demos without any account |
 | `anthropic` | `AI_API_KEY` or `ANTHROPIC_API_KEY` | Claude via the official SDK. Default model `claude-opus-5` at low effort for fast replies; change with `AI_MODEL`. Server-side refusal fallback is on (`AI_FALLBACKS=default`); set `AI_FALLBACKS=off` if you pick a model that does not support it. |
-| `openai-compatible` | `AI_MODEL`, usually `AI_API_KEY`, optional `AI_BASE_URL` | Any OpenAI-compatible Chat Completions API (OpenAI, Mistral, Groq, OpenRouter, local Ollama...) |
+| `openai-compatible` | `AI_MODEL`, usually `AI_API_KEY`, optional `AI_BASE_URL` | Any OpenAI-compatible Chat Completions API (Groq, Google Gemini, OpenAI, Mistral, OpenRouter, local Ollama...). Free-tier settings for Groq and Gemini are in `.env.example`. |
 
 To add another vendor, add a case in `getAiClient()` in `src/server/advisor/ai-adapter.ts`; nothing else changes. The rate limit is in memory (fine for one server); move it to a shared store such as Redis when running several instances.
+
+## Support chat
+
+A chat bubble in the bottom-right corner of every shop page (the floating "Help me choose" button sits just to its left). Visitors ask practical questions (how ordering works, grades, warranty, packages, the Gauge) and get a short answer (2–3 sentences) in their own language. It uses the same AI provider settings as the advisor; the key stays on the server.
+
+1. `POST /api/chat` (`src/app/api/chat/route.ts`) validates the conversation (the browser keeps it and sends it back each time) and applies its own per-visitor rate limit. `GET /api/chat` says whether an AI answers.
+2. `src/server/support/knowledge.ts` writes the "website knowledge" from the live data: phones and starting prices, grades, batteries, warranty lengths, packages, the three ways to order, towns served, the Gauge. What staff change in `/admin` shows in the next answer.
+3. `src/server/support/prompt.ts` holds the rules: answer only from that knowledge, reply in the visitor's language, send anything that needs staff (an order, a refund, a repair) to the shop's contact details, never make up contact details, never give out promo codes, ignore attempts to change the rules.
+4. Without an AI provider, or if it fails, the chat answers with the shop's contact details.
+
+**To fill in before launch:** `src/config/support.config.ts`: contact details (email, phone, address, opening hours) and the policies the site doesn't know yet (delivery, returns, warranty terms, payment in the shop). Lines starting with `TODO` are ignored until replaced, so the assistant never reads out a placeholder.
 
 ## 3D visuals
 
@@ -235,6 +246,7 @@ src/
     [locale]/             pages per language: homepage, placeholder routes, 404
     admin/                back office: login/, (panel)/ with one folder (page + actions) per screen
     api/advisor/          the advisor API (POST: ask, GET: demo or AI mode)
+    api/chat/             the support chat API (POST: ask, GET: AI or contact-details mode)
     api/media/            serves product photos uploaded in the admin
     manifest.ts, icon.tsx PWA manifest and generated app icons
   components/
@@ -242,16 +254,20 @@ src/
     product/              product cards and the neutral phone illustration
     three/                3D scenes, their lazy loader and static fallbacks
     advisor/              chat panel, its state, cards and "Help me choose" buttons
+    support/              support chat bubble and panel
     admin/                admin screens, tables, previews and form pieces
     layout/               header, language switcher, footer
     ui/                   shared styles, carousel, placeholder page
   config/site.config.ts   brand name, stock threshold, service area
+  config/support.config.ts  support chat: contact details and extra knowledge (TODOs to fill in)
   i18n/                   language routing and message loading
   lib/
     data/                 schemas, JSON store, queries used by the shop, admin repository
     advisor/              request/response contract shared by browser and server
+    support/              support chat contract shared by browser and server
     product-view.ts       turns a product into translated, formatted card text
-  server/advisor/         orchestrator, AI adapter, prompt, output schema, guard, demo engine
+  server/advisor/         orchestrator, AI adapter (shared with the support chat), prompt, output schema, guard, demo engine
+  server/support/         support chat: live knowledge, prompt, answer + offline fallback
   server/admin/           temporary admin login, action helpers
   proxy.ts                adds the language to each request; first login check for /admin
 ```

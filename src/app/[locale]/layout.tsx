@@ -10,6 +10,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { RevealOnScroll } from "@/components/layout/reveal-on-scroll";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
+import { SupportChat } from "@/components/support/support-chat";
 import { ALLOW_SEARCH_INDEXING, BRAND_NAME } from "@/config/site.config";
 import { routing } from "@/i18n/routing";
 import { pick } from "@/lib/pick";
@@ -24,7 +25,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 /** Only these message namespaces are sent to the browser (for client components). */
-const CLIENT_NAMESPACES = ["Common", "Header", "Hero", "Advisor"] as const;
+const CLIENT_NAMESPACES = ["Common", "Header", "Hero", "Advisor", "Support"] as const;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -70,6 +71,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
             <SiteFooter />
             <AdvisorPanel />
             <AdvisorLauncher />
+            <SupportChat />
             <RevealOnScroll />
           </AdvisorProvider>
         </NextIntlClientProvider>

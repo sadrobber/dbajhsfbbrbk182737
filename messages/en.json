@@ -408,5 +408,42 @@
         "easy": "Very easy to use"
       }
     }
+  },
+  "Support": {
+    "open": "Open the support chat",
+    "closeChat": "Close the support chat",
+    "title": "Customer support",
+    "subtitle": "Orders, warranty, the shop… ask your question.",
+    "offlineBadge": "Contact details only",
+    "welcome": "Hello! I’m the {brand} assistant. How can I help you?",
+    "examplesTitle": "For example",
+    "examples": {
+      "order": "How does ordering online work?",
+      "grades": "What do the refurbished grades mean?",
+      "warranty": "What warranty do I get?",
+      "pickup": "Can I pick up my order in the shop?"
+    },
+    "choosePrompt": "Looking for a phone?",
+    "chooseCta": "Help me choose",
+    "inputLabel": "Your question",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "typing": "The assistant is writing…",
+    "error": "Sorry, something went wrong. Please try again.",
+    "rateLimited": "Lots of questions at once! Please wait a minute and try again.",
+    "retry": "Try again",
+    "restart": "Start again",
+    "you": "You",
+    "assistant": "Assistant",
+    "footnote": "Automatic answers can contain mistakes. For anything important, contact the shop.",
+    "offline": "Our online assistant isn’t available right now.",
+    "offlineContact": "You can reach the shop here:",
+    "offlineNoContact": "Please contact the shop directly: our team will be happy to help.",
+    "contact": {
+      "email": "Email: {value}",
+      "phone": "Phone: {value}",
+      "address": "Address: {value}",
+      "hours": "Opening hours: {value}"
+    }
   }
 }
